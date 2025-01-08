@@ -4,11 +4,10 @@
   <!-- Use this if parameters are set from the launch file, otherwise delete -->
   <xacro:arg name="prefix" default=""/>
 
-  <xacro:arg name="use_mock_hardware" default="false"/>
-  <xacro:arg name="mock_sensor_commands" default="false"/>
-  <xacro:arg name="sim_gazebo_classic" default="false"/>
-  <xacro:arg name="sim_gazebo" default="false"/>
-  <xacro:arg name="simulation_controllers" default=""/>
+  <xacro:arg name="use_mock_hardware" default="false" />
+  <xacro:arg name="mock_sensor_commands" default="false" />
+  <xacro:arg name="sim_gazebo" default="false" />
+  <xacro:arg name="simulation_controllers" default="" />
 
   <xacro:include filename="$(find $PKG_NAME$)/urdf/$ROBOT_NAME$/$ROBOT_NAME$_macro.xacro"/>
   <xacro:include filename="$(find $PKG_NAME$)/urdf/$ROBOT_NAME$/$ROBOT_NAME$_macro.ros2_control.xacro"/>
@@ -18,8 +17,8 @@
 
   <!-- Load robot's macro with parameters -->
   <!-- set prefix if multiple robots are used -->
-  <xacro:$ROBOT_NAME$ prefix="$(arg prefix)" parent="world">
-    <origin xyz="0 0 0" rpy="0 0 0"/>          <!-- position robot in the world -->
+  <xacro:$ROBOT_NAME$ prefix="$(arg prefix)" parent="world" simulation="$(arg sim_gazebo)">
+    <origin xyz="0 0 0" rpy="0 0 0" />          <!-- position robot in the world -->
   </xacro:$ROBOT_NAME$>
 
   <xacro:$ROBOT_NAME$_ros2_control
@@ -27,7 +26,6 @@
     prefix="$(arg prefix)"
     use_mock_hardware="$(arg use_mock_hardware)"
     mock_sensor_commands="$(arg mock_sensor_commands)"
-    sim_gazebo_classic="$(arg sim_gazebo_classic)"
     sim_gazebo="$(arg sim_gazebo)"
     simulation_controllers="$(arg simulation_controllers)"/>
 
