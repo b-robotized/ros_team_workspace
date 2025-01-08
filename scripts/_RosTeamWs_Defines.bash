@@ -534,6 +534,9 @@ function set_ros_version_for_distro {
     iron)
       ros_version=2
       ;;
+    jazzy)
+      ros_version=2
+      ;;
     rolling)
       ros_version=2
       ;;
