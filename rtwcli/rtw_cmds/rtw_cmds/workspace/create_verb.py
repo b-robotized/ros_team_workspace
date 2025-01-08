@@ -359,7 +359,7 @@ class CreateVerb(VerbExtension):
             type=str,
             help="ROS distro to use for the workspace.",
             required=True,
-            choices=["humble", "rolling"],
+            choices=["humble", "jazzy", "rolling"],
         )
         parser.add_argument(
             "--docker", action="store_true", help="Create a docker workspace.", default=False

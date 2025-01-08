@@ -28,7 +28,7 @@ fi
 
 # All the possible supported ros distributions supported by rtw
 if [ -z "$rtw_supported_ros_distributions" ]; then
-  readonly rtw_supported_ros_distributions=("noetic" "foxy" "galactic" "humble" "iron" "rolling")
+  readonly rtw_supported_ros_distributions=("noetic" "foxy" "galactic" "humble" "iron" "jazzy" "rolling")
 fi
 
 # Mapping of ubuntu version and supported ros distributions
