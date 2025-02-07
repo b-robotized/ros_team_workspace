@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script defer data-domain="rtw.b-robotized.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script>
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+  
+  <title>2. Setting up RosTeamWorkspace &mdash; ROS Team Workspace Documentation: Galactic Feb 2025 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+  
+
+  
+  
+
+  
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//galactic/tutorials/setting_up_rtw.html" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Managing multiple workspaces" href="managing_multiple_workspaces.html" />
+    <link rel="prev" title="1. Quick start with RosTeamWorkspace" href="quick-start.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/galactic-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html">1. Quick start with RosTeamWorkspace</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Setting up RosTeamWorkspace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">2.1. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-auto-sourcing">2.2. Manual auto-sourcing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managing_multiple_workspaces.html">3. Managing multiple workspaces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Galactic</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li><span class="section-number">2. </span>Setting up RosTeamWorkspace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/b»robotized/ros_team_workspace/blob/galactic//docs/tutorials/setting_up_rtw.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="setting-up-rosteamworkspace">
+<h1><span class="section-number">2. </span>Setting up RosTeamWorkspace<a class="headerlink" href="#setting-up-rosteamworkspace" title="Permalink to this heading"></a></h1>
+<section id="installation">
+<span id="tutorial-setting-up-rtw"></span><h2><span class="section-number">2.1. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<p>To start using RosTeamWS framework clone the repository to any location using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StoglRobotics/ros_team_workspace.git
+</pre></div>
+</div>
+<p>Source the <code class="docutils literal notranslate"><span class="pre">setup.bash`</span></code> in the top folder of RosTeamWorkspace:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>ros_team_workspace/setup.bash
+</pre></div>
+</div>
+<p>That’s all. You are now set to use RosTeamWS. If you want to add auto-sourcing you can simply execute the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setup-auto-sourcing
+</pre></div>
+</div>
+<p>This is going to configure the RosTeamWorkspace permanently. If you want to revert those changes or prefer to do them by yourself simply follow the next few steps.</p>
+</section>
+<section id="manual-auto-sourcing">
+<h2><span class="section-number">2.2. </span>Manual auto-sourcing<a class="headerlink" href="#manual-auto-sourcing" title="Permalink to this heading"></a></h2>
+<p>Add auto-sourcing of configuration to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file by adding the following lines to its end using your favorite text editor (e.g., <code class="docutils literal notranslate"><span class="pre">vim</span></code> or <code class="docutils literal notranslate"><span class="pre">nano</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>~/.ros_team_ws_rc<span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>.<span class="w"> </span>~/.ros_team_ws_rc
+<span class="k">fi</span>
+</pre></div>
+</div>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">&lt;PATH</span> <span class="pre">TO</span> <span class="pre">ros_team_workspace&gt;/templates/.ros_team_ws_rc</span></code> file to your home folder using</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>&lt;PATH<span class="w"> </span>TO<span class="w"> </span>ros_team_workspace&gt;/templates/.ros_team_ws_rc<span class="w"> </span>~/
+</pre></div>
+</div>
+<p>and adjust the following values using your favorite text editor:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;PATH</span> <span class="pre">TO</span> <span class="pre">ros_team_workspace&gt;</span></code> - with the path to the framework folder</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have ros installed at another location than /opt/ros/&lt;ros-distro&gt; , please adjust the ALTERNATIVE_ROS_&lt;ROS-DISTRO&gt;_LOCATION variable in the ~/.ros_team_ws_rc to according location.</p>
+</div>
+<p>Now you are ready to:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="quick-start.html#tutorial-quick-start"><span class="std std-ref">quick-start</span></a>,</p></li>
+<li><p><a class="reference internal" href="../use-cases/operating_system/create_setup_workspace.html#uc-setup-workspace"><span class="std std-ref">setup your first workspace</span></a>,</p></li>
+<li><p>check how to <a class="reference internal" href="managing_multiple_workspaces.html#tutorial-managing-multiple-workspaces"><span class="std std-ref">manage multiple workspaces</span></a>,</p></li>
+<li><p>or check out one of the <a class="reference internal" href="../use-cases/index.html#uc-index"><span class="std std-ref">use-cases</span></a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="managing_multiple_workspaces.html" class="btn btn-neutral float-right" title="3. Managing multiple workspaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="quick-start.html" class="btn btn-neutral float-left" title="1. Quick start with RosTeamWorkspace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, Stogl Robotics Consulting UG (haftungsbeschränkt).
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: galactic
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>ROS Team Workspace - Galactic and Rolling</dt>
+      <dd><a href="../../master/tutorials/setting_up_rtw.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+      <dt>ROS Team Workspace - Foxy</dt>
+        <dd><a href="../../humble/tutorials/setting_up_rtw.html">Humble (recommended)</a></dd>
+        <dd><a href="setting_up_rtw.html">Galactic</a></dd>
+        <dd><a href="../../foxy/index.html">Foxy</a></dd>
+   </dl>
+  </div>
+</div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

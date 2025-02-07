@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script defer data-domain="rtw.b-robotized.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script>
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+  
+  <title>Development Guidelines &mdash; ROS Team Workspace Documentation: Humble Feb 2025 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+  
+
+  
+  
+
+  
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/guidelines/development.html" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ROS-Robot Package structure" href="robot_package_structure.html" />
+    <link rel="prev" title="Guidelines" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/humble-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guidelines</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Development Guidelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-changes-and-pull-request-submissions">Code Changes and Pull Request Submissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-pre-commit-for-formatting-and-linting">Use <em>pre-commit</em> for formatting and linting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getting-started-with-pre-commit">Getting started with <em>pre-commit</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#useful-commands-and-options">Useful commands and options</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot_package_structure.html">ROS-Robot Package structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Humble</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Guidelines</a> &raquo;</li>
+        
+      <li>Development Guidelines</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/b»robotized/ros_team_workspace/blob/humble//docs/guidelines/development.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="development-guidelines">
+<h1>Development Guidelines<a class="headerlink" href="#development-guidelines" title="Permalink to this heading"></a></h1>
+<p id="guidelines-development">This documents proposes development guidelines to increase work efficiency and synergy within the rest of the team.</p>
+<p><strong>NOTE</strong>: All the proposal here are the results of authors’ personal experiences. Saying that, if you have any idea to make them better you are very wellcome to create a PR.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="#code-changes-and-pull-request-submissions">Making changes to the code-base by submitting a Pull Request</a></p></li>
+<li><p><a class="reference external" href="#use-pre-commit-for-formatting-and-linting">Using *pre-commit*</a></p></li>
+</ol>
+</section>
+<section id="code-changes-and-pull-request-submissions">
+<h2>Code Changes and Pull Request Submissions<a class="headerlink" href="#code-changes-and-pull-request-submissions" title="Permalink to this heading"></a></h2>
+<p>To make a change of the existing code base, Pull Request (GitHub) or Merge Request (GitLab) are used.
+This section describes in short process with valuable tips to make your and reviewers’ life easier.</p>
+<ol class="arabic">
+<li><p>Check with the team if it is usual to submit a PR/MR from a fork or directly into target repository.
+This usually depends on the team size and organization.
+When working with public repositories you always need to create a fork.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In <em>Stogl Robotics</em> we have the organization called <a class="reference external" href="https://github.com/StoglRobotics-forks">StoglRobotics-forks</a> where all forks of public repositories live and are accessible for writing by all team members.
+This simplify collaboration inside the team - there is no need for individual access grants when using forks under your user.
+<strong>Always</strong> check if there is already a fork in <em>StoglRobotics-forks</em> organization and if not create it.</p>
+</div>
+</li>
+<li><p>Start development always from the up-to date state of the repositories default branch (usually called <em>master</em> or <em>main</em> - for simplicity we call it <em>master</em> here).
+Take into account that master branch of your fork is usually not up to date with the upstream repository.
+Therefore be careful about that and use the opportunity to sync <em>master</em> branch of the fork to the state of the <em>master</em> branch of the upstream repository.</p></li>
+<li><p><strong>Always</strong> create a new branch for each feature or bug fix.
+<strong>Never</strong> make multiple changes on a same feature branch. One feature / change == one branch. Don’t submit PRs from <em>master</em> branch.</p></li>
+<li><p><strong>Before</strong> starting development check how the branch will be merged, using <em>merge commit</em> or <em>squash</em> method.
+If <em>merge commit</em> is used make sure that each of your commits is clean and named properly since they will become part of the repository’s history.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In <em>Stogl Robotics</em> we are always <em>squashing</em> commits, i.e., one future or one bug fix is one commit in the default branch. The commit message is edited before merging.</p>
+</div>
+</li>
+<li><p>Explain in the PR/MR description what your code is doing and why.</p></li>
+<li><p>When you are finished with development and want to submit code for the review - consider the following tips:</p>
+<ul class="simple">
+<li><p><strong>Always</strong> run <em>pre-commit</em> formatters;</p></li>
+<li><p>Review your code <strong>first by yourself</strong> before asking someone else;</p></li>
+<li><p>Make sure there <strong>are not</strong> commented code blocks or if they have to be there add explanation why;</p></li>
+<li><p>Resolve all TODOs or add concrete questions about them either in the code or in review comments so that other people know this is open for discussion;</p></li>
+<li><p>By iterating on the review adjust <strong>all parts</strong> of the code with the same or similar patterns even if you get a comment about those only in one place - reviewers usually don’t like to repeat themselves on each iteration of the same issue - if you are not sure about something, ask;</p></li>
+<li><p>Ask yourself: <em>Would I like to review this code?</em>.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The reviews are done by other people and show respect toward their time. Reviewer’s task is <strong>not to clean</strong> the code behind you.
+Many people get very angry if you provide messy code, usually so much that you have to wait for weeks to get your code reviewed again.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="use-pre-commit-for-formatting-and-linting">
+<h2>Use <em>pre-commit</em> for formatting and linting<a class="headerlink" href="#use-pre-commit-for-formatting-and-linting" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> is a program that adds hooks into <code class="docutils literal notranslate"><span class="pre">git</span></code> so when you commit something actions can be automatically executed.
+There are many different possibility with <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> but it is mostly used for integrating code linters and formatters to always commit clean code.</p>
+<section id="getting-started-with-pre-commit">
+<h3>Getting started with <em>pre-commit</em><a class="headerlink" href="#getting-started-with-pre-commit" title="Permalink to this heading"></a></h3>
+<p>First install it to you computer using:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pre-commit
+</pre></div>
+</div>
+</div></blockquote>
+<p>and than tell <code class="docutils literal notranslate"><span class="pre">git</span></code> that you are using it by executing the following in each repository:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>install
+</pre></div>
+</div>
+</div></blockquote>
+<p>This will execute <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> on every commit you make and prevent it from doing it if some checks fail.
+If you really need to ignore check in the commit, you can add <code class="docutils literal notranslate"><span class="pre">-n</span></code> flag to the <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code> command and they will be skipped.</p>
+<p><strong>NOTE</strong>: If your repository does not uses <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> yet, it is very easy to add it by creating a configuration file <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> in the top level of your repository (there where <code class="docutils literal notranslate"><span class="pre">.git</span></code> folder is).
+If you don’t know where to start with <em>pre-commit</em> configuration in your ROS project, simply copy our template from <a class="reference external" href="https://github.com/StoglRobotics/ros_team_workspace/blob/master/templates/package/.pre-commit-config.yaml">templates/package/.pre-commit-config.yaml</a>.</p>
+</section>
+<section id="useful-commands-and-options">
+<h3>Useful commands and options<a class="headerlink" href="#useful-commands-and-options" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p>Update all the hooks in the configuration</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>autoupdate
+</pre></div>
+</div>
+</li>
+<li><p>Manually run and check status of all <em>pre-commit</em> hooks:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>-a
+</pre></div>
+</div>
+</li>
+<li><p>Remove <em>pre-commit</em>-hooks from automatic execution:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>uninstall
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="robot_package_structure.html" class="btn btn-neutral float-right" title="ROS-Robot Package structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, Stogl Robotics Consulting UG (haftungsbeschränkt).
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: humble
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>ROS Team Workspace - Galactic and Rolling</dt>
+      <dd><a href="../../master/guidelines/development.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+      <dt>ROS Team Workspace - Foxy</dt>
+        <dd><a href="development.html">Humble (recommended)</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic</a></dd>
+        <dd><a href="../../foxy/index.html">Foxy</a></dd>
+   </dl>
+  </div>
+</div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
