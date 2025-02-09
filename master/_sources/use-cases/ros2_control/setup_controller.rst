@@ -4,7 +4,7 @@ ros2_control: Setup controller package
 .. _uc-setup-ros2-controller:
 
 This use-case describes how to set up a controller for the ros2_control
-framework using scripts from ROS Team Workspace (RosTeamWS) framework.
+framework using scripts from ROS Team Workspace (RTW) framework.
 The scripts uses template files from
 ``templates/ros2_control/controller`` folder.
 The script creates a full skeleton of a controller with plugin description

@@ -4,7 +4,7 @@ Setup robot description
 .. _uc-setup-robot-description:
 
 This use-case describes how to set up a robot description package using
-scripts from ROS Team Workspace (RosTeamWS) framework.
+scripts from ROS Team Workspace (RTW) framework.
 The package follows as far as possible best practices for
 `robot support packages <http://wiki.ros.org/Industrial/Tutorials/WorkingWithRosIndustrialRobotSupportPackages>`_
 from ROS-Industrial consortia. (**This has to be verified!**)

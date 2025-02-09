@@ -4,7 +4,7 @@ Setup robot bringup
 .. _uc-setup-robot-bringup:
 
 This use-case describes how to set up a robot bringup package using scripts
-from ROS Team Workspace (RosTeamWS) framework.
+from ROS Team Workspace (RTW) framework.
 The package follows as far as possible best practices for
 `robot support packages <http://wiki.ros.org/Industrial/Tutorials/WorkingWithRosIndustrialRobotSupportPackages>`_
 from ROS-Industrial consortia. (**This has to be verified!**)

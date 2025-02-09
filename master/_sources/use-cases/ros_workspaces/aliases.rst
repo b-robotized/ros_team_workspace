@@ -38,6 +38,7 @@ rosdi
 
 Installling dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^
+.. _uc-aliases-dependencies:
 
 rosdepi
   Installing dependencies for the packages in ``$ROS_WS/src`` folder.

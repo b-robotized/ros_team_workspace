@@ -3,22 +3,29 @@ Setting up RosTeamWorkspace
 ============================
 .. _tutorial-setting-up-rtw:
 
-Installation of RosTeamWS
+Installation of RTW
 """"""""""""""""""""""""""
-To start using RosTeamWS framework clone the repository to any location using:
+To start using RTW framework clone the repository to any location using:
 
 .. code-block:: bash
 
    git clone https://github.com/StoglRobotics/ros_team_workspace.git
 
+Install RTW CLI. This is a python-based CLI as for ROS 2 that makes it easier to use:
 
-Source the ``setup.bash``` in the top folder of RosTeamWorkspace:
+.. code-block:: bash
+
+   cd ros_team_workspace/rtwcli/  # enter the RTW-CLI folder
+   pip3 install -r requirements.txt --break-system-packages  # since Ubuntu 24.04 is this flag required as we are not using virtual environment
+   cd -  # go back to the folder where you cloned the RTW
+
+Source the ``setup.bash``` in the top folder of RTW:
 
 .. code-block:: bash
 
    source ros_team_workspace/setup.bash
 
-That's all. You are now set to use RosTeamWS. If you want to add auto-sourcing you can simply execute the following command:
+That's all. You are now set to use RTW. If you want to add auto-sourcing you can simply execute the following command:
 
 .. code-block:: bash
 

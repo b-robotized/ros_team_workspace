@@ -1,5 +1,5 @@
 ==================================
-Quick start with RosTeamWorkspace
+Quick start with RTW
 ==================================
 .. _tutorial-quick-start:
 
@@ -12,14 +12,14 @@ interested in:
    :maxdepth: 1
 
 
-Clone and source the RosTeamWorkspace
----------------------------------------
+Clone, setup and source the RosTeamWorkspace (RTW)
+---------------------------------------------------
 .. code-block:: bash
 
    git clone https://github.com/StoglRobotics/ros_team_workspace.git
+   cd ros_team_workspace/rtwcli/ && pip3 install -r requirements.txt --break-system-packages && cd -
    source ros_team_workspace/setup.bash
    setup-auto-sourcing  # Make RosTeamWorkspace automatically sourced when open a new terminal (The best experience)
-
 
 Create new package in an existing workspace
 --------------------------------------------------------

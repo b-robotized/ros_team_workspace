@@ -10,7 +10,7 @@
   <script defer data-domain="rtw.b-robotized.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   
-  <title>1. Quick start with RosTeamWorkspace &mdash; ROS Team Workspace Documentation: Humble Feb 2025 documentation</title>
+  <title>1. Quick start with RTW &mdash; ROS Team Workspace Documentation: Humble Feb 2025 documentation</title>
   
 
   
@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
 
   
   
@@ -71,7 +72,7 @@
 
           
             
-            <img src="../_static/humble-small.png" class="logo" alt="Logo"/>
+            <img src="../_static/humble.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -102,8 +103,8 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Quick start with RosTeamWorkspace</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#clone-and-source-the-rosteamworkspace">1.1. Clone and source the RosTeamWorkspace</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Quick start with RTW</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clone-setup-and-source-the-rosteamworkspace-rtw">1.1. Clone, setup and source the RosTeamWorkspace (RTW)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-new-package-in-an-existing-workspace">1.2. Create new package in an existing workspace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-robot-description-package">1.3. Create robot description package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-robot-bringup-package">1.4. Create robot bringup package</a></li>
@@ -115,10 +116,10 @@
 <li class="toctree-l2"><a class="reference internal" href="managing_multiple_workspaces.html">3. Managing multiple workspaces</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RosTeamWS CLI (Experimental)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
 </ul>
 
@@ -170,7 +171,7 @@
         
           <li><a href="index.html">Tutorials</a> &raquo;</li>
         
-      <li><span class="section-number">1. </span>Quick start with RosTeamWorkspace</li>
+      <li><span class="section-number">1. </span>Quick start with RTW</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,17 +192,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="quick-start-with-rosteamworkspace">
-<h1><span class="section-number">1. </span>Quick start with RosTeamWorkspace<a class="headerlink" href="#quick-start-with-rosteamworkspace" title="Permalink to this heading"></a></h1>
+  <section id="quick-start-with-rtw">
+<h1><span class="section-number">1. </span>Quick start with RTW<a class="headerlink" href="#quick-start-with-rtw" title="Permalink to this heading"></a></h1>
 <p id="tutorial-quick-start">This tutorial shows use of RosTeamWorkspace for very common use-cases that can
 be done without permanent changes to your environment. First you have to clone
 and source the workspace and then continue with the use-case you are
 interested in:</p>
 <div class="toctree-wrapper compound">
 </div>
-<section id="clone-and-source-the-rosteamworkspace">
-<h2><span class="section-number">1.1. </span>Clone and source the RosTeamWorkspace<a class="headerlink" href="#clone-and-source-the-rosteamworkspace" title="Permalink to this heading"></a></h2>
+<section id="clone-setup-and-source-the-rosteamworkspace-rtw">
+<h2><span class="section-number">1.1. </span>Clone, setup and source the RosTeamWorkspace (RTW)<a class="headerlink" href="#clone-setup-and-source-the-rosteamworkspace-rtw" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StoglRobotics/ros_team_workspace.git
+<span class="nb">cd</span><span class="w"> </span>ros_team_workspace/rtwcli/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>--break-system-packages<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>-
 <span class="nb">source</span><span class="w"> </span>ros_team_workspace/setup.bash
 setup-auto-sourcing<span class="w">  </span><span class="c1"># Make RosTeamWorkspace automatically sourced when open a new terminal (The best experience)</span>
 </pre></div>
@@ -327,14 +329,16 @@ ros2_control_setup-controller-package<span class="w"> </span>&lt;my_controller_f
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>ROS Team Workspace - Galactic and Rolling</dt>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
       <dd><a href="quick-start.html">Master (latest)</a></dd>
     </dl>
     <dl>
-      <dt>ROS Team Workspace - Foxy</dt>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
         <dd><a href="../../humble/tutorials/quick-start.html">Humble (recommended)</a></dd>
-        <dd><a href="../../galactic/tutorials/quick-start.html">Galactic</a></dd>
-        <dd><a href="../../foxy/index.html">Foxy</a></dd>
+        <dd><a href="../../galactic/tutorials/quick-start.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
    </dl>
   </div>
 </div>

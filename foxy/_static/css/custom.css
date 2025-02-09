@@ -1,0 +1,142 @@
+:root {
+  --br-primary: #5bbdb5;  /* b»robotized green */
+  --br-secondary: #734293; /* b»robotized violett */
+  --br-ternary: #fdc300; /* b»robotized yellow */
+  --br-gray: #41413f; /* b»robotized gray */
+  --br-dark-gray: #1d1d1b; /* b»robotized dark gray  */
+  --br-dark-gray1: #363636;
+  --br-dark-gray2: #4d4d4d;
+  --br-dark-gray3: #5d5d5d;
+  --br-dark-gray5: #e3e3e3;
+  --br-light-gray: #878787; /* b»robotized light gray */
+}
+
+/* Change background color */
+/*.wy-nav-content {
+ *  background-color: var(--br-light-gray);
+ * }*/
+
+/* Change links */
+a {
+  color: var(--br-primary);
+}
+
+/* Hover effect for links */
+a:hover {
+  color: var(--br-secondary);
+}
+
+/* Change sidebar text color */
+.wy-menu-vertical a {
+  color: var(--br-primary) !important; /* Yellow text */
+}
+
+/* Change main content text color */
+.rst-content {
+  color: var(--br-dark-gray);
+}
+
+/* Change header bar color */
+.wy-side-nav-search {
+  background-color: var(--br-dark-gray);
+}
+
+/* Change sidebar background */
+.wy-nav-side {
+  background-color: var(--br-dark-gray);
+}
+
+/* Menu items style */
+.wy-menu-vertical > a {
+  color: var(--br-primary) !important;
+  background-color: var(--br-dark-gray);
+}
+
+.wy-menu-vertical > a:hover {
+  filter: brightness(1.4); /* 1.2 = 20% lighter */
+  font-weight: bolder !important;
+}
+
+.wy-menu-vertical > a:hover {
+  filter: brightness(1.4); /* 1.2 = 20% lighter */
+}
+
+/* Style for active (current) first-level menu item */
+.wy-menu-vertical .current > a {
+  color: var(--br-secondary) !important;
+}
+
+/* Custom hover effect ONLY for the current first-level menu item */
+.wy-menu-vertical .current > a:hover {
+  filter: brightness(0.8); /* 0.8 = 20% darker */;
+}
+
+/* First-level menu items */
+.wy-menu-vertical .toctree-l1 > a:hover {
+  filter: brightness(1.4); /* 1.2 = 20% lighter */
+}
+
+/* Style for active (current) first-level menu item */
+.wy-menu-vertical .toctree-l1.current > a {
+  color: var(--br-secondary) !important;
+}
+
+/* Custom hover effect ONLY for the current first-level menu item */
+.wy-menu-vertical .toctree-l1.current > a:hover {
+  filter: brightness(0.8); /* 0.8 = 20% darker */;
+}
+
+/* Second-level menu items */
+.wy-menu-vertical .toctree-l2 > a {
+  background-color: var(--br-dark-gray1) !important;  /* Darker gray */
+}
+.wy-menu-vertical .toctree-l2 > a:hover {
+  filter: brightness(1.4); /* 1.2 = 20% lighter */
+}
+.wy-menu-vertical .toctree-l2.current > a {
+  color: var(--br-secondary);  /* Yellow text */
+  background-color: #fcfcfc !important;
+}
+.wy-menu-vertical .toctree-l2.current > a:hover {
+  filter: brightness(0.8); /* 1.2 = 20% lighter */
+}
+
+/* Third-level menu items */
+.wy-menu-vertical .toctree-l3 > a {
+  background-color: var(--br-dark-gray2) !important;  /* Even darker gray */
+}
+.wy-menu-vertical .toctree-l3 > a:hover {
+  filter: brightness(1.4); /* 1.2 = 20% lighter */
+}
+.wy-menu-vertical .toctree-l3.current > a {
+  color: var(--br-secondary);  /* Yellow text */
+  background-color: var(--br-dark-gray5) !important;
+}
+.wy-menu-vertical .toctree-l3.current > a:hover {
+  filter: brightness(0.8); /* 1.2 = 20% lighter */
+}
+
+/* Fourth-level menu items */
+.wy-menu-vertical .toctree-l4 > a {
+  color: var(--br-ternary) !important;  /* Orange text */
+  background-color: var(--br-dark-gray3) !important;  /* Even darker gray */
+}
+
+/* Fifth-level menu items */
+.wy-menu-vertical .toctree-l5 > a {
+  color: var(--br-ternary) !important;  /* Orange text */
+  background-color: var(--br-dark-gray3) !important;  /* Even darker gray */
+}
+
+.rst-versions .rst-current-version {
+  color: var(--br-ternary);
+  background-color: var(--br-gray);
+}
+
+.rst-versions .rst-current-version .fa {
+  color: var(-br-light-gray);
+}
+
+.rst-versions .rst-other-versions .dd a:hover {
+  color: var(-br-secondary);
+}

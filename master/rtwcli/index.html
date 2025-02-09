@@ -10,7 +10,7 @@
   <script defer data-domain="rtw.b-robotized.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   
-  <title>RosTeamWS CLI (Experimental) &mdash; ROS Team Workspace Documentation: Humble Feb 2025 documentation</title>
+  <title>RTW CLI &mdash; ROS Team Workspace Documentation: Humble Feb 2025 documentation</title>
   
 
   
@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
 
   
   
@@ -51,8 +52,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="FAQ" href="../faq/index.html" />
-    <link rel="prev" title="Supported ros versions and operating systems" href="../docker/supported_versions/supported_versions.html" /> 
+    <link rel="next" title="Guidelines" href="../guidelines/index.html" />
+    <link rel="prev" title="3. Managing multiple workspaces" href="../tutorials/managing_multiple_workspaces.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -71,7 +72,7 @@
 
           
             
-            <img src="../_static/humble-small.png" class="logo" alt="Logo"/>
+            <img src="../_static/humble.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -102,10 +103,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">RosTeamWS CLI (Experimental)</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RTW CLI</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install-the-cli">How to install the CLI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-use-the-cli">How to use the CLI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-a-new-workspace">Setting up a new workspace</a></li>
@@ -113,6 +111,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install-rocker-fork-with-the-new-features">How to install rocker fork with the new features</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
 </ul>
 
@@ -162,7 +163,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>RosTeamWS CLI (Experimental)</li>
+      <li>RTW CLI</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,17 +184,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="rosteamws-cli-experimental">
-<h1>RosTeamWS CLI (Experimental)<a class="headerlink" href="#rosteamws-cli-experimental" title="Permalink to this heading"></a></h1>
-<p>RosTeamWS has a command line interface (CLI) that provides a set of commands to
+  <section id="rtw-cli">
+<h1>RTW CLI<a class="headerlink" href="#rtw-cli" title="Permalink to this heading"></a></h1>
+<p>RTW has a command line interface (CLI) that provides a set of commands to
 manage ROS workspaces incl. Docker workspaces. The CLI is designed to have a
 more user-friendly overview of the available RTW commands and to provide a more
 intuitive way to interact with RTW.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The CLI is still in the experimental stage and may have bugs or issues.
-Please report any bugs or issues to the RosTeamWS GitHub repository.</p>
-</div>
 <section id="how-to-install-the-cli">
 <h2>How to install the CLI<a class="headerlink" href="#how-to-install-the-cli" title="Permalink to this heading"></a></h2>
 <p id="rtwcli-setup">Follow the instructions in the <code class="docutils literal notranslate"><span class="pre">README.md</span></code> inside the <code class="docutils literal notranslate"><span class="pre">rtwcli</span></code> folder
@@ -373,8 +369,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Stogl
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../docker/supported_versions/supported_versions.html" class="btn btn-neutral float-left" title="Supported ros versions and operating systems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../guidelines/index.html" class="btn btn-neutral float-right" title="Guidelines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../tutorials/managing_multiple_workspaces.html" class="btn btn-neutral float-left" title="3. Managing multiple workspaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
@@ -410,14 +406,16 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Stogl
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>ROS Team Workspace - Galactic and Rolling</dt>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
       <dd><a href="index.html">Master (latest)</a></dd>
     </dl>
     <dl>
-      <dt>ROS Team Workspace - Foxy</dt>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
         <dd><a href="../../humble/index.html">Humble (recommended)</a></dd>
-        <dd><a href="../../galactic/index.html">Galactic</a></dd>
-        <dd><a href="../../foxy/index.html">Foxy</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
    </dl>
   </div>
 </div>

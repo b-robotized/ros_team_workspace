@@ -4,7 +4,7 @@ ros2_control: Setup robot's hardware package
 .. _uc-setup-ros2-control-hardware:
 
 This use-case describes how to set up a robot's hardware interface for the
-ros2_control framework using scripts from ROS Team Workspace (RosTeamWS)
+ros2_control framework using scripts from ROS Team Workspace (RTW)
 framework.
 
 ``ros2_control_setup-hardware-interface-package`` script accepts the file name

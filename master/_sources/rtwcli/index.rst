@@ -1,16 +1,11 @@
-==============================
-RosTeamWS CLI (Experimental)
-==============================
+==============
+RTW CLI
+==============
 
-RosTeamWS has a command line interface (CLI) that provides a set of commands to
+RTW has a command line interface (CLI) that provides a set of commands to
 manage ROS workspaces incl. Docker workspaces. The CLI is designed to have a
 more user-friendly overview of the available RTW commands and to provide a more
 intuitive way to interact with RTW.
-
-.. warning::
-   The CLI is still in the experimental stage and may have bugs or issues.
-   Please report any bugs or issues to the RosTeamWS GitHub repository.
-
 
 How to install the CLI
 """"""""""""""""""""""""
