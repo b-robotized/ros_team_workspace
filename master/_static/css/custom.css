@@ -1,5 +1,7 @@
 :root {
   --br-primary: #5bbdb5;  /* b»robotized green */
+  --br-primary1: #4aa9a0;  /* b»robotized green */
+  --br-primary2: #43978f;  /* b»robotized green */
   --br-secondary: #734293; /* b»robotized violett */
   --br-ternary: #fdc300; /* b»robotized yellow */
   --br-gray: #41413f; /* b»robotized gray */
@@ -9,6 +11,7 @@
   --br-dark-gray3: #5d5d5d;
   --br-dark-gray5: #e3e3e3;
   --br-light-gray: #878787; /* b»robotized light gray */
+  --br-light-gray-bg: #fcfcfc; /* b»robotized light gray */
 }
 
 /* Change background color */
@@ -27,9 +30,9 @@ a:hover {
 }
 
 /* Change sidebar text color */
-.wy-menu-vertical a {
-  color: var(--br-primary) !important; /* Yellow text */
-}
+/*.wy-menu-vertical a {
+  color: var(--br-dark-gray) !important; /* Gray text */
+}*/
 
 /* Change main content text color */
 .rst-content {
@@ -43,37 +46,34 @@ a:hover {
 
 /* Change sidebar background */
 .wy-nav-side {
-  background-color: var(--br-dark-gray);
+  background-color: var(--br-primary) !important;
 }
 
 /* Menu items style */
-.wy-menu-vertical > a {
-  color: var(--br-primary) !important;
-  background-color: var(--br-dark-gray);
+.wy-menu-vertical a {
+  color: var(--br-dark-gray) !important;
+  background-color: var(--br-primary) !important;
 }
 
-.wy-menu-vertical > a:hover {
-  filter: brightness(1.4); /* 1.2 = 20% lighter */
+.wy-menu-vertical a:hover {
+  filter: brightness(1.2) !important; /* 1.2 = 20% lighter */
   font-weight: bolder !important;
-}
-
-.wy-menu-vertical > a:hover {
-  filter: brightness(1.4); /* 1.2 = 20% lighter */
 }
 
 /* Style for active (current) first-level menu item */
 .wy-menu-vertical .current > a {
   color: var(--br-secondary) !important;
+  background-color: var(--br-light-gray-bg) !important;
 }
 
 /* Custom hover effect ONLY for the current first-level menu item */
 .wy-menu-vertical .current > a:hover {
-  filter: brightness(0.8); /* 0.8 = 20% darker */;
+  filter: brightness(0.9) !important; /* 0.8 = 20% darker */
 }
 
 /* First-level menu items */
 .wy-menu-vertical .toctree-l1 > a:hover {
-  filter: brightness(1.4); /* 1.2 = 20% lighter */
+  filter: brightness(1.2) !important; /* 1.2 = 20% lighter */
 }
 
 /* Style for active (current) first-level menu item */
@@ -83,49 +83,53 @@ a:hover {
 
 /* Custom hover effect ONLY for the current first-level menu item */
 .wy-menu-vertical .toctree-l1.current > a:hover {
-  filter: brightness(0.8); /* 0.8 = 20% darker */;
+  filter: brightness(0.9); /* 0.8 = 20% darker */;
 }
 
 /* Second-level menu items */
 .wy-menu-vertical .toctree-l2 > a {
-  background-color: var(--br-dark-gray1) !important;  /* Darker gray */
+  background-color: var(--br-primary1) !important;  /* Darker gray */
 }
 .wy-menu-vertical .toctree-l2 > a:hover {
   filter: brightness(1.4); /* 1.2 = 20% lighter */
 }
 .wy-menu-vertical .toctree-l2.current > a {
-  color: var(--br-secondary);  /* Yellow text */
-  background-color: #fcfcfc !important;
+  color: var(--br-secondary);  /* Violet text */
+  background-color: var(--br-light-gray-bg) !important;
 }
 .wy-menu-vertical .toctree-l2.current > a:hover {
-  filter: brightness(0.8); /* 1.2 = 20% lighter */
+  filter: brightness(1.2); /* 1.2 = 20% lighter */
 }
 
 /* Third-level menu items */
 .wy-menu-vertical .toctree-l3 > a {
-  background-color: var(--br-dark-gray2) !important;  /* Even darker gray */
+  background-color: var(--br-primary2) !important;  /* Even darker gray */
 }
 .wy-menu-vertical .toctree-l3 > a:hover {
-  filter: brightness(1.4); /* 1.2 = 20% lighter */
+  filter: brightness(1.2); /* 1.2 = 20% lighter */
 }
 .wy-menu-vertical .toctree-l3.current > a {
-  color: var(--br-secondary);  /* Yellow text */
-  background-color: var(--br-dark-gray5) !important;
+  color: var(--br-secondary);  /* Violet text */
+  background-color: var(--br-light-gray-bg) !important;
 }
 .wy-menu-vertical .toctree-l3.current > a:hover {
-  filter: brightness(0.8); /* 1.2 = 20% lighter */
+  filter: brightness(1.2) !important; /* 1.2 = 20% lighter */
 }
 
 /* Fourth-level menu items */
 .wy-menu-vertical .toctree-l4 > a {
-  color: var(--br-ternary) !important;  /* Orange text */
-  background-color: var(--br-dark-gray3) !important;  /* Even darker gray */
+  color: var(--br-ternary) !important;  /* Yellow text */
+  background-color: var(--br-primary2) !important;  /* Even darker gray */
+}
+
+.wy-menu-vertical .toctree-l4.current > a:hover {
+  filter: brightness(1.2) !important; /* 1.2 = 20% lighter */
 }
 
 /* Fifth-level menu items */
 .wy-menu-vertical .toctree-l5 > a {
-  color: var(--br-ternary) !important;  /* Orange text */
-  background-color: var(--br-dark-gray3) !important;  /* Even darker gray */
+  color: var(--br-ternary) !important;  /* Yellow text */
+  background-color: var(--br-primary2) !important;  /* Even darker gray */
 }
 
 .rst-versions .rst-current-version {
