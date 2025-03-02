@@ -90,11 +90,13 @@ cp -n "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/materials.xacro
 # Copy launch files for testing the description
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   mkdir -p launch
+  ROBOT_DESCRIPTION_LAUNCH="launch/${ROBOT_NAME}.launch.xml"
+  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
   VIEW_ROBOT_LAUNCH="launch/view_${ROBOT_NAME}.launch${file_type}"
   cp -n "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" $VIEW_ROBOT_LAUNCH
 
   # sed all needed files
-  FILES_TO_SED=($ROBOT_URDF_XACRO $ROBOT_MACRO $ROBOT_MACRO_ROS2_CONTROL $VIEW_ROBOT_LAUNCH)
+  FILES_TO_SED=($ROBOT_URDF_XACRO $ROBOT_MACRO $ROBOT_MACRO_ROS2_CONTROL $VIEW_ROBOT_LAUNCH $ROBOT_DESCRIPTION_LAUNCH)
 
   for SED_FILE in "${FILES_TO_SED[@]}"; do
     sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
