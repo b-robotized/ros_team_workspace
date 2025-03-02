@@ -179,6 +179,18 @@ function RosTeamWS_setup_ros2_aliases {
   alias caup="colcon_all_up_to"
 
   alias crm="colcon_remove"
+
+  # Completions commands
+  # Inspired by: https://github.com/MetroRobots/ros_command/blob/743967f5208bd987970e624538fdafa9ce27222d/src/ros_command/ros_command_setup.bash#L8-L30
+  _rosd_completions()
+  {
+      case $COMP_CWORD in
+          1)
+              COMPREPLY=($(compgen -W "$(ros2 pkg list | sed 's/\t//')" -- "${COMP_WORDS[1]}")) ;;
+      esac
+  }
+
+  complete -F _rosd_completions rosd
 }
 
 function rtw_ros_cd {
@@ -193,10 +205,29 @@ function rtw_ros2_cd {
   if [ -z "$1" ]; then
     cd $ROS_WS
   else
-    colcon_cd $1
+    # Run the command and capture the output
+    pkg_path=$(ros2 pkg prefix "$1" 2>/dev/null)
+
+    # Check if output exists
+    # Inspired by: https://github.com/MetroRobots/ros_command/blob/743967f5208bd987970e624538fdafa9ce27222d/src/ros_command/commands/get_ros_directory.py
+    if [[ -n "$pkg_path" ]]; then
+#         echo "Output exists: $pkg_path"
+        # Check if output starts with "/opt/ros"
+        if [[ "$pkg_path" == /opt/ros* ]]; then
+#             echo "Output starts with /opt/ros"
+            pkg_path="$pkg_path/share/$1"
+        else
+            cd $ROS_WS
+            pkg_path=$(colcon list --packages-select "$1" --paths-only 2>/dev/null)
+            pkg_path="$ROS_WS/$pkg_path"
+        fi
+#         echo "Entering $pkg_path"
+        cd $pkg_path
+    else
+        echo "No output from command"
+    fi
   fi
 }
-
 
 ## some colcon helpers
 function colcon_helper_ros2 {
