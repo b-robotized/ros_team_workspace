@@ -129,7 +129,8 @@ function RosTeamWS_setup_aliases {
   alias rosds="cd \$ROS_WS/src"
   alias rosdb="cd \$ROS_WS/build"
   alias rosdi="cd \$ROS_WS/install"
-  alias rosdepi="rosdep install -r -y -i --from-paths \$ROS_WS/src"
+  alias rosdep_prep="sudo apt update && rosdep update"
+  alias rosdepi="rosdep install -r -y -i --from-paths \$ROS_WS/src --os=ubuntu:$(lsb_release -c -s)"
 }
 
 function RosTeamWS_setup_ros1_exports {
