@@ -5,11 +5,11 @@
 
 To move the robot using Moveit2, we first bring up the robot with the mock hardware enabled:
 ```
-ros2 launch <robot_bringup_package> $ROBOT_NAME$.launch.xml use_mock_hardware:=true
+ros2 launch <robot_bringup_package> $CELL_NAME$.launch.xml use_mock_hardware:=true
 ```
 
 After that, in another terminal we launch MoveIt2:
 ```
-ros2 launch $ROBOT_NAME$_moveit moveit.launch.xml
+ros2 launch $CELL_NAME$_moveit moveit.launch.xml
 ```
 Now we can use the `MotionPlanning` widget in `rviz2` to assign goals, plan and execute motions.

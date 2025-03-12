@@ -19,26 +19,26 @@ $PKG_NAME$/                           # Launch and config files for robot manipu
 └── launch/
     ├── moveit.launch.py                           # MoveIt launch file.
 └── srdf/
-    ├── $ROBOT_NAME$_macro.srdf.xacro              # Semantic robot description macro
-    ├── $ROBOT_NAME$.srdf.xacro                    # Semantic robot description required for MoveIt.
+    ├── $CELL_NAME$_macro.srdf.xacro              # Semantic robot description macro
+    ├── $CELL_NAME$.srdf.xacro                    # Semantic robot description required for MoveIt.
 └── rviz/
     ├── moveit.launch.py                           # RViZ config with MoveIt MotionPlanning widget.
 
 ```
 ## Compiling the package
 
-To sucessfuly compile and run this package, it is necessary to install `MoveIt`. For a simple binary install, [follow the official guide](https://moveit.ros.org/install-moveit2/binary/)
+To successfully compile and run this package, it is necessary to install `MoveIt`. For a simple binary install, [follow the official guide](https://moveit.ros.org/install-moveit2/binary/)
 
 ## Moving the *mock_robot* using MoveIt2
 
 1. Start robot's hardware and load controllers (default configuration starts mock hardware)
    ```
-   ros2 launch <bringup_pkg_name> $ROBOT_NAME$.launch.xml
+   ros2 launch <bringup_pkg_name> $CELL_NAME$.launch.xml
    ```
 
 2. Open another terminal and launch MoveIt
    ```
-   ros2 launch $ROBOT_NAME$_moveit moveit.launch.xml
+   ros2 launch $CELL_NAME$_moveit moveit.launch.xml
    ```
 
 3. You should now be able to use `MotionPlanning` widget in `rviz2` to assign, plan and execute robot motion.

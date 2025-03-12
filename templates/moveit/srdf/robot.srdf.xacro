@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (c) 2025 b»robotized
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Source of this file are templates in https://github.com/b-robotized/ros_team_workspace repository.
+
+Authors - Nikola Banovic, Daniel Azanov, Dr. Denis
+-->
+
+<robot name="$(arg cell_name)" xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:arg name="cell_name" default="$CELL_NAME$" />
+  <xacro:arg name="prefix" default="" />
+
+  <!--GROUPS - Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+  <group name="$CELL_NAME$_gripper">
+    <chain base_link="$(arg prefix)base_link" tip_link="$(arg prefix)tool0"/>
+  </group>
+  <group name="$CELL_NAME$_no_gripper">
+    <chain base_link="$(arg prefix)base_link" tip_link="$(arg prefix)link6"/>
+  </group>
+  <!--LINKS - When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+  <!--JOINTS - When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+  <!--CHAINS - When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+  <!--SUBGROUPS - Groups can also be formed by referencing to already defined group names-->
+  <!--PASSIVE JOINT - This element is used to mark joints that are not actuated-->
+  <!--DISABLE COLLISIONS - By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot.
+  This tag disables collision checking between a specified pair of links. -->
+  <disable_collisions link1="$(arg prefix)base_link" link2="$(arg prefix)link1" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)base_link" link2="$(arg prefix)link2" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link1" link2="$(arg prefix)link2" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link3" link2="$(arg prefix)link4" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link3" link2="$(arg prefix)link5" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link3" link2="$(arg prefix)link6" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link4" link2="$(arg prefix)link5" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link4" link2="$(arg prefix)link6" reason="Adjacent"/>
+  <disable_collisions link1="$(arg prefix)link5" link2="$(arg prefix)link6" reason="Adjacent"/>
+
+</robot>

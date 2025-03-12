@@ -1,0 +1,46 @@
+# Copyright (c) 2025, b»robotized
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Source of this file are templates in https://github.com/b-robotized/ros_team_workspace repository.
+#
+# Authors: Nikola Banovic, Daniel Azanov, Dr. Denis (template)
+#
+
+/**:
+  ros__parameters:
+    robot_description_kinematics:
+
+      $CELL_NAME$_gripper:
+        kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+        # Commented out for now as rviz recognizes this as strings and not doubles - this might be due to the non US locales for parsing of numbers
+        # kinematics_solver_search_resolution: 0.005
+        # kinematics_solver_timeout: 0.005
+        kinematics_solver_attempts: 3
+
+        # optional parameters for caching:
+        max_cache_size: 10000
+        min_pose_distance: 1.00
+        min_joint_config_distance: 4.00
+
+      $CELL_NAME$_no_gripper:
+        kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+        # Commented out for now as rviz recognizes this as strings and not doubles - this might be due to the non US locales for parsing of numbers
+        # kinematics_solver_search_resolution: 0.005
+        # kinematics_solver_timeout: 0.005
+        kinematics_solver_attempts: 3
+
+        # optional parameters for caching:
+        max_cache_size: 10000
+        min_pose_distance: 1.00
+        min_joint_config_distance: 4.00

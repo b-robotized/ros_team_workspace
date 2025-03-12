@@ -19,8 +19,6 @@
 
 /**:
   ros__parameters:
-    planning_pipelines:
-      - ompl
     ompl:
       planning_plugins:
         - ompl_interface/OMPLPlanner
@@ -33,6 +31,7 @@
         - default_planning_response_adapters/AddTimeOptimalParameterization
         - default_planning_response_adapters/ValidateSolution
         - default_planning_response_adapters/DisplayMotionPath
+      start_state_max_bounds_error: 0.1
 
       planner_configs:
         AnytimePathShortening:
@@ -74,7 +73,6 @@
         RRTConnect:
           type: geometric::RRTConnect
           range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
-          longest_valid_segment_fraction: 0.5
         RRTstar:
           type: geometric::RRTstar
           range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
@@ -164,11 +162,8 @@
           sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25
           dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
           max_failures: 5000  # maximum consecutive failure limit. default: 5000
-      $CELL_NAME$_manipulator:
-        # projection_evaluator: joints(joint_s,joint_l)
-        longest_valid_segment_fraction: 0.005
-        default_planner_config: RRTConnect
-        default_workspace_bounds: 100
+
+      $CELL_NAME$_gripper:
         planner_configs:
           - AnytimePathShortening
           - SBL
@@ -194,3 +189,34 @@
           - LazyPRMstar
           - SPARS
           - SPARStwo
+        # projection_evaluator: joints(group_1/joint_1,group_1/joint_2)
+        longest_valid_segment_fraction: 0.005
+
+      $CELL_NAME$_no_gripper:
+        planner_configs:
+          - AnytimePathShortening
+          - SBL
+          - EST
+          - LBKPIECE
+          - BKPIECE
+          - KPIECE
+          - RRT
+          - RRTConnect
+          - RRTstar
+          - TRRT
+          - PRM
+          - PRMstar
+          - FMT
+          - BFMT
+          - PDST
+          - STRIDE
+          - BiTRRT
+          - LBTRRT
+          - BiEST
+          - ProjEST
+          - LazyPRM
+          - LazyPRMstar
+          - SPARS
+          - SPARStwo
+        # projection_evaluator: joints(group_1/joint_1,group_1/joint_2)
+        longest_valid_segment_fraction: 0.005
