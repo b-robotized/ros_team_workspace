@@ -220,8 +220,10 @@ The aliases set for each workspace (see <a class="reference internal" href="../.
 <section id="entering-workspace-folders">
 <h4>Entering Workspace Folders<a class="headerlink" href="#entering-workspace-folders" title="Permalink to this heading"></a></h4>
 <dl class="simple">
-<dt>rosd</dt><dd><p>Enter the root directory of the ROS workspace.
-Alias for command: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">$ROS_WS</span></code></p>
+<dt>rosd [&lt;package_name&gt;]</dt><dd><p>Enter the root directory of the ROS workspace.
+Alias for command: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">$ROS_WS</span></code>
+If you add argument <code class="docutils literal notranslate"><span class="pre">&lt;package_name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">rosd</span></code> enters the source folder of that package.
+And if your workspace is already compiled you can use auto-completion of package names.</p>
 </dd>
 <dt>rosds</dt><dd><p>Enter <code class="docutils literal notranslate"><span class="pre">src</span></code> directory of the ROS workspace.
 Alias for command: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">$ROS_WS/src</span></code></p>
