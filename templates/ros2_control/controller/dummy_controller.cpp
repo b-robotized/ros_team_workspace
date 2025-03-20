@@ -221,7 +221,7 @@ controller_interface::CallbackReturn DummyClassName::on_deactivate(
   // instead of a loop
   for (size_t i = 0; i < command_interfaces_.size(); ++i)
   {
-    command_interfaces_[i].set_value(std::numeric_limits<double>::quiet_NaN());
+    (void)command_interfaces_[i].set_value(std::numeric_limits<double>::quiet_NaN());
   }
   return controller_interface::CallbackReturn::SUCCESS;
 }
