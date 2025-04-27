@@ -12,7 +12,7 @@ How to install the CLI
 .. _rtwcli-setup:
 
 Follow the instructions in the ``README.md`` inside the ``rtwcli`` folder
-`#here <https://github.com/StoglRobotics/ros_team_workspace/blob/master/rtwcli/README.md>`_.
+`#here <https://github.com/b-robotized/ros_team_workspace/blob/master/rtwcli/README.md>`_.
 
 
 How to use the CLI
@@ -40,7 +40,7 @@ Setting up a new workspace
 """"""""""""""""""""""""""""
 .. _rtwcli-setup-workspace:
 
-PR `#169 <https://github.com/StoglRobotics/ros_team_workspace/pull/169>`_
+PR `#169 <https://github.com/b-robotized/ros_team_workspace/pull/169>`_
 introduced a new feature to create a new local or dockerized workspace.
 The workspace can additionally be created using ``.repos`` files in your
 repository, streamlining the setup process for complex projects with multiple
@@ -81,13 +81,13 @@ repositories.
       --ros-distro jazzy \
       --docker \
       --repos-containing-repository-url \
-         git@github.com:StoglRobotics/sr_dummy_packages.git \
+         git@github.com:b-robotized/br_dummy_packages.git \
       --repos-branch dummy_demo_pkg
 ..
 
    * This command will create a new dockerized workspace named ``dummy_ws``
      with ROS distribution ``jazzy`` using the ``.repos`` files from the
-     repository ``sr_dummy_packages`` on branch ``dummy_demo_pkg``.
+     repository ``br_dummy_packages`` on branch ``dummy_demo_pkg``.
 
 * Example of a ``standalone`` workspace and ``robot`` user:
 
@@ -98,7 +98,7 @@ repositories.
       --ros-distro jazzy \
       --docker \
       --repos-containing-repository-url \
-         git@github.com:StoglRobotics/sr_dummy_packages.git \
+         git@github.com:b-robotized/br_dummy_packages.git \
       --repos-branch dummy_demo_pkg \
       --standalone \
       --user-override-name robot
@@ -106,7 +106,7 @@ repositories.
 
    * This command will create a new dockerized standalone workspace named
      ``dummy_ws`` with ROS distribution ``jazzy`` using the
-     ``.repos`` files from the repository ``sr_dummy_packages`` on branch
+     ``.repos`` files from the repository ``br_dummy_packages`` on branch
      ``dummy_demo_pkg``.
 
      However, for exporting the workspace docker image, the commit command must
