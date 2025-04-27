@@ -103,7 +103,7 @@ repositories.
       --ros-distro jazzy \
       --docker \
       --repos-containing-repository-url \
-         git@github.com:b-robotized/br_dummy_packages.git \
+         https://github.com/b-robotized/br_dummy_packages.git \
       --repos-branch dummy_demo_pkg \
       --standalone \
       --user-override-name robot
