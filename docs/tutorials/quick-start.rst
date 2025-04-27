@@ -11,6 +11,21 @@ interested in:
 .. toctree::
    :maxdepth: 1
 
+Creating a new workspace (RTW)
+---------------------------------------------------
+For more details on options and flags check :ref:`use-case description <rtwcli-setup-workspace>`.
+
+Local, empty workspace:
+
+.. code-block:: bash
+
+   rtw workspace create --ros-distro jazzy --ws-folder my_workspace
+
+Docker workspace from ``.repos`` file:
+
+.. code-block:: bash
+
+   rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace   
 
 Clone, setup and source the RosTeamWorkspace (RTW)
 ---------------------------------------------------
@@ -24,7 +39,6 @@ Clone, setup and source the RosTeamWorkspace (RTW)
 Create new package in an existing workspace
 --------------------------------------------------------
 For more details check :ref:`use-case description <uc-new-package>`.
-
 
 .. code-block:: bash
 
