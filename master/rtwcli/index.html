@@ -10,7 +10,7 @@
   <script defer data-domain="rtw.b-robotized.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   
-  <title>RTW CLI &mdash; ROS Team Workspace Documentation: Humble Mar 2025 documentation</title>
+  <title>RTW CLI &mdash; ROS Team Workspace Documentation: Humble Apr 2025 documentation</title>
   
 
   
@@ -193,7 +193,7 @@ intuitive way to interact with RTW.</p>
 <section id="how-to-install-the-cli">
 <h2>How to install the CLI<a class="headerlink" href="#how-to-install-the-cli" title="Permalink to this heading"></a></h2>
 <p id="rtwcli-setup">Follow the instructions in the <code class="docutils literal notranslate"><span class="pre">README.md</span></code> inside the <code class="docutils literal notranslate"><span class="pre">rtwcli</span></code> folder
-<a class="reference external" href="https://github.com/StoglRobotics/ros_team_workspace/blob/master/rtwcli/README.md">#here</a>.</p>
+<a class="reference external" href="https://github.com/b-robotized/ros_team_workspace/blob/master/rtwcli/README.md">#here</a>.</p>
 </section>
 <section id="how-to-use-the-cli">
 <h2>How to use the CLI<a class="headerlink" href="#how-to-use-the-cli" title="Permalink to this heading"></a></h2>
@@ -225,7 +225,7 @@ intuitive way to interact with RTW.</p>
 </section>
 <section id="setting-up-a-new-workspace">
 <h2>Setting up a new workspace<a class="headerlink" href="#setting-up-a-new-workspace" title="Permalink to this heading"></a></h2>
-<p id="rtwcli-setup-workspace">PR <a class="reference external" href="https://github.com/StoglRobotics/ros_team_workspace/pull/169">#169</a>
+<p id="rtwcli-setup-workspace">PR <a class="reference external" href="https://github.com/b-robotized/ros_team_workspace/pull/169">#169</a>
 introduced a new feature to create a new local or dockerized workspace.
 The workspace can additionally be created using <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files in your
 repository, streamlining the setup process for complex projects with multiple
@@ -254,33 +254,52 @@ containing the <code class="docutils literal notranslate"><span class="pre">.rep
 </dd>
 </dl>
 </li>
+<li><p>Minimal example:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>dummy_minimal_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy
+</pre></div>
+</div>
+<blockquote>
+<div><ul class="simple">
+<li><p>This command will create an empty local workspace named <code class="docutils literal notranslate"><span class="pre">dummy_minial_ws</span></code>
+with ROS distribution <code class="docutils literal notranslate"><span class="pre">jazzy</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
 <li><p>Example:</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ws-folder<span class="w"> </span>dummy_ws<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ros-distro<span class="w"> </span>humble<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>dummy_docker_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--repos-containing-repository-url<span class="w"> </span><span class="se">\</span>
-<span class="w">      </span>git@github.com:StoglRobotics/sr_dummy_packages.git<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>https://github.com/b-robotized/br_dummy_packages.git<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--repos-branch<span class="w"> </span>dummy_demo_pkg
 </pre></div>
 </div>
 <blockquote>
 <div><ul class="simple">
 <li><p>This command will create a new dockerized workspace named <code class="docutils literal notranslate"><span class="pre">dummy_ws</span></code>
-with ROS distribution <code class="docutils literal notranslate"><span class="pre">humble</span></code> using the <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files from the
-repository <code class="docutils literal notranslate"><span class="pre">sr_dummy_packages</span></code> on branch <code class="docutils literal notranslate"><span class="pre">dummy_demo_pkg</span></code>.</p></li>
+with ROS distribution <code class="docutils literal notranslate"><span class="pre">jazzy</span></code> using the <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files from the
+repository <code class="docutils literal notranslate"><span class="pre">br_dummy_packages</span></code> on branch <code class="docutils literal notranslate"><span class="pre">dummy_demo_pkg</span></code>.</p></li>
 </ul>
 </div></blockquote>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you don’t have nvidia graphics card or you don’t want to use nvidia capabilits
+in the container add <code class="docutils literal notranslate"><span class="pre">--disable-nvidia</span></code> flag to the command.</p>
+</div>
 <ul class="simple">
 <li><p>Example of a <code class="docutils literal notranslate"><span class="pre">standalone</span></code> workspace and <code class="docutils literal notranslate"><span class="pre">robot</span></code> user:</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ws-folder<span class="w"> </span>dummy_ws<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ros-distro<span class="w"> </span>humble<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>dummy_docker_standalone_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--repos-containing-repository-url<span class="w"> </span><span class="se">\</span>
-<span class="w">      </span>git@github.com:StoglRobotics/sr_dummy_packages.git<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>https://github.com/b-robotized/br_dummy_packages.git<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--repos-branch<span class="w"> </span>dummy_demo_pkg<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--standalone<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--user-override-name<span class="w"> </span>robot
@@ -289,8 +308,8 @@ repository <code class="docutils literal notranslate"><span class="pre">sr_dummy
 <blockquote>
 <div><ul>
 <li><p>This command will create a new dockerized standalone workspace named
-<code class="docutils literal notranslate"><span class="pre">dummy_ws</span></code> with ROS distribution <code class="docutils literal notranslate"><span class="pre">humble</span></code> using the
-<code class="docutils literal notranslate"><span class="pre">.repos</span></code> files from the repository <code class="docutils literal notranslate"><span class="pre">sr_dummy_packages</span></code> on branch
+<code class="docutils literal notranslate"><span class="pre">dummy_ws</span></code> with ROS distribution <code class="docutils literal notranslate"><span class="pre">jazzy</span></code> using the
+<code class="docutils literal notranslate"><span class="pre">.repos</span></code> files from the repository <code class="docutils literal notranslate"><span class="pre">br_dummy_packages</span></code> on branch
 <code class="docutils literal notranslate"><span class="pre">dummy_demo_pkg</span></code>.</p>
 <p>However, for exporting the workspace docker image, the commit command must
 be executed first:</p>
@@ -301,7 +320,7 @@ be executed first:</p>
 executed:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>import<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--ws-name<span class="w"> </span>dummy_import_ws<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ros-distro<span class="w"> </span>humble<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--standalone-docker-image<span class="w"> </span>rtw_dummy_ws_export<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--user-override-name<span class="w"> </span>robot
 </pre></div>
