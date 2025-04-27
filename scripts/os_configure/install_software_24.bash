@@ -145,7 +145,7 @@ pip3 install --upgrade pip
 # ROS2 Packages
 for ROS2_VERSION in "${ROS2_VERSIONS[@]}"
 do
-  bash $SCRIPT_PATH/install_software_ros2.bash $ROS2_VERSION
+  bash "$SCRIPT_PATH"/install_software_ros2.bash "$ROS2_VERSION"
 done
 
 sudo rosdep init
@@ -175,8 +175,12 @@ fi
 
 if [[ "${computer_type}" == "office" ]]
 then
+  # Usability tools
+  sudo nala install -y plasma-discover-backend-flatpak
+
   # Nextcloud
   sudo nala install -y nextcloud-desktop
+
   #flatpak install app/com.gitlab.j0chn.nextcloud_password_client/x86_64/stable
   wget https://github.com/nextcloud-releases/talk-desktop/releases/latest/download/Nextcloud.Talk-linux-x64.flatpak
   sudo flatpak install -y Nextcloud.Talk-linux-x64.flatpak
@@ -196,7 +200,7 @@ then
   ### ADDITIONAL DEVELOPMENT TOOLS ###
   # Code optimization and profiling
   sudo nala install -y valgrind kcachegrind hotspot heaptrack-gui
-  sudo nala install -y linux-tools-generic linux-cloud-tools-generic
+  sudo nala install -y linux-tools-generic linux-cloud-tools-generic  # Kernel tools
 
   # Kernel tools
   sudo nala install -y flac
@@ -223,7 +227,6 @@ then
   sudo add-apt-repository ppa:pbek/qownnotes
   sudo apt update
   sudo nala install -y qownnotes
-
 fi
 
 # Setting up protools
@@ -248,7 +251,6 @@ if  [[ "$protools" == "yes" ]]; then
   # Language packs
   sudo nala install -y language-pack-de language-pack-de-base language-pack-kde-de aspell-de hunspell-de-de hyphen-de wogerman
   sudo nala install -y language-pack-hr language-pack-hr-base language-pack-kde-hr aspell-hr hunspell-hr hyphen-hr
-
 fi
 
 sudo apt update
@@ -258,17 +260,17 @@ sudo apt autoremove
 trash "${RosTeamWS_FRAMEWORK_OS_CONFIGURE_PATH}/log/"
 
 # Get Corporate Identity package from b»robotized and install them
-cd ~/Downloads
+cd ~/Downloads || exit
 NAME="br-ci-package-computer"
-ZIP_NAME="${name}.zip"
-wget https://cloud.b-robotized.com/s/447BJD7tXrd3nDA/download -O ${ZIP_NAME}
-unzip ${ZIP_NAME} -d ${NAME}
-rm ${ZIP_NAME}
+ZIP_NAME="${NAME}.zip"
+wget https://cloud.b-robotized.com/s/447BJD7tXrd3nDA/download -O "${ZIP_NAME}"
+unzip "${ZIP_NAME}" -d "${NAME}"
+rm "${ZIP_NAME}"
 if [ ! -d "/usr/share/${NAME}" ]; then
-  sudo mkdir /usr/share/${NAME}
+  sudo mkdir -p /usr/share/${NAME}
 fi
-sudo mv ${NAME}/*.* /usr/share/${NAME}/
-rm -r ${NAME}
-cd -
+sudo mv "${NAME}"/*.* /usr/share/${NAME}/
+rm -r "${NAME}"
+cd - || exit
 
 # Create your Theme or change files in: /usr/share/sddm/themes/kubuntu/theme.conf
