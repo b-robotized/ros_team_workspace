@@ -131,6 +131,9 @@ function RosTeamWS_setup_aliases {
   alias rosdi="cd \$ROS_WS/install"
   alias rosdep_prep="sudo apt update && rosdep update"
   alias rosdepi="rosdep install -r -y -i --from-paths \$ROS_WS/src --os=ubuntu:$(lsb_release -c -s)"
+
+  # ssh helper aliases
+  alias create-ssh-key="ssh-keygen -t ed25519"
 }
 
 function RosTeamWS_setup_ros1_exports {
@@ -183,15 +186,26 @@ function RosTeamWS_setup_ros2_aliases {
 
   # Completions commands
   # Inspired by: https://github.com/MetroRobots/ros_command/blob/743967f5208bd987970e624538fdafa9ce27222d/src/ros_command/ros_command_setup.bash#L8-L30
-  _rosd_completions()
+  _rosd_completions_single()
   {
-      case $COMP_CWORD in
-          1)
-              COMPREPLY=($(compgen -W "$(ros2 pkg list | sed 's/\t//')" -- "${COMP_WORDS[1]}")) ;;
-      esac
+    case $COMP_CWORD in
+      1)
+        COMPREPLY=($(compgen -W "$(ros2 pkg list | sed 's/\t//')" -- "${COMP_WORDS[1]}")) ;;
+    esac
+  }
+    _rosd_completions_multi()
+  {
+    COMPREPLY=($(compgen -W "$(ros2 pkg list | sed 's/\t//')" -- "${COMP_WORDS[COMP_CWORD]}") )
   }
 
-  complete -F _rosd_completions rosd
+  complete -F _rosd_completions_single rosd
+  complete -F _rosd_completions_multi cb
+  complete -F _rosd_completions_single cbup
+  complete -F _rosd_completions_multi ct
+  complete -F _rosd_completions_single ctres
+  complete -F _rosd_completions_multi ca
+  complete -F _rosd_completions_single caup
+  complete -F _rosd_completions_multi crm
 }
 
 function rtw_ros_cd {
@@ -329,6 +343,13 @@ function colcon_remove {
     done
   fi
   cd -
+}
+
+# docker_transfer rtw_image_export ssh-user@ssh-server
+function docker_transfer() {
+  local image=$1
+  local host=$2
+  docker save "$image" | pigz | pv | ssh "$host" "unpigz | docker load"
 }
 
 ## END: Default Framework Definitions

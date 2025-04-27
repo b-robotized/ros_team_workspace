@@ -12,7 +12,7 @@ How to install the CLI
 .. _rtwcli-setup:
 
 Follow the instructions in the ``README.md`` inside the ``rtwcli`` folder
-`#here <https://github.com/StoglRobotics/ros_team_workspace/blob/master/rtwcli/README.md>`_.
+`#here <https://github.com/b-robotized/ros_team_workspace/blob/master/rtwcli/README.md>`_.
 
 
 How to use the CLI
@@ -40,7 +40,7 @@ Setting up a new workspace
 """"""""""""""""""""""""""""
 .. _rtwcli-setup-workspace:
 
-PR `#169 <https://github.com/StoglRobotics/ros_team_workspace/pull/169>`_
+PR `#169 <https://github.com/b-robotized/ros_team_workspace/pull/169>`_
 introduced a new feature to create a new local or dockerized workspace.
 The workspace can additionally be created using ``.repos`` files in your
 repository, streamlining the setup process for complex projects with multiple
@@ -60,41 +60,58 @@ repositories.
       * ``--repos-branch <branch>``: Branch of the repository containing the
         ``.repos`` files
 
+* Minimal example:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder dummy_minimal_ws \
+      --ros-distro jazzy
+..
+
+   * This command will create an empty local workspace named ``dummy_minial_ws``
+     with ROS distribution ``jazzy``.
+
 * Example:
 
 .. code-block:: bash
 
    rtw workspace create \
-      --ws-folder dummy_ws \
-      --ros-distro humble \
+      --ws-folder dummy_docker_ws \
+      --ros-distro jazzy \
       --docker \
       --repos-containing-repository-url \
-         git@github.com:StoglRobotics/sr_dummy_packages.git \
+         https://github.com/b-robotized/br_dummy_packages.git \
       --repos-branch dummy_demo_pkg
 ..
 
    * This command will create a new dockerized workspace named ``dummy_ws``
-     with ROS distribution ``humble`` using the ``.repos`` files from the
-     repository ``sr_dummy_packages`` on branch ``dummy_demo_pkg``.
+     with ROS distribution ``jazzy`` using the ``.repos`` files from the
+     repository ``br_dummy_packages`` on branch ``dummy_demo_pkg``.
+
+.. important::
+   If you don't have nvidia graphics card or you don't want to use nvidia capabilits
+   in the container add ``--disable-nvidia`` flag to the command.
+
 
 * Example of a ``standalone`` workspace and ``robot`` user:
 
 .. code-block:: bash
 
    rtw workspace create \
-      --ws-folder dummy_ws \
-      --ros-distro humble \
+      --ws-folder dummy_docker_standalone_ws \
+      --ros-distro jazzy \
       --docker \
       --repos-containing-repository-url \
-         git@github.com:StoglRobotics/sr_dummy_packages.git \
+         https://github.com/b-robotized/br_dummy_packages.git \
       --repos-branch dummy_demo_pkg \
       --standalone \
       --user-override-name robot
 ..
 
    * This command will create a new dockerized standalone workspace named
-     ``dummy_ws`` with ROS distribution ``humble`` using the
-     ``.repos`` files from the repository ``sr_dummy_packages`` on branch
+     ``dummy_ws`` with ROS distribution ``jazzy`` using the
+     ``.repos`` files from the repository ``br_dummy_packages`` on branch
      ``dummy_demo_pkg``.
 
      However, for exporting the workspace docker image, the commit command must
@@ -111,7 +128,7 @@ repositories.
 
          rtw workspace import \
             --ws-name dummy_import_ws \
-            --ros-distro humble \
+            --ros-distro jazzy \
             --standalone-docker-image rtw_dummy_ws_export \
             --user-override-name robot
 
