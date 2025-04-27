@@ -25,7 +25,7 @@ Docker workspace from ``.repos`` file:
 
 .. code-block:: bash
 
-   rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace   
+   rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
 
 Clone, setup and source the RosTeamWorkspace (RTW)
 ---------------------------------------------------
