@@ -81,13 +81,18 @@ repositories.
       --ros-distro jazzy \
       --docker \
       --repos-containing-repository-url \
-         git@github.com:b-robotized/br_dummy_packages.git \
+         https://github.com/b-robotized/br_dummy_packages.git \
       --repos-branch dummy_demo_pkg
 ..
 
    * This command will create a new dockerized workspace named ``dummy_ws``
      with ROS distribution ``jazzy`` using the ``.repos`` files from the
      repository ``br_dummy_packages`` on branch ``dummy_demo_pkg``.
+
+.. important::
+   If you don't have nvidia graphics card or you don't want to use nvidia capabilits
+   in the container add ``--disable-nvidia`` flag to the command.
+
 
 * Example of a ``standalone`` workspace and ``robot`` user:
 
