@@ -43,7 +43,7 @@ Installling dependencies
 .. _uc-aliases-dependencies:
 
 rosdep_prep
-  Updating the system and ``rosdep`` references before installing dependecies.
+  Updating the system and ``rosdep`` references before installing dependencies.
 
 rosdepi
   Installing dependencies for the packages in ``$ROS_WS/src`` folder.
