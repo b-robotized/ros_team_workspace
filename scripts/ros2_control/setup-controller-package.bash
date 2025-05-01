@@ -108,7 +108,6 @@ for FOLDER in "${ADD_FOLDERS[@]}"; do
 done
 
 # Set file constants
-VC_H="include/$PKG_NAME/visibility_control.h"
 CTRL_HPP="include/$PKG_NAME/$FILE_NAME.hpp"
 CTRL_CPP="src/$FILE_NAME.cpp"
 CTRL_PARAMS_YAML="src/$FILE_NAME.yaml"
@@ -120,11 +119,6 @@ TEST_PRECEEDING_CPP="test/test_${FILE_NAME}_preceeding.cpp"
 TEST_HPP="test/test_$FILE_NAME.hpp"
 TEST_PARAMS_YAML="test/${FILE_NAME}_params.yaml"
 TEST_PRECEEDING_PARAMS_YAML="test/${FILE_NAME}_preceeding_params.yaml"
-
-# Copy files
-if [[ ! -f "$VC_H" ]]; then
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/visibility_control.h $VC_H
-fi
 
 if [[ "$CONTROLLER_TYPE" == "chainable" ]]; then
   cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/dummy_chainable_controller.hpp $CTRL_HPP
@@ -181,7 +175,6 @@ FILES_TO_SED+=("$PLUGIN_XML" "$CTRL_PARAMS_YAML" "$TEST_PARAMS_YAML" "$TEST_PREC
 
 for SED_FILE in "${FILES_TO_SED[@]}"; do
   sed -i "s/TEMPLATES__ROS2_CONTROL__CONTROLLER__DUMMY_PACKAGE_NAMESPACE/${PKG_NAME^^}/g" $SED_FILE # package name for include guard
-  sed -i "s/TEMPLATES__ROS2_CONTROL__VISIBILITY/${PKG_NAME^^}__VISIBILITY/g" $SED_FILE # visibility defines
   sed -i "s/dummy_package_namespace/${PKG_NAME}/g" $SED_FILE # package name for includes
   sed -i "s/dummy_controller/${FILE_NAME}/g" $SED_FILE # file name
   sed -i "s/dummy_chainable_controller/${FILE_NAME}/g" $SED_FILE # file name
