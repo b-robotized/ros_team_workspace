@@ -77,14 +77,18 @@ sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt update
 
 ### BASIC TOOLS ###
-sudo nala -y install neovim ssh git qgit trash-cli htop unrar screen finger ksshaskpass kompare filelight tldr tree pre-commit tmux apt-transport-https curl
+sudo nala install -y neovim ssh git qgit trash-cli htop unrar screen finger ksshaskpass kompare filelight tldr tree pre-commit tmux apt-transport-https curl
+
+## Enable flatpak
+sudo nala install -y plasma-discover-backend-flatpak kde-config-flatpak
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Useful libraries
-sudo nala -y install libxml2-dev libvlc-dev libmuparser-dev libudev-dev
+sudo nala install -y libxml2-dev libvlc-dev libmuparser-dev libudev-dev
 
 ### DEVELOPMENT TOOLS ###
 # gh - Github CLI (it seems that gh needs to be install via apt to get access to .ssh keys)
-sudo nala -y install gh
+sudo nala install -y gh
 gh completion -s bash | tee "$HOME"/.local/share/bash-completion/completions/gh.bash > /dev/null
 
 # visual studio code
@@ -105,12 +109,12 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
-sudo nala -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo nala install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo groupadd docker
 sudo usermod -aG docker "$(whoami)"
 
 # Python tools
-sudo nala -y install python3-pip \
+sudo nala install -y python3-pip \
   python3-colcon-common-extensions \
   python3-colcon-cd \
   python3-colcon-argcomplete \
@@ -166,25 +170,22 @@ git config --global commit.template "$commit_template_path/$template_name"
 
 if [[ "${computer_type}" != "robot" ]]
 then
-  sudo nala -y install recordmydesktop peek rdesktop gimp meshlab inkscape pdfposter unrar
+  sudo nala install -y recordmydesktop peek rdesktop gimp meshlab inkscape pdfposter unrar
 fi
 
 if [[ "${computer_type}" == "office" ]]
 then
-  # Usability tools
-  sudo nala -y install plasma-discover-backend-flatpak
-
   # Nextcloud
-  sudo nala -y install nextcloud-desktop
+  sudo nala install -y nextcloud-desktop
   #flatpak install app/com.gitlab.j0chn.nextcloud_password_client/x86_64/stable
   wget https://github.com/nextcloud-releases/talk-desktop/releases/latest/download/Nextcloud.Talk-linux-x64.flatpak
   sudo flatpak install -y Nextcloud.Talk-linux-x64.flatpak
 
   # Dolphin Plugins
-  sudo nala -y install kdesdk-scripts dolphin-nextcloud
+  sudo nala install -y kdesdk-scripts dolphin-nextcloud
 
   # VirtualBox
-  sudo nala -y install virtualbox dkms virtualbox-guest-utils virtualbox-ext-pack
+  sudo nala install -y virtualbox dkms virtualbox-guest-utils virtualbox-ext-pack
 
   ##  Network monitoring and debugging
   # Wireshark
@@ -194,28 +195,34 @@ then
 
   ### ADDITIONAL DEVELOPMENT TOOLS ###
   # Code optimization and profiling
-  sudo nala -y install valgrind kcachegrind hotspot heaptrack-gui
-  sudo nala -y install linux-tools-generic linux-cloud-tools-generic  # Kernel tools
+  sudo nala install -y valgrind kcachegrind hotspot heaptrack-gui
+  sudo nala install -y linux-tools-generic linux-cloud-tools-generic
 
-  sudo nala -y install flac
+  # Kernel tools
+  sudo nala install -y flac
 
   # 3D software
-  flatpak install app/org.freecad.FreeCAD/x86_64/stable
+  flatpak install -y app/org.freecad.FreeCAD/x86_64/stable
+
+  # Logitech tools
+  sudo add-apt-repository ppa:solaar-unifying/stable
+  sudo nala update
+  sudo nala install -y solaar
 
   # Tracing
-  sudo nala -y install lttng-tools lttng-modules-dkms liblttng-ust-dev
-  sudo nala -y install python3-babeltrace python3-lttng python3-lttngust
+  sudo nala install -y lttng-tools lttng-modules-dkms liblttng-ust-dev
+  sudo nala install -y python3-babeltrace python3-lttng python3-lttngust
   sudo usermod -aG tracing "$(whoami)"
 
   ### MANAGE PERSONAL INFORMATION
   # KDE-PIM
-  sudo nala -y install kontact korganizer kmail kjots kaddressbook kdepim*
+  sudo nala install -y kontact korganizer kmail kjots kaddressbook kdepim*
 
   ### OFFICE TOOLS ###
   # Notes-taking
   sudo add-apt-repository ppa:pbek/qownnotes
   sudo apt update
-  sudo nala -y install qownnotes
+  sudo nala install -y qownnotes
 
 fi
 
@@ -226,27 +233,27 @@ protools=${protools:="no"}
 if  [[ "$protools" == "yes" ]]; then
   ### CRYPTOPGRAPHY AND PASSWORD MANAGEMENT ###
   # Cryptography
-  sudo nala -y install kleopatra scdaemon
+  sudo nala install -y kleopatra scdaemon
   #  Passwordmanager
-  sudo nala -y install pass
+  sudo nala install -y pass
 
   ### NETWORKING ###
   # Network manager
-  sudo nala -y install network-manager-openvpn network-manager-vpnc network-manager-ssh network-manager-openconnect
+  sudo nala install -y network-manager-openvpn network-manager-vpnc network-manager-ssh network-manager-openconnect
 
   # Remote desktop
-  sudo nala -y install krdc
+  sudo nala install -y krdc
 
   ### LANGUAGES ###
   # Language packs
-  sudo nala -y install language-pack-de language-pack-de-base language-pack-kde-de aspell-de hunspell-de-de hyphen-de wogerman
-  sudo nala -y install language-pack-hr language-pack-hr-base language-pack-kde-hr aspell-hr hunspell-hr hyphen-hr
+  sudo nala install -y language-pack-de language-pack-de-base language-pack-kde-de aspell-de hunspell-de-de hyphen-de wogerman
+  sudo nala install -y language-pack-hr language-pack-hr-base language-pack-kde-hr aspell-hr hunspell-hr hyphen-hr
 
 fi
 
 sudo apt update
-sudo nala -y dist-upgrade
-sudo nala -y autoremove
+sudo apt dist-upgrade
+sudo apt autoremove
 # log is created somehow
 trash "${RosTeamWS_FRAMEWORK_OS_CONFIGURE_PATH}/log/"
 
