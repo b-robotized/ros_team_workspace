@@ -22,6 +22,7 @@ RTW_WS_build_docker_container_image () {
   --build-arg uid=$UID \
   --build-arg gid=$GROUPS \
   --build-arg home=$HOME \
+  --progress=plain \
   -t "$docker_image_tag" .
 }
 
