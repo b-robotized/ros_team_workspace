@@ -639,7 +639,7 @@ class CreateVerb(VerbExtension):
             )
         else:
             update_key_cmds = ""
-                
+
         return textwrap.dedent(
             f"""
             FROM {create_args.base_image_name}
