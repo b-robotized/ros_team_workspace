@@ -125,6 +125,7 @@ class CreateVerbArgs:
     docker: bool = False
     enable_ipc: bool = False
     disable_upgrade: bool = False
+    update_key: bool = False
 
     @property
     def ws_name(self) -> str:
@@ -534,6 +535,12 @@ class CreateVerb(VerbExtension):
             help="Override the user name for the workspace.",
             default=None,
         )
+        parser.add_argument(
+            "--update-key",
+            action="store_true",
+            help="update the key for ros2.",
+            default=False,
+        )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
         if create_args.apt_packages:
@@ -613,9 +620,30 @@ class CreateVerb(VerbExtension):
             copy_workspace_cmd = "# workspace will be mounted as volume"
             copy_upstream_workspace_cmd = "# upstream workspace will be mounted as volume"
 
+        if create_args.update_key:
+            update_key_cmds = textwrap.dedent(
+                """
+                RUN if [ -f /usr/share/keyrings/ros2-latest-archive-keyring.gpg ]; then \\
+                      gpg_file="/usr/share/keyrings/ros2-latest-archive-keyring.gpg"; \\
+                    elif [ -f /usr/share/keyrings/ros-archive-keyring.gpg ]; then \\
+                      gpg_file="/usr/share/keyrings/ros-archive-keyring.gpg"; \\
+                    elif [ -f /usr/share/keyrings/ros2-archive-keyring.gpg ]; then \\
+                      gpg_file="/usr/share/keyrings/ros2-archive-keyring.gpg"; \\
+                    else \\
+                      echo "No ROS GPG keyring found!" && exit 1; \\
+                    fi && \\
+                    echo "Using GPG file: $gpg_file" && \\
+                    rm -f "$gpg_file" && \\
+                    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o "$gpg_file"
+                """
+            )
+        else:
+            update_key_cmds = ""
+
         return textwrap.dedent(
             f"""
             FROM {create_args.base_image_name}
+            {update_key_cmds}
             RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
             {apt_packages_cmd}
             {python_packages_cmd}
