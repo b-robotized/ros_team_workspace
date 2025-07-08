@@ -47,6 +47,7 @@ RTW_Docker_build_docker_image () {
   --build-arg uid=$UID \
   --build-arg gid=$GROUPS \
   --build-arg home=$HOME \
+  --progress=plain \
   -t "$docker_image_tag" . \
   -f "$docker_file_path" || { return 1; }
 
