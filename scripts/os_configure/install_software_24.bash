@@ -264,5 +264,11 @@ ZIP_NAME="${name}.zip"
 wget https://cloud.b-robotized.com/s/447BJD7tXrd3nDA/download -O ${ZIP_NAME}
 unzip ${ZIP_NAME} -d ${NAME}
 rm ${ZIP_NAME}
-sudo mv ${NAME} /usr/share/
+if [ ! -d "/usr/share/${NAME}" ]; then
+  sudo mkdir /usr/share/${NAME}
+fi
+sudo mv ${NAME}/*.* /usr/share/${NAME}/
+rm -r ${NAME}
+cd -
+
 # Create your Theme or change files in: /usr/share/sddm/themes/kubuntu/theme.conf
