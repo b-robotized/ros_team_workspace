@@ -5,13 +5,13 @@ Setting up RosTeamWorkspace (RTW)
 
 Installation of RTW
 """"""""""""""""""""""""""
-To start using RTW framework clone the repository to any location using:
+To start using the RTW framework, clone the repository to any location using:
 
 .. code-block:: bash
 
    git clone https://github.com/StoglRobotics/ros_team_workspace.git
 
-Install RTW CLI. This is a python-based CLI as for ROS 2 that makes it easier to use:
+Next, we install RTW CLI. This is a Python-based CLI that makes it easier to use RTW. It is mainly used in conjunction with ROS 2:
 
 .. code-block:: bash
 
@@ -19,25 +19,26 @@ Install RTW CLI. This is a python-based CLI as for ROS 2 that makes it easier to
    pip3 install -r requirements.txt --break-system-packages  # since Ubuntu 24.04 is this flag required as we are not using virtual environment
    cd -  # go back to the folder where you cloned the RTW
 
-Source the ``setup.bash``` in the top folder of RTW:
+Then, source the ``setup.bash``` in the top folder of RTW:
 
 .. code-block:: bash
 
    source ros_team_workspace/setup.bash
 
-That's all. You are now set to use RTW. If you want to add auto-sourcing you can simply execute the following command:
+That's all. You are now all set to use RTW. If you want to add auto-sourcing you can simply execute the following command:
 
 .. code-block:: bash
 
    setup-auto-sourcing
 
 
-This is going to configure the RosTeamWorkspace permanently. If you want to revert those changes or prefer to do them by yourself simply follow the next few steps.
+This is going to configure the RTW permanently in the sense, that it will always be sourced when you open a new terminal.
+If you want to revert those changes or prefer to do them by yourself simply follow the next few steps.
 
 Manual auto-sourcing
 """""""""""""""""""""
 
-Add auto-sourcing of configuration to your ``.bashrc`` file by adding the following lines to its end using your favorite text editor (e.g., ``vim`` or ``nano``):
+Add auto-sourcing of configuration to your ``.bashrc`` file by adding the following lines at the end of the file using your favorite text editor (e.g., ``vim`` or ``nano``):
 
 .. code-block:: bash
 

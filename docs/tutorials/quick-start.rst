@@ -32,7 +32,7 @@ Docker workspace from ``.repos`` file:
 
 Create new package in an existing workspace
 --------------------------------------------------------
-For more details check :ref:`use-case description <uc-new-package>`.
+For more details, check :ref:`use-case description <uc-new-package>`.
 
 .. code-block:: bash
 
@@ -46,7 +46,7 @@ For more details check :ref:`use-case description <uc-new-package>`.
 
 Create robot description package
 -------------------------------------------------
-For more details check
+For more details, check
 :ref:`use-case description <uc-setup-robot-description>`.
 
 .. warning::
@@ -64,7 +64,7 @@ For more details check
 
 Create robot bringup package
 -----------------------------------------------
-For more details check :ref:`use-case description <uc-setup-robot-bringup>`.
+For more details, check :ref:`use-case description <uc-setup-robot-bringup>`.
 
 .. warning::
    You must have a <my_cool_robot_bringup_package_name> package of
@@ -80,7 +80,7 @@ For more details check :ref:`use-case description <uc-setup-robot-bringup>`.
 
 Setup  ros2_control control hardware
 -------------------------------------------------
-For more details check
+For more details, check
 :ref:`use-case description <uc-setup-ros2-control-hardware>`.
 
 .. warning::
@@ -98,7 +98,7 @@ For more details check
 
 Setup  ros2_control controller
 -----------------------------------------------
-For more details check :ref:`use-case description <uc-setup-ros2-controller>`.
+For more details, check :ref:`use-case description <uc-setup-ros2-controller>`.
 
 .. warning::
    You must have a <my_cool_robot_controller_package_name> package of
