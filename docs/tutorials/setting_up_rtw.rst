@@ -1,6 +1,6 @@
-============================
-Setting up RosTeamWorkspace
-============================
+=================================
+Setting up RosTeamWorkspace (RTW)
+=================================
 .. _tutorial-setting-up-rtw:
 
 Installation of RTW
