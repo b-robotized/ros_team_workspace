@@ -8,6 +8,6 @@ These tutorials will quickly get you using the ROS Team Workspace.
    :maxdepth: 2
    :numbered:
 
-   quick-start.rst
    setting_up_rtw.rst
+   quick-start.rst
    managing_multiple_workspaces.rst

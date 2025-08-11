@@ -3,10 +3,13 @@ Quick start with RTW
 ==================================
 .. _tutorial-quick-start:
 
-This tutorial shows use of RosTeamWorkspace for very common use-cases that can
-be done without permanent changes to your environment. First you have to clone
-and source the workspace and then continue with the use-case you are
-interested in:
+This tutorial shows the use of RosTeamWorkspace (RTW) for very common use-cases that can
+be done without permanent changes to your environment.
+
+.. note::
+
+   This tutorial assumes that RTW is already set up and sourced.
+   If that is not the case, please follow the :doc:`setting_up_rtw` tutorial first.
 
 .. toctree::
    :maxdepth: 1
@@ -27,18 +30,9 @@ Docker workspace from ``.repos`` file:
 
    rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
 
-Clone, setup and source the RosTeamWorkspace (RTW)
----------------------------------------------------
-.. code-block:: bash
-
-   git clone https://github.com/StoglRobotics/ros_team_workspace.git
-   cd ros_team_workspace/rtwcli/ && pip3 install -r requirements.txt --break-system-packages && cd -
-   source ros_team_workspace/setup.bash
-   setup-auto-sourcing  # Make RosTeamWorkspace automatically sourced when open a new terminal (The best experience)
-
 Create new package in an existing workspace
 --------------------------------------------------------
-For more details check :ref:`use-case description <uc-new-package>`.
+For more details, check :ref:`use-case description <uc-new-package>`.
 
 .. code-block:: bash
 
@@ -52,7 +46,7 @@ For more details check :ref:`use-case description <uc-new-package>`.
 
 Create robot description package
 -------------------------------------------------
-For more details check
+For more details, check
 :ref:`use-case description <uc-setup-robot-description>`.
 
 .. warning::
@@ -70,7 +64,7 @@ For more details check
 
 Create robot bringup package
 -----------------------------------------------
-For more details check :ref:`use-case description <uc-setup-robot-bringup>`.
+For more details, check :ref:`use-case description <uc-setup-robot-bringup>`.
 
 .. warning::
    You must have a <my_cool_robot_bringup_package_name> package of
@@ -86,7 +80,7 @@ For more details check :ref:`use-case description <uc-setup-robot-bringup>`.
 
 Setup  ros2_control control hardware
 -------------------------------------------------
-For more details check
+For more details, check
 :ref:`use-case description <uc-setup-ros2-control-hardware>`.
 
 .. warning::
@@ -104,7 +98,7 @@ For more details check
 
 Setup  ros2_control controller
 -----------------------------------------------
-For more details check :ref:`use-case description <uc-setup-ros2-controller>`.
+For more details, check :ref:`use-case description <uc-setup-ros2-controller>`.
 
 .. warning::
    You must have a <my_cool_robot_controller_package_name> package of
