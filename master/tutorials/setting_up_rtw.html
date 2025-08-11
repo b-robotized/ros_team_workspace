@@ -10,7 +10,7 @@
   <script defer data-domain="rtw.b-robotized.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   
-  <title>2. Setting up RosTeamWorkspace &mdash; ROS Team Workspace Documentation: Humble Jul 2025 documentation</title>
+  <title>1. Setting up RosTeamWorkspace (RTW) &mdash; ROS Team Workspace Documentation: Humble Aug 2025 documentation</title>
   
 
   
@@ -52,8 +52,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Managing multiple workspaces" href="managing_multiple_workspaces.html" />
-    <link rel="prev" title="1. Quick start with RTW" href="quick-start.html" /> 
+    <link rel="next" title="2. Quick start with RTW" href="quick-start.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -103,12 +103,12 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="quick-start.html">1. Quick start with RTW</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Setting up RosTeamWorkspace</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#installation-of-rtw">2.1. Installation of RTW</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#manual-auto-sourcing">2.2. Manual auto-sourcing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Setting up RosTeamWorkspace (RTW)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-of-rtw">1.1. Installation of RTW</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-auto-sourcing">1.2. Manual auto-sourcing</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html">2. Quick start with RTW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="managing_multiple_workspaces.html">3. Managing multiple workspaces</a></li>
 </ul>
 </li>
@@ -167,7 +167,7 @@
         
           <li><a href="index.html">Tutorials</a> &raquo;</li>
         
-      <li><span class="section-number">2. </span>Setting up RosTeamWorkspace</li>
+      <li><span class="section-number">1. </span>Setting up RosTeamWorkspace (RTW)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -188,33 +188,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="setting-up-rosteamworkspace">
-<h1><span class="section-number">2. </span>Setting up RosTeamWorkspace<a class="headerlink" href="#setting-up-rosteamworkspace" title="Permalink to this heading"></a></h1>
+  <section id="setting-up-rosteamworkspace-rtw">
+<h1><span class="section-number">1. </span>Setting up RosTeamWorkspace (RTW)<a class="headerlink" href="#setting-up-rosteamworkspace-rtw" title="Permalink to this heading"></a></h1>
 <section id="installation-of-rtw">
-<span id="tutorial-setting-up-rtw"></span><h2><span class="section-number">2.1. </span>Installation of RTW<a class="headerlink" href="#installation-of-rtw" title="Permalink to this heading"></a></h2>
-<p>To start using RTW framework clone the repository to any location using:</p>
+<span id="tutorial-setting-up-rtw"></span><h2><span class="section-number">1.1. </span>Installation of RTW<a class="headerlink" href="#installation-of-rtw" title="Permalink to this heading"></a></h2>
+<p>To start using the RTW framework, clone the repository to any location using:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StoglRobotics/ros_team_workspace.git
 </pre></div>
 </div>
-<p>Install RTW CLI. This is a python-based CLI as for ROS 2 that makes it easier to use:</p>
+<p>Next, we install RTW CLI. This is a Python-based CLI that makes it easier to use RTW. It is mainly used in conjunction with ROS 2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>ros_team_workspace/rtwcli/<span class="w">  </span><span class="c1"># enter the RTW-CLI folder</span>
 pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>--break-system-packages<span class="w">  </span><span class="c1"># since Ubuntu 24.04 is this flag required as we are not using virtual environment</span>
 <span class="nb">cd</span><span class="w"> </span>-<span class="w">  </span><span class="c1"># go back to the folder where you cloned the RTW</span>
 </pre></div>
 </div>
-<p>Source the <code class="docutils literal notranslate"><span class="pre">setup.bash`</span></code> in the top folder of RTW:</p>
+<p>Then, source the <code class="docutils literal notranslate"><span class="pre">setup.bash`</span></code> in the top folder of RTW:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>ros_team_workspace/setup.bash
 </pre></div>
 </div>
-<p>That’s all. You are now set to use RTW. If you want to add auto-sourcing you can simply execute the following command:</p>
+<p>That’s all. You are now all set to use RTW. If you want to add auto-sourcing you can simply execute the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setup-auto-sourcing
 </pre></div>
 </div>
-<p>This is going to configure the RosTeamWorkspace permanently. If you want to revert those changes or prefer to do them by yourself simply follow the next few steps.</p>
+<p>This is going to configure the RTW permanently in the sense, that it will always be sourced when you open a new terminal.
+If you want to revert those changes or prefer to do them by yourself simply follow the next few steps.</p>
 </section>
 <section id="manual-auto-sourcing">
-<h2><span class="section-number">2.2. </span>Manual auto-sourcing<a class="headerlink" href="#manual-auto-sourcing" title="Permalink to this heading"></a></h2>
-<p>Add auto-sourcing of configuration to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file by adding the following lines to its end using your favorite text editor (e.g., <code class="docutils literal notranslate"><span class="pre">vim</span></code> or <code class="docutils literal notranslate"><span class="pre">nano</span></code>):</p>
+<h2><span class="section-number">1.2. </span>Manual auto-sourcing<a class="headerlink" href="#manual-auto-sourcing" title="Permalink to this heading"></a></h2>
+<p>Add auto-sourcing of configuration to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file by adding the following lines at the end of the file using your favorite text editor (e.g., <code class="docutils literal notranslate"><span class="pre">vim</span></code> or <code class="docutils literal notranslate"><span class="pre">nano</span></code>):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>~/.ros_team_ws_rc<span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
 <span class="w">    </span>.<span class="w"> </span>~/.ros_team_ws_rc
 <span class="k">fi</span>
@@ -248,8 +249,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="managing_multiple_workspaces.html" class="btn btn-neutral float-right" title="3. Managing multiple workspaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="quick-start.html" class="btn btn-neutral float-left" title="1. Quick start with RTW" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quick-start.html" class="btn btn-neutral float-right" title="2. Quick start with RTW" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
