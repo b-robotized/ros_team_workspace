@@ -124,6 +124,7 @@ DEP_PKGS=(
   "moveit_kinematics"
   "moveit_planners"
   "moveit_simple_controller_manager"
+  "moveit_ros_visualization"
   )
 
 for DEP_PKG in "${DEP_PKGS[@]}"; do
