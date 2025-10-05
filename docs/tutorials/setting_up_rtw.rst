@@ -9,7 +9,7 @@ To start using the RTW framework, clone the repository to any location using:
 
 .. code-block:: bash
 
-   git clone https://github.com/StoglRobotics/ros_team_workspace.git
+   git clone https://github.com/b-robotized/ros_team_workspace.git
 
 Next, we install RTW CLI. This is a Python-based CLI that makes it easier to use RTW. It is mainly used in conjunction with ROS 2:
 
