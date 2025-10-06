@@ -75,7 +75,7 @@ function set_git_color {
     if [[ "$STATUS" == *'nothing added to commit but untracked files present'* ]]; then
       # blue if there are only untracked files
       color=${TERMINAL_COLOR_LIGHT_RED}
-    elif [[ "$STATUS" == *'no changes added to commit'* ]]; then
+    elif [[ "$STATUS" == *'not staged for commit'* ]]; then
       # red if nothing added to commit but tracked files are changed
       color=${TERMINAL_COLOR_RED}
     elif [[ "$STATUS" != *'working tree clean'* ]]; then
