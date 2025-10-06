@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2022 Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright 2022-2025 b»robotized Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 # Authors: Manuel Muth, Denis Štogl
 #
 
-# BEGIN: Stogl Robotics custom setup for nice colors and showing ROS workspace
+# BEGIN: b»robotized custom setup for nice colors and showing ROS workspace
 
 # Check this out: https://www.shellhacks.com/bash-colors/
 export TERMINAL_COLOR_NC='\e[0m' # No Color
@@ -55,7 +55,7 @@ export TERMINAL_BG_COLOR_LIGHT_CYAN='\e[1;46m'
 export TERMINAL_BG_COLOR_LIGHT_GRAY='\e[47m'
 export TERMINAL_BG_COLOR_WHITE='\e[1;47m'
 
-if [ -n "$SSH_CLIENT" ]; then text="-ssh-session"
+if [ -n "$SSH_CLIENT" ]; then text="-ssh"
 fi
 
 function get_gitbranch {
@@ -72,12 +72,18 @@ function set_git_color {
   if [[ "$(get_gitbranch)" != '' ]]; then
     # Get the status of the repo and chose a color accordingly
     local STATUS=$(LANG=en_GB LANGUAGE=en git status 2>&1)
-    if [[ "$STATUS" != *'working tree clean'* ]]; then
-      # red if need to commit
+    if [[ "$STATUS" == *'nothing added to commit but untracked files present'* ]]; then
+      # blue if there are only untracked files
+      color=${TERMINAL_COLOR_LIGHT_RED}
+    elif [[ "$STATUS" == *'no changes added to commit'* ]]; then
+      # red if nothing added to commit but tracked files are changed
       color=${TERMINAL_COLOR_RED}
+    elif [[ "$STATUS" != *'working tree clean'* ]]; then
+      # changes present and added to commit - untracked files may exist
+      color=${TERMINAL_COLOR_YELLOW}
     elif [[ "$STATUS" == *'Your branch is ahead'* ]]; then
-        # yellow if need to push
-        color=${TERMINAL_COLOR_YELLOW}
+      # yellow if need to push
+      color=${TERMINAL_COLOR_BLUE}
     elif [[ "$STATUS" == *' have diverged,'* ]]; then
       # brown if need to force push
       color=${TERMINAL_COLOR_BROWN}
@@ -114,8 +120,9 @@ function set_ros_workspace_color {
 }
 
 function parse_ros_workspace {
-  if [[ -n ${ROS_WS} ]]; then
-
+  if [[ -n ${RosTeamWS_WS_NAME} ]]; then
+    echo "[${RosTeamWS_WS_NAME}]"
+  elif [[ -n ${ROS_WS} ]]; then
     echo "[${ROS_WS##*/}]"
   fi
 }
@@ -130,4 +137,4 @@ function parse_ros_workspace {
 export PS1="\[\e]0;"'$(parse_ros_workspace)'"\a\]\[${TERMINAL_COLOR_LIGHT_GREEN}\]"'\u\['"\[${TERMINAL_COLOR_LIGHT_GRAY}\]"'@\['"\[${TERMINAL_COLOR_BROWN}\]"'\h\['"\[${TERMINAL_COLOR_YELLOW}\]"'${text}\['"\[${TERMINAL_COLOR_LIGHT_GRAY}\]"':'"\["'$(set_ros_workspace_color)'"\]"'$(parse_ros_workspace)\['"\[${TERMINAL_COLOR_GREEN}\]"'$(parse_git_bracket)'"\["'$(set_git_color)'"\]"'$(get_gitbranch)'"\[${TERMINAL_COLOR_GREEN}\]"'>'"\[${TERMINAL_COLOR_LIGHT_PURPLE}\]"'\W\['"\[${TERMINAL_COLOR_LIGHT_PURPLE}\]"'$\['"\[${TERMINAL_COLOR_NC}\]"'\[\e[m\] '
 
 
-# END: Stogl Robotics custom setup for nice colors and showing ROS workspace
+# END: b»robotized custom setup for nice colors and showing ROS workspace
