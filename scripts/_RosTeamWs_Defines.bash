@@ -124,6 +124,16 @@ function RosTeamWS_setup_exports {
 
 # TODO(denis): add this into setup.bash
 function RosTeamWS_setup_aliases {
+  # ssh helper aliases
+  # TODO(denis): Add function for this that requests the Email/comment and filename
+  alias create-ssh-key="ssh-keygen -t ed25519"
+
+  alias stop_kvm="sudo systemctl stop libvirtd && sudo modprobe -r kvm_intel kvm_amd kvm"
+  alias start_kvm="sudo modprobe kvm && sudo modprobe kvm_intel && sudo modprobe kvm_amd && sudo systemctl start libvirtd"
+}
+
+# TODO(denis): add this into setup.bash
+function RosTeamWS_setup_ros_aliases {
 
   # ROS
   alias rosds="cd \$ROS_WS/src"
@@ -131,9 +141,6 @@ function RosTeamWS_setup_aliases {
   alias rosdi="cd \$ROS_WS/install"
   alias rosdep_prep="sudo apt update && rosdep update"
   alias rosdepi="rosdep install -r -y -i --from-paths \$ROS_WS/src --os=ubuntu:$(lsb_release -c -s)"
-
-  # ssh helper aliases
-  alias create-ssh-key="ssh-keygen -t ed25519"
 }
 
 function RosTeamWS_setup_ros1_exports {
