@@ -12,7 +12,7 @@ At least for our workgroup.
 Development and main branch
 ===========================
 
-Let's start with the basic setup that every\* repository should have: a `main`/`master` and `devel` branch.
+Let's start with the basic setup that every\* repository should have: a ``main``/``master`` and ``devel`` branch.
 At no point should anyone push to these two branches directly.
 Every modification of the code should happen through pull/merge requests (see guidelines below - Merge/pull requests).
 Merging master/ main should happen every so often by the maintainers of the repository.
@@ -25,29 +25,30 @@ When starting work on a new feature, bugfix, documentation improvement or anythi
 Git branch naming convention
 ============================
 
-As the saying goes:  
-"A large number of branches with seemingly no purpose on a single repository is a strong sign of upcoming chaos." - Timo
+| As the saying goes:  
+| *"A large number of branches with seemingly no purpose on a single repository is a strong sign of upcoming chaos."* 
+| - Timo
 
 Joking aside, branching a repository should happen for a reason. 
 And the branch should also exist for a reason.
 There are two distinctive reasons for a branch to exist: it is actively being worked on or contains code that is useful in a certain scenario.
 If the scenario becomes irrelevant, so does the code and the branch that hosts it.
 
-We therefore set forth the following guideline.
+We therefore set forth the following guideline. When creating a branch on a repository, have a clear understanding what are you doing it for. After this, select a prefix from the list below and finally give it a clear name:
 
-When creating a branch on a repository, have a clear understanding what are you doing it for. After this, select a prefix from the list below and finally give it a clear name:
-- `feature/` or `feat/`- When creating a new feature or improving the code
-- `bugfix/` or `fix/`- When fixing a known bug.
-- `hotfix/` - Those little things you spotted that you wanted to fix (typo in the documentation, missing image, wrong comment, delete commented out line, etc.).
-- `doc/` - When your task is to extend the documentation.
-- `release/` - Will be rarely used. But is essentially a step between merging `devel` into `main`/`master`.
+- ``feature/`` or ``feat/`` - When creating a new feature or improving the code
+- ``bugfix/`` or ``fix/`` - When fixing a known bug.
+- ``hotfix/`` - Those little things you spotted that you wanted to fix (typo in the documentation, missing image, wrong comment, delete commented out line, etc.).
+- ``doc/`` - When your task is to extend the documentation.
+- ``release/`` - Will be rarely used. But is essentially a step between merging ``devel`` into ``main``/``master``.
 
-The name should also be rather descriptive but at the same time not too long. Use dashes - to separate words.
+The name should also be rather descriptive but at the same time not too long. Use dashes ``-`` to separate words.
+
 
 Merge/pull requests
 ===================
 
-As discussed above, we will add improvements to our code (typically) into the development branch through pull requests.
+As discussed above, we will add improvements to our code (typically) into the development branch through pull requests. 
 These allows the author of the code to present their work to others and request their review.
 
 It is very important that the author of the pull request provide sufficient information to the reviewers!
@@ -58,7 +59,7 @@ Therefore, each merge request should contain the following elements:
 - Any additional information that will help the reviewer
 
 .. note::
-    Commenting-out sections of code
+    **Commenting-out sections of code**
 
     As a general rule of thumb, if a portion of code is not needed, it should simply not be there. 
     When developing locally, we often test things by commenting-out sections of code.
@@ -67,6 +68,6 @@ Therefore, each merge request should contain the following elements:
 
     However, there are of course exceptions to this rule. 
     If you think that a commented-out section of code should be left there for whatever reason - note it! 
-    Simple add a comment at the beginning of this explaining why is this code commented-out and why is it staying: `# The code blow is commented-out but we decided to keep it because ...`
+    Simple add a comment at the beginning of this explaining why is this code commented-out and why is it staying: ``# The code blow is commented-out but we decided to keep it because ...``
 
     This will significantly ease the work of the reviewer when they see such sections.
