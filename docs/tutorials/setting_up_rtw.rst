@@ -63,6 +63,9 @@ In ``~/.ros_team_ws_rc`` adjust the following values using your favorite text ed
 Now you are ready to:
 
 - :ref:`quick-start <tutorial-quick-start>`,
+
 - :ref:`setup your first workspace <uc-setup-workspace>`,
+
 - check how to :ref:`manage multiple workspaces <tutorial-managing-multiple-workspaces>`,
+
 - or check out one of the :ref:`use-cases <uc-index>`.
