@@ -25,11 +25,11 @@ When starting work on a new feature, bugfix, documentation improvement or anythi
 Git branch naming convention
 ============================
 
-| As the saying goes:  
-| *"A large number of branches with seemingly no purpose on a single repository is a strong sign of upcoming chaos."* 
+| As the saying goes:
+| *"A large number of branches with seemingly no purpose on a single repository is a strong sign of upcoming chaos."*
 | - Timo
 
-Joking aside, branching a repository should happen for a reason. 
+Joking aside, branching a repository should happen for a reason.
 And the branch should also exist for a reason.
 There are two distinctive reasons for a branch to exist: it is actively being worked on or contains code that is useful in a certain scenario.
 If the scenario becomes irrelevant, so does the code and the branch that hosts it.
@@ -48,7 +48,7 @@ The name should also be rather descriptive but at the same time not too long. Us
 Merge/pull requests
 ===================
 
-As discussed above, we will add improvements to our code (typically) into the development branch through pull requests. 
+As discussed above, we will add improvements to our code (typically) into the development branch through pull requests.
 These allows the author of the code to present their work to others and request their review.
 
 It is very important that the author of the pull request provide sufficient information to the reviewers!
@@ -61,13 +61,13 @@ Therefore, each merge request should contain the following elements:
 .. note::
     **Commenting-out sections of code**
 
-    As a general rule of thumb, if a portion of code is not needed, it should simply not be there. 
+    As a general rule of thumb, if a portion of code is not needed, it should simply not be there.
     When developing locally, we often test things by commenting-out sections of code.
     While this is perfectly fine for when we develop, such commented-out section should not make it into the PR.
     Code is either needed or it is not.
 
-    However, there are of course exceptions to this rule. 
-    If you think that a commented-out section of code should be left there for whatever reason - note it! 
+    However, there are of course exceptions to this rule.
+    If you think that a commented-out section of code should be left there for whatever reason - note it!
     Simple add a comment at the beginning of this explaining why is this code commented-out and why is it staying: ``# The code blow is commented-out but we decided to keep it because ...``
 
     This will significantly ease the work of the reviewer when they see such sections.
