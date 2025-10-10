@@ -200,7 +200,6 @@ html_baseurl = "https://rtw.b-robotized.com/" + ros_distro + "/"
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
-html_theme_path = ["_themes"]
 
 templates_path = [
     "_templates",
