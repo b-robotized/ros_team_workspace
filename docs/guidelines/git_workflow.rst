@@ -9,7 +9,7 @@ When working together as a group, we should strive towards unifying them and hav
 This is the exact purpose of this document - to set a standard on how development should happen using Git.
 At least for our workgroup.
 
-Development and main branch
+The main branch
 ===========================
 
 Let's start with the basic setup that every repository should have: a protected ``main``/``master`` branch.
@@ -41,7 +41,7 @@ After this, select a prefix from the list below and finally give it a clear name
 - ``bugfix/`` or ``fix/`` - When fixing a known bug.
 - ``hotfix/`` - Those little things you spotted that you wanted to fix (typo in the documentation, missing image, wrong comment, delete commented out line, etc.).
 - ``doc/`` - When your task is to extend the documentation.
-- ``release/`` - Will be rarely used. But is essentially a step between merging ``devel`` into ``main``/``master``.
+- ``release/`` - Use this for adding changes to the CHANGELOG.md before a new release.
 
 The name should also be rather descriptive but at the same time not too long. Use dashes ``-`` to separate words.
 
@@ -79,7 +79,7 @@ At one point you will likely find yourself in a situation that you want to label
 This is typically done when development milestone is reached.
 When using Git, this is done through tags.
 One can name a tag whatever they want.
-However, we recommend using [Semantic Versioning (SemVer)](https://semver.org/) for naming tags.
+However, we recommend using `Semantic Versioning (SemVer) <https://semver.org/>`_ for naming tags.
 In short, this will make your tags (labels) look like this: ``MAJOR.MINOR.PATCH`` (i.e. ``1.2.3``).
 If you prefer, you can add the ``v`` prefix: ``v1.2.3``.
 
