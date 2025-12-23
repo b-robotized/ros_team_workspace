@@ -12,6 +12,14 @@
     <color rgba="0.0 1.0 0.0 1.0"/>
   </material>
 
+  <material name="cyan">
+    <color rgba="0.35 0.66 0.64 1.0"/>
+  </material>
+
+  <material name="violet">
+    <color rgba="0.4 0.18 0.57 1 1.0"/>
+  </material>
+
   <material name="dark_grey">
     <color rgba="0.2 0.2 0.2 1.0"/>
   </material>
