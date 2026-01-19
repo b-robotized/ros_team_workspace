@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ sys.path.append(os.path.abspath("./sphinx-multiversion"))
 # -- General configuration -------------------------------------------------
 # General information about the project.
 project = "ROS Team Workspace"
-author = "Stogl Robotics Consulting UG (haftungsbeschränkt)"
+author = "b»robotized group"
 documentation = "ROS Team Workspace Documentation"
 copyright = "{}, {}".format(time.strftime("%Y"), author)
 

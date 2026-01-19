@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2021 Stogl Denis Stogl (Stogl Robotics Consulting)
+# Copyright (c) 2021-2026, b»robotized group
 # Copyright 2017-2020 Denis Stogl (Institute for Anthropomatics and Robotics (IAR) -
 #  Intelligent Process Control and Robotics (IPR) of Karlsruhe Institute of Technology (KIT))
 #
