@@ -116,6 +116,14 @@ If that is not the case, please follow the <a class="reference internal" href="s
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
 </pre></div>
 </div>
+<p>Docker, empty workspace:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--docker<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
+</pre></div>
+</div>
+<p>Local workspace from <code class="docutils literal notranslate"><span class="pre">.repos</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--repos-containing-repository-url<span class="w"> </span>&lt;my_git_url&gt;<span class="w"> </span>--repos-branch<span class="w"> </span>&lt;my_git_branch_with_repos&gt;<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
+</pre></div>
+</div>
 <p>Docker workspace from <code class="docutils literal notranslate"><span class="pre">.repos</span></code> file:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--docker<span class="w"> </span>--repos-containing-repository-url<span class="w"> </span>&lt;my_git_url&gt;<span class="w"> </span>--repos-branch<span class="w"> </span>&lt;my_git_branch_with_repos&gt;<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
 </pre></div>
