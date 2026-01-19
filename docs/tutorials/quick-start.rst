@@ -24,6 +24,18 @@ Local, empty workspace:
 
    rtw workspace create --ros-distro jazzy --ws-folder my_workspace
 
+Docker, empty workspace:
+
+.. code-block:: bash
+
+   rtw workspace create --ros-distro jazzy --docker --ws-folder my_workspace
+
+Local workspace from ``.repos`` file:
+
+.. code-block:: bash
+
+   rtw workspace create --ros-distro jazzy --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
+
 Docker workspace from ``.repos`` file:
 
 .. code-block:: bash
