@@ -28,7 +28,7 @@ fi
 
 # All the possible supported ros distributions supported by rtw
 if [ -z "$rtw_supported_ros_distributions" ]; then
-  readonly rtw_supported_ros_distributions=("noetic" "foxy" "galactic" "humble" "iron" "rolling")
+  readonly rtw_supported_ros_distributions=("noetic" "foxy" "galactic" "humble" "iron" "jazzy" "rolling")
 fi
 
 # Mapping of ubuntu version and supported ros distributions
@@ -124,11 +124,23 @@ function RosTeamWS_setup_exports {
 
 # TODO(denis): add this into setup.bash
 function RosTeamWS_setup_aliases {
+  # ssh helper aliases
+  # TODO(denis): Add function for this that requests the Email/comment and filename
+  alias create-ssh-key="ssh-keygen -t ed25519"
+
+  alias stop_kvm="sudo systemctl stop libvirtd && sudo modprobe -r kvm_intel kvm_amd kvm"
+  alias start_kvm="sudo modprobe kvm && sudo modprobe kvm_intel && sudo modprobe kvm_amd && sudo systemctl start libvirtd"
+}
+
+# TODO(denis): add this into setup.bash
+function RosTeamWS_setup_ros_aliases {
 
   # ROS
   alias rosds="cd \$ROS_WS/src"
   alias rosdb="cd \$ROS_WS/build"
   alias rosdi="cd \$ROS_WS/install"
+  alias rosdep_prep="sudo apt update && rosdep update"
+  alias rosdepi="rosdep install -r -y -i --from-paths \$ROS_WS/src --os=ubuntu:$(lsb_release -c -s)"
 }
 
 function RosTeamWS_setup_ros1_exports {
@@ -178,6 +190,29 @@ function RosTeamWS_setup_ros2_aliases {
   alias caup="colcon_all_up_to"
 
   alias crm="colcon_remove"
+
+  # Completions commands
+  # Inspired by: https://github.com/MetroRobots/ros_command/blob/743967f5208bd987970e624538fdafa9ce27222d/src/ros_command/ros_command_setup.bash#L8-L30
+  _rosd_completions_single()
+  {
+    case $COMP_CWORD in
+      1)
+        COMPREPLY=($(compgen -W "$(ros2 pkg list | sed 's/\t//')" -- "${COMP_WORDS[1]}")) ;;
+    esac
+  }
+    _rosd_completions_multi()
+  {
+    COMPREPLY=($(compgen -W "$(ros2 pkg list | sed 's/\t//')" -- "${COMP_WORDS[COMP_CWORD]}") )
+  }
+
+  complete -F _rosd_completions_single rosd
+  complete -F _rosd_completions_multi cb
+  complete -F _rosd_completions_single cbup
+  complete -F _rosd_completions_multi ct
+  complete -F _rosd_completions_single ctres
+  complete -F _rosd_completions_multi ca
+  complete -F _rosd_completions_single caup
+  complete -F _rosd_completions_multi crm
 }
 
 function rtw_ros_cd {
@@ -192,10 +227,29 @@ function rtw_ros2_cd {
   if [ -z "$1" ]; then
     cd $ROS_WS
   else
-    colcon_cd $1
+    # Run the command and capture the output
+    pkg_path=$(ros2 pkg prefix "$1" 2>/dev/null)
+
+    # Check if output exists
+    # Inspired by: https://github.com/MetroRobots/ros_command/blob/743967f5208bd987970e624538fdafa9ce27222d/src/ros_command/commands/get_ros_directory.py
+    if [[ -n "$pkg_path" ]]; then
+#         echo "Output exists: $pkg_path"
+        # Check if output starts with "/opt/ros"
+        if [[ "$pkg_path" == /opt/ros* ]]; then
+#             echo "Output starts with /opt/ros"
+            pkg_path="$pkg_path/share/$1"
+        else
+            cd $ROS_WS
+            pkg_path=$(colcon list --packages-select "$1" --paths-only 2>/dev/null)
+            pkg_path="$ROS_WS/$pkg_path"
+        fi
+#         echo "Entering $pkg_path"
+        cd $pkg_path
+    else
+        echo "No output from command"
+    fi
   fi
 }
-
 
 ## some colcon helpers
 function colcon_helper_ros2 {
@@ -233,23 +287,23 @@ function colcon_helper_ros2_up_to {
 }
 
 function colcon_build {
-  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"  "$*"
+  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"  "$*"
 }
 
 function colcon_console_cohesion_build {
-  colcon_helper_ros2 "colcon build --symlink-install --event-handlers console_cohesion+ --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"  "$*"
+  colcon_helper_ros2 "colcon build --symlink-install --event-handlers console_cohesion+ --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"  "$*"
 }
 
 function colcon_build_up_to {
-  colcon_helper_ros2_up_to "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON" "$*"
+  colcon_helper_ros2_up_to "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON" "$*"
 }
 
 function colcon_build_debug {
-  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Debug --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON" "$*"
+  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON" "$*"
 }
 
 function colcon_build_release {
-  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON" "$*"
+  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON" "$*"
 }
 
 function colcon_test {
@@ -257,7 +311,7 @@ function colcon_test {
 }
 
 function colcon_no_test_build {
-  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --cmake-args -DBUILD_TESTING=OFF"  "$*"
+  colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTING=OFF"  "$*"
 }
 
 function colcon_test_up_to {
@@ -296,6 +350,13 @@ function colcon_remove {
     done
   fi
   cd -
+}
+
+# docker_transfer rtw_image_export ssh-user@ssh-server
+function docker_transfer() {
+  local image=$1
+  local host=$2
+  docker save "$image" | pigz | pv | ssh "$host" "unpigz | docker load"
 }
 
 ## END: Default Framework Definitions
@@ -531,6 +592,9 @@ function set_ros_version_for_distro {
       ros_version=2
       ;;
     iron)
+      ros_version=2
+      ;;
+    jazzy)
       ros_version=2
       ;;
     rolling)

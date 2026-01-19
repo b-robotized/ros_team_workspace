@@ -44,6 +44,7 @@ def docker_build(
     docker_build_command = ["docker", "build", "-t", tag]
     if no_cache:
         docker_build_command.append("--no-cache")
+        docker_build_command.append("--progress=plain")
     if pull:
         docker_build_command.append("--pull")
     if file:

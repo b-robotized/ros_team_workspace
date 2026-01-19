@@ -2,7 +2,7 @@
 Welcome the documentation of *ROS Team Workspace*-Framework
 ============================================================
 
-ROS Team Workspace (RosTeamWS) is a framework for boosting collaboration in teams when developing software for robots using `Robot Operating System (ROS) <https://www.ros.org/>`_.
+ROS Team Workspace (RTW) is a framework for boosting collaboration in teams when developing software for robots using `Robot Operating System (ROS) <https://www.ros.org/>`_.
 It supports both **ROS** and **ROS 2**.
 Its main goal is to optimize the workflow of development teams and focus more on programming robots.
 
@@ -14,8 +14,8 @@ From 2021, the framework is maintained by Stogl Robotics Consulting.
 ..    :depth: 2
 
 
-Purpose of the *RosTeamWS*
-==========================
+Purpose of the *RosTeamWorkspace (RTW)*
+========================================
 
 This package targets the following stakeholders:
 
@@ -33,7 +33,7 @@ The framework is the main entry-point for teams to:
 #. provide scripts for easy use of ROS.
 
 
-To achieve this, RosTeamWS defines:
+To achieve this, RTW defines:
 
 #. an architecture of overlaid workspaces for sharing standard ROS packages;
 #. standardized package structure for straightforward collaboration;
@@ -43,7 +43,7 @@ To achieve this, RosTeamWS defines:
 
 DISCLAIMER
 ==========
-The work in the RosTeamWS-framework tries to follow, if applicable, `ROS Enhancement Proposals (REPs) <https://www.ros.org/reps/rep-0000.html>`_. Still, collisions in the best-practices proposals may occur.
+The work in the RTW-framework tries to follow, if applicable, `ROS Enhancement Proposals (REPs) <https://www.ros.org/reps/rep-0000.html>`_. Still, collisions in the best-practices proposals may occur.
 The opinions and proposals stated here are merely related to the authors' experiences.
 
 
@@ -51,8 +51,8 @@ The opinions and proposals stated here are merely related to the authors' experi
    :hidden:
 
    tutorials/index.rst
+   rtwcli/index.rst
    guidelines/index.rst
    use-cases/index.rst
    docker/index.rst
-   rtwcli/index.rst
    faq/index.rst

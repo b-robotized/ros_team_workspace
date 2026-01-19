@@ -6,7 +6,7 @@ Its main goal is to optimize the workflow of development teams and focus more on
 
 [![Licence](https://img.shields.io/badge/License-Apache%20License%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-[Documentation](https://stoglrobotics.github.io/ros_team_workspace)
+[Documentation](https://rtw.b-robotized.com)
 
 ### Build status
 

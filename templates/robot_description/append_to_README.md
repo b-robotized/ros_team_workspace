@@ -1,7 +1,7 @@
 
 Descriptions, meshes, and visualization files for the robots and environments. Corresponding launch and test files are also stored here.
 
-The structure and files in this package are generated using [RosTeamWorkspace script setup-robot-description](https://rtw.stoglrobotics.de/master/use-cases/ros_packages/setup_robot_description_package.html). You can use the same script to generate initial files for other robots.
+The structure and files in this package are generated using [RosTeamWorkspace script setup-robot-description](https://rtw.b-robotized.com/master/use-cases/ros_packages/setup_robot_description_package.html). You can use the same script to generate initial files for other robots.
 
 ## General details about robot description packages
 
@@ -45,7 +45,7 @@ The general package structure is the following:
 3. (Re-)Source environment `source install/setup.bash`
 
 
-> **NOTE:** If you use [RosTeamWorkspace (RTW)](https://rtw.stoglrobotics.de) than instead of the previous three steps, use `cb $PKG_NAME$` command.
+> **NOTE:** If you use [RosTeamWorkspace (RTW)](https://rtw.b-robotized.com) than instead of the previous three steps, use `cb $PKG_NAME$` command.
 
 Now, launch description test:
 ```

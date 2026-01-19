@@ -7,13 +7,13 @@
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dt>ROS Team Workspace - Galactic and Rolling</dt>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
       {%- for item in versions.in_development|sort(reverse=True) %}
       <dd><a href="{{ item.url }}">{{ item.name|title }} (latest)</a></dd>
       {%- endfor %}
     </dl>
     <dl>
-      <dt>ROS Team Workspace - Foxy</dt>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
       {%- for item in versions.releases|sort(reverse=True) %}
         {%- if item.name == latest_version.name %}
         <dd><a href="{{ item.url }}">{{ item.name|title }} (recommended)</a></dd>

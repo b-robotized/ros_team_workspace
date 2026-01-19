@@ -3,7 +3,7 @@ Docker
 ===========
 .. _docker-overview:
 
-RosTeamWS supports the usage of docker containers.
+RTW supports the usage of docker containers.
 
 .. toctree::
    :maxdepth: 1

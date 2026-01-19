@@ -36,14 +36,14 @@ If you end up with missing dependencies, install them using commands from [Setup
 > **NOTE:** If you do not use Docker in the current workflow you can skip this section and jump to [Install and Build](#install-and-build)
 
 We usually use a separate [Docker](https://docs.docker.com/) container for each of the projects/workspaces we work on.
-An internal tool from [Stogl Robotics](https://stoglrobotics.de) called [Ros Team Workspace (RTW)](https://rtw.stoglrobotics.de) simplifies the creation and work with  Docker based workspaces.
+An internal tool from [Stogl Robotics](https://b-robotized.com) called [Ros Team Workspace (RTW)](https://rtw.b-robotized.com) simplifies the creation and work with  Docker based workspaces.
 The tool is targeted toward developers.
 
 Installation of docker depends on the operating system you are using. Instructions can be found here: [Windows](https://docs.docker.com/desktop/install/windows-install/), [Mac](https://docs.docker.com/desktop/install/mac-install/) and [Linux](https://docs.docker.com/desktop/install/linux-install/).
 
 ### Quick Start Using ROS with Docker (ros_team_workspace)
 
-Using [Ros Team Workspace (RTW)](https://rtw.stoglrobotics.de) you can easily with the following command:
+Using [Ros Team Workspace (RTW)](https://rtw.b-robotized.com) you can easily with the following command:
 ```
 setup-ros-workspace-docker WS_FOLDER_NAME ROS_DISTRO
 ```
