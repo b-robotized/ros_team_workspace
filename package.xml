@@ -11,8 +11,8 @@
   <license>Apache License 2.0</license>
 
   <url type="website"></url>
-  <url type="repository">https://github.com/StoglRobotics/ros_team_workspace</url>
-  <url type="bugtracker">https://github.com/StoglRobotics/ros_team_workspace/issues</url>
+  <url type="repository">https://github.com/b-robotized/ros_team_workspace</url>
+  <url type="bugtracker">https://github.com/b-robotized/ros_team_workspace/issues</url>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

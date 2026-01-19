@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 import os
 import pathlib
 
-ROS_TEAM_WS_GIT_HTTPS_URL = "https://github.com/StoglRobotics/ros_team_workspace.git"
+ROS_TEAM_WS_GIT_HTTPS_URL = "https://github.com/b-robotized/ros_team_workspace.git"
 
 ROS_TEAM_WS_PATH = os.path.expanduser("~/.ros_team_workspace")
 WORKSPACES_PATH = os.path.join(ROS_TEAM_WS_PATH, "workspaces.yaml")

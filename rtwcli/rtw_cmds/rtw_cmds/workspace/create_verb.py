@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -919,7 +919,7 @@ RUN rm -rf /var/lib/apt/lists/*
                 . ~/.ros_team_ws_rc
             fi
 
-            # Stogl Robotics custom setup for nice colors and showing ROS workspace
+            # b»robotized custom setup for nice colors and showing ROS workspace
             . {create_args.rtw_docker_clone_abs_path}/scripts/configuration/terminal_coloring.bash
 
             # automatically use the main workspace
