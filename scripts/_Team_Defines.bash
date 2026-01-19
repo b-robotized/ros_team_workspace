@@ -40,8 +40,9 @@ alias cd_rtw='cd $FRAMEWORK_BASE_PATH'
 alias cd_rtw_scripts='cd $RosTeamWS_FRAMEWORK_SCRIPTS_PATH'
 
 alias setup_exports=RosTeamWS_setup_exports
-
 alias setup_aliases=RosTeamWS_setup_aliases
+
+alias setup_ros_aliases=RosTeamWS_setup_ros_aliases
 
 alias setup_ros1_exports=RosTeamWS_setup_ros1_exports
 
