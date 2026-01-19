@@ -126,6 +126,8 @@ class CreateVerbArgs:
     enable_ipc: bool = False
     disable_upgrade: bool = False
     update_key: bool = False
+    env_file: str = ""
+    proxy_server: str = ""
 
     @property
     def ws_name(self) -> str:
@@ -541,6 +543,18 @@ class CreateVerb(VerbExtension):
             help="update the key for ros2.",
             default=False,
         )
+        parser.add_argument(
+            "--env-file",
+            type=str,
+            help="Path to environment file for rocker",
+            default=None,
+        )
+        parser.add_argument(
+            "--proxy-server",
+            type=str,
+            help="Proxy server URL for setting proxy environment variables",
+            default=None,
+        )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
         if create_args.apt_packages:
@@ -561,8 +575,22 @@ class CreateVerb(VerbExtension):
                 """
             )
 
+            trusted_hosts = (
+                [
+                    "--trusted-host",
+                    "pypi.org",
+                    "--trusted-host",
+                    "pypi.python.org",
+                    "--trusted-host",
+                    "files.pythonhosted.org",
+                ]
+                if create_args.proxy_server
+                else []
+            )
             python_packages_cmd = mv_externally_managed_cmd + " ".join(
-                ["RUN", "pip3", "install", "-U", "-I"] + create_args.python_packages
+                ["RUN", "pip3", "install", "-U", "-I"]
+                + trusted_hosts
+                + create_args.python_packages
             )
         else:
             python_packages_cmd = "# no python packages to install"
@@ -640,19 +668,44 @@ class CreateVerb(VerbExtension):
         else:
             update_key_cmds = ""
 
+        proxy_env_cmds = ""
+        if create_args.proxy_server:
+            proxy_env_cmds = textwrap.dedent(
+                f"""
+            ENV http_proxy={create_args.proxy_server}
+            ENV https_proxy={create_args.proxy_server}
+            ENV HTTP_PROXY={create_args.proxy_server}
+            ENV HTTPS_PROXY={create_args.proxy_server}
+            ENV PIP_PROXY={create_args.proxy_server}
+            ENV no_proxy=localhost,127.0.0.1
+            ENV NO_PROXY=localhost,127.0.0.1
+            """
+            )
+
+        pip_config_cmd = ""
+        if create_args.proxy_server:
+            pip_config_cmd = textwrap.dedent(
+                f"""
+            RUN mkdir -p /root/.config/pip && \\
+                echo -e "[global]\\nproxy = {create_args.proxy_server}\\ntrusted-host = pypi.org pypi.python.org files.pythonhosted.org" > /root/.config/pip/pip.conf
+            """
+            )
+
         return textwrap.dedent(
             f"""
-            FROM {create_args.base_image_name}
-            {update_key_cmds}
-            RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
-            {apt_packages_cmd}
-            {python_packages_cmd}
-            {rtw_clone_cmd}
-            {rtw_install_cmd}
-            {copy_workspace_cmd}
-            {copy_upstream_workspace_cmd}
-            RUN rm -rf /var/lib/apt/lists/*
-            """
+FROM {create_args.base_image_name}
+{proxy_env_cmds}
+{update_key_cmds}
+RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
+{apt_packages_cmd}
+{pip_config_cmd}
+{python_packages_cmd}
+{rtw_clone_cmd}
+{rtw_install_cmd}
+{copy_workspace_cmd}
+{copy_upstream_workspace_cmd}
+RUN rm -rf /var/lib/apt/lists/*
+"""
         )
 
     def build_intermediate_docker_image(self, create_args: CreateVerbArgs):
@@ -928,6 +981,9 @@ class CreateVerb(VerbExtension):
         rich.print(create_args)
         logger.info("### CREATE ARGS ###")
 
+        if create_args.env_file and not os.path.exists(create_args.env_file):
+            raise RuntimeError(f"Environment file '{create_args.env_file}' does not exist.")
+
         if create_args.docker and docker_container_exists(create_args.container_name):
             raise RuntimeError(
                 f"Docker container with name '{create_args.container_name}' already exists.\n"
@@ -974,6 +1030,7 @@ class CreateVerb(VerbExtension):
                 final_image_name=create_args.final_image_name,
                 ws_volumes=rocker_ws_volumes,
                 user_override_name=create_args.user_override_name,
+                env_file=create_args.env_file,
             )
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):
