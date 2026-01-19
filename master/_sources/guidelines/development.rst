@@ -27,9 +27,9 @@ This section describes in short the process with valuable tips to make your and 
 
    .. note::
 
-      In *Stogl Robotics* we have the organization called `StoglRobotics-forks <https://github.com/StoglRobotics-forks>`_ where all forks of public repositories live and are accessible for writing by all team members.
+      At *b»robotized* we have the organization called `b-robotized-forks <https://github.com/b-robotized-forks>`_ where all forks of public repositories live and are accessible for writing by all team members.
       This simplifies collaboration inside the team - there is no need for individual access grants when using forks under your user.
-      **Always** check if there is already a fork in *StoglRobotics-forks* organization and if not create it.
+      **Always** check if there is already a fork in *b-robotized-forks* organization and if not create it.
 
 #. Start development always from the up-to date state of the repositories default branch (usually called *master* or *main* - for simplicity we call it *master* here).
    Take into account that the master branch of your fork is usually not up to date with the upstream repository.
@@ -89,7 +89,7 @@ If you really need to ignore check in the commit, you can add ``-n`` flag to the
 
 
 .. note:: If your repository does not use ``pre-commit`` yet, it is very easy to add it by creating a configuration file ``.pre-commit-config.yaml`` in the top level of your repository (there where ``.git`` folder is).
-          If you don't know where to start with *pre-commit* configuration in your ROS project, simply copy our template from `templates/package/.pre-commit-config.yaml <https://github.com/StoglRobotics/ros_team_workspace/blob/master/templates/package/.pre-commit-config.yaml>`_.
+          If you don't know where to start with *pre-commit* configuration in your ROS project, simply copy our template from `templates/package/.pre-commit-config.yaml <https://github.com/b-robotized/ros_team_workspace/blob/master/templates/package/.pre-commit-config.yaml>`_.
 
 
 Useful commands and options

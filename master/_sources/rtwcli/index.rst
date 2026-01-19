@@ -188,5 +188,5 @@ Until rocker PR is merged you are encouraged to install your rocker fork with:
 .. code-block:: bash
 
    pip3 uninstall rocker   # if you have installed it with 'sudo' use it here too
-   git clone https://github.com/StoglRobotics-forks/rocker.git --branch <your-feature-branch>
+   git clone https://github.com/b-robotized-forks/rocker.git --branch <your-feature-branch>
    cd rocker && pip3 install -e . && cd -
