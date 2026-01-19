@@ -30,6 +30,7 @@ def generate_rocker_flags(
     final_image_name: str,
     ws_volumes: Union[List[str], None] = None,
     user_override_name: Union[str, None] = None,
+    env_file: Union[str, None] = None,
 ) -> List[str]:
     # rocker flags have order, see rocker --help
     rocker_flags = ["--nocache", "--nocleanup", "--git"]
@@ -64,6 +65,9 @@ def generate_rocker_flags(
     rocker_flags.extend(["--user", "--user-preserve-home"])
     if user_override_name:
         rocker_flags.extend(["--user-override-name", user_override_name])
+
+    if env_file:
+        rocker_flags.extend(["--env-file", env_file])
 
     # rocker volumes
     rocker_flags.append("--volume")
