@@ -27,7 +27,7 @@ The CLI currently supports the following commands:
    * ``port``: Port existing RTW workspace(s)
 
 * ``rtw docker``: Various Docker related sub-commands
-   * ``enter``: Enter a Docker container for a dockerized workspace
+   * ``enter``: Enter a Docker container for a dockerized workspace (make sure to run ``rtw ws <ws-name>`` before)
 
 * ``rtw ws``: Alias for ``rtw workspace use``
 
