@@ -687,7 +687,11 @@ class CreateVerb(VerbExtension):
             pip_config_cmd = textwrap.dedent(
                 f"""
             RUN mkdir -p /root/.config/pip && \\
-                echo -e "[global]\\nproxy = {create_args.proxy_server}\\ntrusted-host = pypi.org pypi.python.org files.pythonhosted.org" > /root/.config/pip/pip.conf
+                echo "[global]" > /root/.config/pip/pip.conf && \\
+                echo "proxy = {create_args.proxy_server}" >> /root/.config/pip/pip.conf && \\
+                echo "trusted-host = pypi.org" >> /root/.config/pip/pip.conf && \\
+                echo "               pypi.python.org" >> /root/.config/pip/pip.conf && \\
+                echo "               files.pythonhosted.org" >> /root/.config/pip/pip.conf
             """
             )
 
