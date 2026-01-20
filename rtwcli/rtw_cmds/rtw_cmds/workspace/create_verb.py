@@ -60,7 +60,6 @@ from rtwcli.workspace_utils import (
     update_workspaces_config,
 )
 
-
 DEFAULT_BASE_IMAGE_NAME_FORMAT = "osrf/ros:{ros_distro}-desktop"
 DEFAULT_FINAL_IMAGE_NAME_FORMAT = "rtw_{workspace_name}_final"
 DEFAULT_CONTAINER_NAME_FORMAT = "{final_image_name}-instance"
@@ -575,14 +574,12 @@ class CreateVerb(VerbExtension):
 
         if create_args.python_packages:
             # hack to install system-wide python packages
-            mv_externally_managed_cmd = textwrap.dedent(
-                """
+            mv_externally_managed_cmd = textwrap.dedent("""
                 RUN python_version=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')") \
                     && echo "Python version is $python_version" \
                     && externally_managed_file_path="/usr/lib/python${python_version}/EXTERNALLY-MANAGED" \
                     && if [ -f "$externally_managed_file_path" ]; then mv "$externally_managed_file_path" "$externally_managed_file_path.old"; fi
-                """
-            )
+                """)
 
             trusted_hosts = (
                 [
@@ -658,8 +655,7 @@ class CreateVerb(VerbExtension):
             copy_upstream_workspace_cmd = "# upstream workspace will be mounted as volume"
 
         if create_args.update_key:
-            update_key_cmds = textwrap.dedent(
-                """
+            update_key_cmds = textwrap.dedent("""
                 RUN if [ -f /usr/share/keyrings/ros2-latest-archive-keyring.gpg ]; then \\
                       gpg_file="/usr/share/keyrings/ros2-latest-archive-keyring.gpg"; \\
                     elif [ -f /usr/share/keyrings/ros-archive-keyring.gpg ]; then \\
@@ -672,15 +668,13 @@ class CreateVerb(VerbExtension):
                     echo "Using GPG file: $gpg_file" && \\
                     rm -f "$gpg_file" && \\
                     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o "$gpg_file"
-                """
-            )
+                """)
         else:
             update_key_cmds = ""
 
         proxy_env_cmds = ""
         if create_args.proxy_server:
-            proxy_env_cmds = textwrap.dedent(
-                f"""
+            proxy_env_cmds = textwrap.dedent(f"""
             ENV http_proxy={create_args.proxy_server}
             ENV https_proxy={create_args.proxy_server}
             ENV HTTP_PROXY={create_args.proxy_server}
@@ -688,35 +682,29 @@ class CreateVerb(VerbExtension):
             ENV PIP_PROXY={create_args.proxy_server}
             ENV no_proxy=localhost,127.0.0.1
             ENV NO_PROXY=localhost,127.0.0.1
-            """
-            )
+            """)
 
         pip_config_cmd = ""
         if create_args.proxy_server:
-            pip_config_cmd = textwrap.dedent(
-                f"""
+            pip_config_cmd = textwrap.dedent(f"""
             RUN mkdir -p /root/.config/pip && \\
                 echo "[global]" > /root/.config/pip/pip.conf && \\
                 echo "proxy = {create_args.proxy_server}" >> /root/.config/pip/pip.conf && \\
                 echo "trusted-host = pypi.org" >> /root/.config/pip/pip.conf && \\
                 echo "               pypi.python.org" >> /root/.config/pip/pip.conf && \\
                 echo "               files.pythonhosted.org" >> /root/.config/pip/pip.conf
-            """
-            )
+            """)
 
         git_config_cmd = ""
         if create_args.proxy_server:
-            git_config_cmd = textwrap.dedent(
-                f"""
+            git_config_cmd = textwrap.dedent(f"""
             RUN git config --global http.proxy {create_args.proxy_server} && \\
                 git config --global https.proxy {create_args.proxy_server} && \\
                 git config --global http.sslVerify false && \\
                 git config --global https.sslVerify false
-            """
-            )
+            """)
 
-        return textwrap.dedent(
-            f"""
+        return textwrap.dedent(f"""
 FROM {create_args.base_image_name}
 {proxy_env_cmds}
 {update_key_cmds}
@@ -730,8 +718,7 @@ RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade e
 {copy_workspace_cmd}
 {copy_upstream_workspace_cmd}
 RUN rm -rf /var/lib/apt/lists/*
-"""
-        )
+""")
 
     def build_intermediate_docker_image(self, create_args: CreateVerbArgs):
         # create intermediate dockerfile
@@ -934,8 +921,7 @@ RUN rm -rf /var/lib/apt/lists/*
         with open(SKEL_BASHRC_PATH) as file:
             default_bashrc_content = file.read()
 
-        extra_bashrc_content = textwrap.dedent(
-            f"""
+        extra_bashrc_content = textwrap.dedent(f"""
             # source rtw
             . {create_args.rtw_docker_clone_abs_path}/setup.bash
 
@@ -949,8 +935,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
             # automatically use the main workspace
             rtw workspace use {create_args.ws_name}
-            """
-        )
+            """)
 
         # write the default bashrc with the extra content to the container
         temp_bashrc_file = create_temp_file(content=default_bashrc_content + extra_bashrc_content)
