@@ -38,7 +38,7 @@ rosdi
   Alias for command: ``cd $ROS_WS/install``
 
 
-Installling dependencies
+Installing dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. _uc-aliases-dependencies:
 
