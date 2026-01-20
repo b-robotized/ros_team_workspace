@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2022, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2022-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ RTW_WS_build_docker_container_image () {
   --build-arg uid=$UID \
   --build-arg gid=$GROUPS \
   --build-arg home=$HOME \
+  --progress=plain \
   -t "$docker_image_tag" .
 }
 

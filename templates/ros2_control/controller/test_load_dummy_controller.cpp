@@ -1,4 +1,4 @@
-// Copyright (c) 2022, Stogl Robotics Consulting UG (haftungsbeschränkt) (template)
+// Copyright (c) 2022-2026, b»robotized group (template)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 //
 // Source of this file are templates in
-// [RosTeamWorkspace](https://github.com/StoglRobotics/ros_team_workspace) repository.
+// [RosTeamWorkspace](https://github.com/b-robotized/ros_team_workspace) repository.
 //
 
 #include <gmock/gmock.h>

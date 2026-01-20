@@ -6,15 +6,15 @@ Its main goal is to optimize the workflow of development teams and focus more on
 
 [![Licence](https://img.shields.io/badge/License-Apache%20License%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-[Documentation](https://stoglrobotics.github.io/ros_team_workspace)
+[Documentation](https://rtw.b-robotized.com)
 
 ### Build status
 
 |         | Foxy    | Rolling
 |:-------:|:-------:|:-------:|
-| Branch  | [`foxy`](https://github.com/StoglRobotics/ros_team_workspace/tree/rolling) | [`foxy`](https://github.com/StoglRobotics/ros_team_workspace/tree/rolling)
-| Build  | Linux: [![Build Status](https://github.com/StoglRobotics/ros_team_workspace/workflows/Build&20Foxy%20ros_team_workspace/badge.svg)](https://github.com/StoglRobotics/ros_team_workspace/actions?query=workflow%3A"Build%20Foxy") | Linux: [![Build Status](https://github.com/StoglRobotics/ros_team_workspace/workflows/Build%20ros_team_workspace/badge.svg)](https://github.com/StoglRobotics/ros_team_workspace/actions?query=workflow%3A"Build") |
-| Lint  | [![Linters Status](https://github.com/StoglRobotics/ros_team_workspace/workflows/Lint%20ros_team_workspace/badge.svg)](https://github.com/StoglRobotics/ros_team_workspace/actions?query=workflow%3A"Lint")| [![Linters Status](https://github.com/StoglRobotics/ros_team_workspace/workflows/Lint%20ros_team_workspace/badge.svg)](https://github.com/StoglRobotics/ros_team_workspace/actions?query=workflow%3A"Lint") |
+| Branch  | [`foxy`](https://github.com/b-robotized/ros_team_workspace/tree/rolling) | [`foxy`](https://github.com/b-robotized/ros_team_workspace/tree/rolling)
+| Build  | Linux: [![Build Status](https://github.com/b-robotized/ros_team_workspace/workflows/Build&20Foxy%20ros_team_workspace/badge.svg)](https://github.com/b-robotized/ros_team_workspace/actions?query=workflow%3A"Build%20Foxy") | Linux: [![Build Status](https://github.com/b-robotized/ros_team_workspace/workflows/Build%20ros_team_workspace/badge.svg)](https://github.com/b-robotized/ros_team_workspace/actions?query=workflow%3A"Build") |
+| Lint  | [![Linters Status](https://github.com/b-robotized/ros_team_workspace/workflows/Lint%20ros_team_workspace/badge.svg)](https://github.com/b-robotized/ros_team_workspace/actions?query=workflow%3A"Lint")| [![Linters Status](https://github.com/b-robotized/ros_team_workspace/workflows/Lint%20ros_team_workspace/badge.svg)](https://github.com/b-robotized/ros_team_workspace/actions?query=workflow%3A"Lint") |
 
 
 ## Purpose

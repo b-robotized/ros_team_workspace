@@ -1,4 +1,4 @@
-# Copyright (c) 2021, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2021-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,8 +40,9 @@ alias cd_rtw='cd $FRAMEWORK_BASE_PATH'
 alias cd_rtw_scripts='cd $RosTeamWS_FRAMEWORK_SCRIPTS_PATH'
 
 alias setup_exports=RosTeamWS_setup_exports
-
 alias setup_aliases=RosTeamWS_setup_aliases
+
+alias setup_ros_aliases=RosTeamWS_setup_ros_aliases
 
 alias setup_ros1_exports=RosTeamWS_setup_ros1_exports
 

@@ -3,10 +3,10 @@ Setup a new Workspace
 ===========================
 .. _uc-setup-workspace:
 
-This use-case describes how to setup a new ROS workspace using scripts from the ROS Team Workspace (RosTeamWS) framework. Besides the creation of a local workspace, creation of a Ubuntu-based docker container is supported. For more details have a look below in the `Docker workspace`_ section.
+This use-case describes how to setup a new ROS workspace using scripts from the ROS Team Workspace (RTW) framework. Besides the creation of a local workspace, creation of a Ubuntu-based docker container is supported. For more details have a look below in the `Docker workspace`_ section.
 
 .. important::
-   If you want to use Ubuntu 24.04 and ROS 2 Jazzy and Rolling (from May 2024) then checkout :ref:`RosTeamWS CLI workspace setup<rtwcli-setup-workspace>`.
+   If you want to use Ubuntu 24.04 and ROS 2 Jazzy and Rolling (from May 2024) then checkout :ref:`RTW CLI workspace setup<rtwcli-setup-workspace>`.
 
 Local workspace
 ----------------
@@ -58,7 +58,7 @@ Recreate a container
 If you removed an image,  you can recreate it by switching into the ``.rtw_docker_defines`` folder inside your workspace and then executing the ``./recreate_docker.sh`` command. After the process is finished you should be able to normally start, reconnect and stop the container.
 
 .. note::
-  For more general questions on the usage of docker and the limitations of RosTeamWS in interacting with docker, have a look at our :ref:`docker related docs<docker-overview>`.
+  For more general questions on the usage of docker and the limitations of RTW in interacting with docker, have a look at our :ref:`docker related docs<docker-overview>`.
 
 CLI overview
 """""""""""""

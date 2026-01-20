@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,8 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "rocker.extensions": [
-            "rtw_tmpfs = rtw_rocker_extensions.tmpfs:Tmpfs",
+            "rtw_tmpfs = rtw_rocker_extensions.rtw_tmpfs:RTWTmpfs",
+            "rtw_update = rtw_rocker_extensions.rtw_update:RTWUPdate",
         ],
     },
 )

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,15 +34,15 @@ sys.path.append(os.path.abspath("./sphinx-multiversion"))
 # -- General configuration -------------------------------------------------
 # General information about the project.
 project = "ROS Team Workspace"
-author = "Stogl Robotics Consulting UG (haftungsbeschränkt)"
+author = "b»robotized group"
 documentation = "ROS Team Workspace Documentation"
 copyright = "{}, {}".format(time.strftime("%Y"), author)
 
 # Adjust those to change ros distribution
-# you might also need to white list branch and
-ros_distro = "galactic"
-distro_title = "Galactic"
-distro_title_full = "Galactic Geochelone"
+# you might also need to whitelist branch and
+ros_distro = "humble"
+distro_title = "Humble"
+distro_title_full = "Humble Hawksbill"
 repos_file_branch = "master"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -194,13 +194,12 @@ epub_exclude_files = ["search.html"]
 # Output file base name for HTML help builder.
 htmlhelp_basename = "ROSTeamWorkspacedoc"
 
-html_baseurl = "https://rtw.stoglrobotics.de/" + ros_distro + "/"
+html_baseurl = "https://rtw.b-robotized.com/" + ros_distro + "/"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
-html_theme_path = ["_themes"]
 
 templates_path = [
     "_templates",
@@ -209,12 +208,14 @@ templates_path = [
 # Set the the browser icon
 html_favicon = "_static/images/favicon-bg.png"
 
-
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+html_css_files = [
+    "css/custom.css",
+]
 
 # Drop any source link suffix
 html_sourcelink_suffix = ""
@@ -230,23 +231,25 @@ html_theme_options = {
 
 html_context = {
     "display_github": True,
-    "github_user": "StoglRobotics",
+    "github_user": "b-robotized",
     "github_repo": "ros_team_workspace",
     "github_version": repos_file_branch + "/",
     "conf_py_path": "/docs/",
     "source_suffix": source_suffix,
 }
 
-# Add branches you want to whtielist here.
-smv_branch_whitelist = r"^(master|foxy)$"
-smv_released_pattern = r"^refs/(heads|remotes/[^/]+)/(foxy).*$"
+# Add branches you want to whitelist here.
+smv_branch_whitelist = r"^(master|humble|galactic|foxy)$"
+smv_released_pattern = r"^refs/(heads|remotes/[^/]+)/(humble|galactic|foxy).*$"
 smv_remote_whitelist = r"^(origin)$"
-smv_latest_version = "galactic"
-smv_eol_versions = []
+smv_latest_version = "humble"
+smv_eol_versions = ["galactic", "foxy"]
 
 distro_full_names = {
     "foxy": "Foxy Fitzroy",
     "galactic": "Galactic Geochelone",
+    "humble": "Humble Hawksbill",
+    "jazzy": "Jazzy Jalisco",
     "rolling": "Rolling Ridley",
 }
 
@@ -363,7 +366,11 @@ def smv_rewrite_configs(app, config):
     # to rewrite the various configuration items with the current version.
     if app.config.smv_current_version != "":
         branch_distro = {
-            "master": "galactic",
+            "master": "humble",
+            # "master": "jazzy_rolling",
+            # "jazzy": "jazzy",
+            "humble": "humble",
+            "galactic": "galactic",
             "foxy": "foxy",
         }
 
@@ -378,10 +385,10 @@ def smv_rewrite_configs(app, config):
         }
         app.config.html_baseurl = app.config.html_baseurl + "/" + distro + "/"
         app.config.project = "ROS Team Workspace Documentation: " + distro.title()
-        app.config.html_logo = "_static/images/" + distro + "-small.png"
+        app.config.html_logo = "_static/images/" + distro + ".svg"
     else:
         # If we are not building a multiversion build, default to the rolling logo
-        app.config.html_logo = "_static/images/rolling-small.png"
+        app.config.html_logo = "_static/images/rolling.svg"
 
 
 def github_link_rewrite_branch(app, pagename, templatename, context, doctree):

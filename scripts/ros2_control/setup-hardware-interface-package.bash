@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2021, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2021-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -105,16 +105,12 @@ for FOLDER in "${ADD_FOLDERS[@]}"; do
 done
 
 # Set file constants
-VC_H="include/$PKG_NAME/visibility_control.h"
 HW_ITF_HPP="include/$PKG_NAME/$FILE_NAME.hpp"
 HW_ITF_CPP="src/$FILE_NAME.cpp"
 PLUGIN_XML="$PKG_NAME.xml"
 TEST_CPP="test/test_$FILE_NAME.cpp"
 
 # Copy files
-if [[ ! -f "$VC_H" ]]; then
-  cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/dummy_package_namespace/visibility_control.h $VC_H
-fi
 cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/dummy_package_namespace/robot_hardware_interface.hpp $HW_ITF_HPP
 cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_hardware_interface.cpp $HW_ITF_CPP
 cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_pluginlib.xml $PLUGIN_XML

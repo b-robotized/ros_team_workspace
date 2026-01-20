@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2022 Manuel Muth (Stogl Robotics Consulting)
+# Copyright (c) 2022-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

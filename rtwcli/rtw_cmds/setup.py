@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,6 +49,9 @@ The package provides the commands for the ROS Team Workspace command line tools.
         ],
         "rtw_cmds.docker.verbs": [
             "enter = rtw_cmds.docker.verbs:EnterVerb",
+            "restart = rtw_cmds.docker.verbs:RestartVerb",
+            "start = rtw_cmds.docker.verbs:StartVerb",
+            "stop = rtw_cmds.docker.verbs:StopVerb",
         ],
         "rtw_cmds.pkg.verbs": [
             "create = rtw_cmds.pkg.verbs:CreateVerb",

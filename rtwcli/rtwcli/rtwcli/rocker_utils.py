@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ def generate_rocker_flags(
     final_image_name: str,
     ws_volumes: Union[List[str], None] = None,
     user_override_name: Union[str, None] = None,
+    env_file: Union[str, None] = None,
 ) -> List[str]:
     # rocker flags have order, see rocker --help
     rocker_flags = ["--nocache", "--nocleanup", "--git"]
@@ -65,13 +66,17 @@ def generate_rocker_flags(
     if user_override_name:
         rocker_flags.extend(["--user-override-name", user_override_name])
 
+    if env_file:
+        rocker_flags.extend(["--env-file", env_file])
+
     # rocker volumes
     rocker_flags.append("--volume")
     rocker_flags.append(f"{ssh_abs_path}:{ssh_abs_path_in_docker}:ro")
     if ws_volumes:
         rocker_flags.extend(ws_volumes)
 
-    rocker_flags.append("--tmpfs")
+    rocker_flags.append("--rtw-tmpfs")
+    rocker_flags.append("--rtw-update")
     rocker_flags.append("--x11")
     rocker_flags.extend(["--mode", "interactive"])
     rocker_flags.extend(["--image-name", f"{final_image_name}"])

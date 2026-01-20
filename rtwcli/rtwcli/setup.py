@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ setup(
     name="rtwcli",
     version="0.2.0",
     packages=find_packages(exclude=["test"]),
-    install_requires=["argcomplete", "docker", "questionary", "rich", "rocker"],
+    install_requires=["argcomplete", "docker", "pyyaml", "questionary", "rich", "rocker"],
     zip_safe=False,
     keywords=[],
     classifiers=[

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ def docker_build(
     docker_build_command = ["docker", "build", "-t", tag]
     if no_cache:
         docker_build_command.append("--no-cache")
+        docker_build_command.append("--progress=plain")
     if pull:
         docker_build_command.append("--pull")
     if file:
