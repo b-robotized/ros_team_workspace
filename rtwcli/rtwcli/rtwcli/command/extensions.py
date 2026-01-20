@@ -45,7 +45,7 @@ class ExtensionsCommand(CommandExtension):
             print(group_name)
             group = all_entry_points[group_name]
             for entry_point_name in sorted(group.keys()):
-                (dist, entry_point) = group[entry_point_name]
+                dist, entry_point = group[entry_point_name]
                 self.print_entry_point(args, dist, entry_point)
 
     def print_entry_point(self, args, dist, entry_point):

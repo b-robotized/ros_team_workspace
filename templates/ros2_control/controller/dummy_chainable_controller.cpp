@@ -210,9 +210,10 @@ std::vector<hardware_interface::CommandInterface> DummyClassName::on_export_refe
 
   for (size_t i = 0; i < reference_interfaces_.size(); ++i)
   {
-    reference_interfaces.push_back(hardware_interface::CommandInterface(
-      get_node()->get_name(), state_joints_[i] + "/" + params_.interface_name,
-      &reference_interfaces_[i]));
+    reference_interfaces.push_back(
+      hardware_interface::CommandInterface(
+        get_node()->get_name(), state_joints_[i] + "/" + params_.interface_name,
+        &reference_interfaces_[i]));
   }
 
   return reference_interfaces;

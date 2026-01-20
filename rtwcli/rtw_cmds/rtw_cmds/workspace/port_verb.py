@@ -42,7 +42,6 @@ from rtwcli.workspace_utils import (
     update_workspaces_config,
 )
 
-
 WS_FUNCTION_PREFIX = ROS_TEAM_WS_PREFIX + "setup_"
 BASE_WS_CURRENT = "<current>"
 EMPTY_DOCKER_TAG = "-"

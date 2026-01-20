@@ -49,9 +49,10 @@ std::vector<hardware_interface::StateInterface> DummyClassName::export_state_int
   std::vector<hardware_interface::StateInterface> state_interfaces;
   for (size_t i = 0; i < info_.joints.size(); ++i)
   {
-    state_interfaces.emplace_back(hardware_interface::StateInterface(
-      // TODO(anyone): insert correct interfaces
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_states_[i]));
+    state_interfaces.emplace_back(
+      hardware_interface::StateInterface(
+        // TODO(anyone): insert correct interfaces
+        info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_states_[i]));
   }
 
   return state_interfaces;
@@ -62,9 +63,10 @@ std::vector<hardware_interface::CommandInterface> DummyClassName::export_command
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   for (size_t i = 0; i < info_.joints.size(); ++i)
   {
-    command_interfaces.emplace_back(hardware_interface::CommandInterface(
-      // TODO(anyone): insert correct interfaces
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_commands_[i]));
+    command_interfaces.emplace_back(
+      hardware_interface::CommandInterface(
+        // TODO(anyone): insert correct interfaces
+        info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_commands_[i]));
   }
 
   return command_interfaces;
