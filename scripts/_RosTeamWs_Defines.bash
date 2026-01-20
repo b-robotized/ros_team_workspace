@@ -130,6 +130,7 @@ function RosTeamWS_setup_aliases {
 
   alias stop_kvm="sudo systemctl stop libvirtd && sudo modprobe -r kvm_intel kvm_amd kvm"
   alias start_kvm="sudo modprobe kvm && sudo modprobe kvm_intel && sudo modprobe kvm_amd && sudo systemctl start libvirtd"
+  alias fix_bt_headphones_audio="sudo pulseaudio -k && systemctl --user restart wireplumber && systemctl --user restart pipewire"
 }
 
 # TODO(denis): add this into setup.bash
