@@ -16,7 +16,6 @@
 import argparse
 from dataclasses import dataclass, field, fields
 import os
-import pathlib
 import shutil
 import textwrap
 from typing import Any, List
@@ -97,6 +96,7 @@ WS_SRC_FOLDER = "src"
 
 @dataclass
 class CreateVerbArgs:
+    ws_name: str
     ws_abs_path: str
     ros_distro: str
     repos_containing_repository_url: str
@@ -128,10 +128,6 @@ class CreateVerbArgs:
     update_key: bool = False
     env_file: str = ""
     proxy_server: str = ""
-
-    @property
-    def ws_name(self) -> str:
-        return pathlib.Path(self.ws_abs_path).name
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -355,14 +351,27 @@ class CreateVerb(VerbExtension):
     def add_arguments(self, parser: argparse.ArgumentParser, cli_name: str):
         parser.formatter_class = argparse.ArgumentDefaultsHelpFormatter
         parser.add_argument(
-            "--ws-folder", type=str, help="Path to the workspace folder to create.", required=True
+            "--ws-name",
+            type=str,
+            help="Name of the workspace to create. If not provided, the basename of the workspace folder will be used.",
+        )
+        parser.add_argument(
+            "--ws-folder",
+            type=str,
+            help="Path to the workspace folder to create.",
+            required=True,
         )
         parser.add_argument(
             "--ros-distro",
             type=str,
             help="ROS distro to use for the workspace.",
             required=True,
-            choices=["humble", "jazzy", "rolling"],
+            choices=["humble", "jazzy", "kilted", "rolling"],
+        )
+        parser.add_argument(
+            "--add-existing-workspace",
+            action="store_true",
+            help="Option to add existing workspace in the workspace.yaml file.",
         )
         parser.add_argument(
             "--docker", action="store_true", help="Create a docker workspace.", default=False
@@ -967,7 +976,7 @@ RUN rm -rf /var/lib/apt/lists/*
         docker_stop(intermediate_container.id)
 
     def main(self, *, args):
-        ws_name = os.path.basename(args.ws_folder)
+        ws_name = args.ws_name if args.ws_name else os.path.basename(args.ws_folder)
         if ws_name in get_workspace_names():
             raise RuntimeError(
                 f"Workspace with name '{ws_name}' already exists. "
@@ -979,11 +988,33 @@ RUN rm -rf /var/lib/apt/lists/*
 
         filtered_args = get_filtered_args(args, list(fields(CreateVerbArgs)))
         filtered_args["ws_abs_path"] = os.path.normpath(os.path.abspath(args.ws_folder))
-
+        filtered_args["ws_name"] = ws_name
         create_args = CreateVerbArgs(**filtered_args)
         logger.info("### CREATE ARGS ###")
         rich.print(create_args)
         logger.info("### CREATE ARGS ###")
+
+        if args.add_existing_workspace:
+            # add existing workspace to the workspaces config and exit
+            if not os.path.exists(create_args.ws_abs_path):
+                raise RuntimeError("Workspace folder does not exist.")
+            local_existing_ws = Workspace(
+                ws_name=create_args.ws_name,
+                ws_folder=create_args.ws_abs_path,
+                distro=create_args.ros_distro,
+                ws_docker_support=create_args.docker,
+                docker_tag=create_args.final_image_name if create_args.docker else None,
+                docker_container_name=(create_args.container_name if create_args.docker else None),
+                base_ws=(create_args.upstream_ws_name if create_args.has_upstream_ws else ""),
+                standalone=create_args.standalone,
+            )
+            if not update_workspaces_config(WORKSPACES_PATH, local_existing_ws):
+                raise RuntimeError("Failed to update workspaces config with existing workspace.")
+            logger.info(
+                f"Successfully added existing workspace '{create_args.ws_name}' to "
+                f"the workspaces config '{WORKSPACES_PATH}'. If it uses docker, please update the workspace.yaml file accordingly."
+            )
+            return
 
         if create_args.env_file and not os.path.exists(create_args.env_file):
             raise RuntimeError(f"Environment file '{create_args.env_file}' does not exist.")
