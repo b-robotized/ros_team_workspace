@@ -695,6 +695,17 @@ class CreateVerb(VerbExtension):
             """
             )
 
+        git_config_cmd = ""
+        if create_args.proxy_server:
+            git_config_cmd = textwrap.dedent(
+                f"""
+            RUN git config --global http.proxy {create_args.proxy_server} && \\
+                git config --global https.proxy {create_args.proxy_server} && \\
+                git config --global http.sslVerify false && \\
+                git config --global https.sslVerify false
+            """
+            )
+
         return textwrap.dedent(
             f"""
 FROM {create_args.base_image_name}
@@ -703,6 +714,7 @@ FROM {create_args.base_image_name}
 RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
 {apt_packages_cmd}
 {pip_config_cmd}
+{git_config_cmd}
 {python_packages_cmd}
 {rtw_clone_cmd}
 {rtw_install_cmd}
