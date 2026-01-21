@@ -1,25 +1,9 @@
 #!/bin/bash
-#
-# Copyright 2022-2026 b»robotized Group
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 usage="setup-ikfast-plugin.bash ROBOT_NAME [CLASS_NAME]"
 
 # Load Framework defines
 script_own_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
-source $script_own_dir/../../setup.bash
+source "$script_own_dir/../../setup.bash"
 # Find exact location of the plugin templates
 TEMPLATE_DIR="$script_own_dir/../../templates/ikfast_plugin"
 
@@ -27,14 +11,14 @@ check_and_set_ros_distro_and_version "${ROS_DISTRO}"
 
 ROBOT_NAME=$1
 if [ -z "$1" ]; then
-  print_and_exit "You should provide the robot name! Nothing to do 😯" "$usage"
+  print_and_exit "You should provide the robot name! Nothing to do: " "$usage"
 fi
 if [ -f src/"${ROBOT_NAME}_ikfast.cpp" ]; then
-  print_and_exit "ERROR:The file '${ROBOT_NAME}_ikfast.cpp' already exist! 😱!" "$usage"
+  print_and_exit "ERROR:The file '${ROBOT_NAME}_ikfast.cpp' already exist!" "$usage"
 fi
 
 if [ ! -f "package.xml" ]; then
-  print_and_exit "ERROR: 'package.xml' not found. You should execute this script at the top level of your package folder. Nothing to do 😯" "$usage"
+  print_and_exit "ERROR: 'package.xml' not found. You should execute this script at the top level of your package folder. Nothing to do:" "$usage"
 fi
 
 FILE_NAME="${ROBOT_NAME}_ikfast"
@@ -68,14 +52,14 @@ choice=${choice:="1"}
 if [ "$choice" != 0 ]; then
   echo -n -e "${TERMINAL_COLOR_USER_INPUT_DECISION}Insert your company or personal name (copyright): ${TERMINAL_COLOR_NC}"
   read NAME_ON_LICENSE
-  NAME_ON_LICENSE=${NAME_ON_LICENSE:="User"}
+  # NAME_ON_LICENSE=${NAME_ON_LICENSE:="User"}
   YEAR_ON_LICENSE=`date +%Y`
 fi
 
 LICENSE_HEADER=""
 case "$choice" in
 "1") LICENSE_HEADER="$LICENSE_TEMPLATES/default_cpp.txt" ;;
-"2") LICENSE_HEADER="$LICENSE_TEMPLATES/propriatery_company_cpp.txt" ;;
+"2") LICENSE_HEADER="$LICENSE_TEMPLATES/proprietary_company_cpp.txt" ;;
 esac
 
 echo -n -e "${TERMINAL_COLOR_USER_INPUT_DECISION}Is package already configured (CMake/Package.xml updated)? (yes/no) [no]: ${TERMINAL_COLOR_NC}"
@@ -89,7 +73,7 @@ read
 
 # Add folders if deleted
 PKG_NAME="$(grep -Po '(?<=<name>).*?(?=</name>)' package.xml | sed -e 's/[[:space:]]//g')"
-ADD_FOLDERS=("include/$PKG_NAME" "src")
+ADD_FOLDERS=("include/$PKG_NAME" "src" "test")
 for FOLDER in "${ADD_FOLDERS[@]}"; do
     mkdir -p $FOLDER
 done
@@ -97,6 +81,7 @@ done
 # Set file constants
 PLUGIN_CPP="src/${FILE_NAME}_plugin.cpp"
 PLUGIN_XML="$FILE_NAME.xml"
+PLUGIN_TEST="test/test_${FILE_NAME}_plugin.cpp"
 
 # copy the files and rename/rewrite it
 if [ ! -f "$TEMPLATE_DIR/dummy_ikfast_plugin.cpp" ]; then
@@ -105,6 +90,7 @@ if [ ! -f "$TEMPLATE_DIR/dummy_ikfast_plugin.cpp" ]; then
 fi
 cp --update=none "$TEMPLATE_DIR/dummy_ikfast_plugin.cpp" "$PLUGIN_CPP"
 cp --update=none "$TEMPLATE_DIR/dummy_ikfast_plugin.xml" "$PLUGIN_XML"
+cp --update=none "$TEMPLATE_DIR/test_dummy_kinematics_plugin.cpp" "$PLUGIN_TEST"
 
 echo -e "${TERMINAL_COLOR_USER_NOTICE}Template files copied from ${TEMPLATE_DIR}.${TERMINAL_COLOR_NC}"
 
@@ -122,27 +108,35 @@ if [[ "$LICENSE_HEADER" != "" && -f "$LICENSE_HEADER" ]]; then
 fi
 
 # sed all needed files
-FILES_TO_SED=("$PLUGIN_CPP" "$PLUGIN_XML")
-# declare -p FILES_TO_SED
+FILES_TO_SED=("$PLUGIN_CPP" "$PLUGIN_XML" "$PLUGIN_TEST")
+
 for SED_FILE in "${FILES_TO_SED[@]}"; do
-  sed -i "s/dummy_ikfast_plugin/$FILE_NAME/g" $SED_FILE
-  sed -i "s/dummy_ikfast/$FILE_NAME/g" $SED_FILE
-  sed -i "s/DummyKinematics/$CLASS_NAME/g" $SED_FILE
-  sed -i "s/Dummy/$ROBOT_NAME/g" $SED_FILE
-  sed -i "s/ikfast_dummy.cpp/${FILE_NAME}.cpp/g" $SED_FILE
-done
-
-DEP_PKGS=("pluginlib" "kinematics_interface" "kinematics_interface_ikfast" "rclcpp")
-
-# package.xml
-for DEP_PKG in "${DEP_PKGS[@]}"; do
-  if ! grep -q "<depend>${DEP_PKG}</depend>" package.xml; then
-    sed -i "/<buildtool_depend>ament_cmake<\/buildtool_depend>/a \  <depend>${DEP_PKG}<\/depend>" package.xml
+  if [ -f "$SED_FILE" ]; then
+    echo "Processing: $SED_FILE"
+    sed -i "s/DummyDeepTest/${CLASS_NAME}DeepTest/g" "$SED_FILE"
+    sed -i "s/dummy_ikfast\/DummyKinematics/${FILE_NAME}\/${CLASS_NAME}/g" "$SED_FILE"
+    sed -i "s/dummy_ikfast_plugin/$FILE_NAME/g" "$SED_FILE"
+    sed -i "s/dummy_ikfast/$FILE_NAME/g" "$SED_FILE"
+    sed -i "s/DummyKinematics/$CLASS_NAME/g" "$SED_FILE"
+    sed -i "s/Dummy/$ROBOT_NAME/g" "$SED_FILE"
+    sed -i "s/ikfast_dummy.cpp/${FILE_NAME}.cpp/g" "$SED_FILE"
+  else
+    echo -e "${TERMINAL_COLOR_USER_ERROR}Warning: $SED_FILE not found, skipping sed.${TERMINAL_COLOR_NC}"
   fi
 done
 
-# 9. Manage CMakeLists.txt (If not configured)
+# CMakeLists.txt and package.xml management
 if [[ "$package_configured" == "no" ]]; then
+  # Manage package.xml if it is not configured
+  echo -e "${TERMINAL_COLOR_USER_NOTICE}Updating package.xml dependencies...${TERMINAL_COLOR_NC}"
+  DEP_PKGS=("pluginlib" "kinematics_interface" "kinematics_interface_ikfast" "rclcpp")
+  for DEP_PKG in "${DEP_PKGS[@]}"; do
+    if ! grep -q "<depend>${DEP_PKG}</depend>" package.xml; then
+      sed -i "/<buildtool_depend>ament_cmake<\/buildtool_depend>/a \  <depend>${DEP_PKG}<\/depend>" package.xml
+    fi
+  done
+
+  # Manage CMakeLists.txt if it is not configured
   echo -e "${TERMINAL_COLOR_USER_NOTICE}Updating CMakeLists.txt...${TERMINAL_COLOR_NC}"
 
   # Remove old comments
@@ -176,11 +170,27 @@ if [[ "$package_configured" == "no" ]]; then
   echo "# IKFast Library Definition" >> $TMP_FILE
   echo "add_library($FILE_NAME SHARED $PLUGIN_CPP)" >> $TMP_FILE
   echo "target_include_directories($FILE_NAME PRIVATE" >> $TMP_FILE
+  echo "  include" >> $TMP_FILE
+  echo "  src" >> $TMP_FILE
   echo '  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"' >> $TMP_FILE
+  echo "  \"$<BUILD_INTERFACE:\${PROJECT_SOURCE_DIR}/include/\${PROJECT_NAME}>\"" >> $TMP_FILE
   echo '  "$<INSTALL_INTERFACE:include>")' >> $TMP_FILE
   echo "ament_target_dependencies($FILE_NAME \${THIS_PACKAGE_INCLUDE_DEPENDS})" >> $TMP_FILE
   echo "" >> $TMP_FILE
   echo "pluginlib_export_plugin_description_file(kinematics_interface $PLUGIN_XML)" >> $TMP_FILE
+
+  # Testing
+  echo "" >> $TMP_FILE
+  echo "if(BUILD_TESTING)" >> $TMP_FILE
+  echo "  find_package(ament_cmake_gmock REQUIRED)" >> $TMP_FILE
+  echo "" >> $TMP_FILE
+  echo "  ament_add_gmock(test_${FILE_NAME} $PLUGIN_TEST)" >> $TMP_FILE
+  echo "" >> $TMP_FILE
+  echo "  target_link_libraries(test_${FILE_NAME}" >> $TMP_FILE
+  echo "    $FILE_NAME" >> $TMP_FILE
+  echo "    kinematics_interface_ikfast::kinematics_interface_ikfast" >> $TMP_FILE
+  echo "  )" >> $TMP_FILE
+  echo "endif()" >> $TMP_FILE
 
   # Installation
   echo "install(TARGETS $FILE_NAME" >> $TMP_FILE
@@ -197,18 +207,7 @@ if [[ "$package_configured" == "no" ]]; then
   mv $TMP_FILE CMakeLists.txt
 fi
 
-# Manage package.xml (If not configured)
-if [[ "$package_configured" == "no" ]]; then
-  echo -e "${TERMINAL_COLOR_USER_NOTICE}Updating package.xml dependencies...${TERMINAL_COLOR_NC}"
-  DEP_PKGS=("pluginlib" "kinematics_interface" "kinematics_interface_ikfast" "rclcpp")
-  for DEP_PKG in "${DEP_PKGS[@]}"; do
-    if ! grep -q "<depend>${DEP_PKG}</depend>" package.xml; then
-      sed -i "/<buildtool_depend>ament_cmake<\/buildtool_depend>/a \  <depend>${DEP_PKG}<\/depend>" package.xml
-    fi
-  done
-fi
 # extend README with general instructions
-
 if [ -f README.md ]; then
   echo -e "\n### IKFast Kinematics Plugin\n* **Library:** $FILE_NAME\n* **Plugin Class:** $FILE_NAME/$CLASS_NAME" >> README.md
 fi
