@@ -27,7 +27,7 @@
 #define IKFAST_HAS_LIBRARY
 
 // Include the ikfast file for the dummy robot
-#include "ikfast_dummy.cpp"
+#include "dummy_ikfast.cpp"
 
 namespace dummy_ikfast
 {
@@ -38,11 +38,11 @@ public:
     return GetNumJoints();
 }
 
-  void do_compute_fk(const double* j, double* etrans, double* erot) override {
+  void compute_fk(const double* j, double* etrans, double* erot) override {
     ComputeFk(j, etrans, erot);
   }
 
-  void do_compute_ik(const double* etrans, const double* erot, const double* free, void* solutions) override {
+  void compute_ik(const double* etrans, const double* erot, const double* free, void* solutions) override {
     auto* sol_list = static_cast<ikfast::IkSolutionListBase<double>*>(solutions);
     ComputeIk(etrans, erot, free, *sol_list);
   }

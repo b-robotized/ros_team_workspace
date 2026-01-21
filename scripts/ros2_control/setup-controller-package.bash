@@ -71,7 +71,7 @@ case "$choice" in
   LICENSE_HEADER="$LICENSE_TEMPLATES/default_cpp.txt"
   ;;
 "2")
-  LICENSE_HEADER="$LICENSE_TEMPLATES/propriatery_company_cpp.txt"
+  LICENSE_HEADER="$LICENSE_TEMPLATES/proprietary_company_cpp.txt"
 esac
 
 echo -n -e "${TERMINAL_COLOR_USER_INPUT_DECISION}Is package already configured (is in there a working controller already)? (yes/no) [no] ${TERMINAL_COLOR_NC}"
