@@ -132,7 +132,7 @@ controller_interface::CallbackReturn DummyClassName::on_configure(
 
   set_slow_control_mode_service_ = get_node()->create_service<ControllerModeSrvType>(
     "~/set_slow_control_mode", set_slow_mode_service_callback,
-    rmw_qos_profile_services_hist_keep_all);
+    rclcpp::QoS(10).keep_all());
 
   try
   {
@@ -241,7 +241,7 @@ controller_interface::CallbackReturn DummyClassName::on_deactivate(
   // instead of a loop
   for (size_t i = 0; i < command_interfaces_.size(); ++i)
   {
-    command_interfaces_[i].set_value(std::numeric_limits<double>::quiet_NaN());
+    (void)command_interfaces_[i].set_value(std::numeric_limits<double>::quiet_NaN());
   }
   return controller_interface::CallbackReturn::SUCCESS;
 }
