@@ -127,6 +127,7 @@ class CreateVerbArgs:
     update_key: bool = False
     env_file: str = ""
     proxy_server: str = ""
+    proxy_ca_cert: str = ""
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -563,6 +564,12 @@ class CreateVerb(VerbExtension):
             help="Proxy server URL for setting proxy environment variables",
             default=None,
         )
+        parser.add_argument(
+            "--proxy-ca-cert",
+            type=str,
+            help="Path to company CA certificate file for proxy (will be copied to container)",
+            default=None,
+        )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
         if create_args.apt_packages:
@@ -684,6 +691,23 @@ class CreateVerb(VerbExtension):
             ENV NO_PROXY=localhost,127.0.0.1
             """)
 
+        apt_proxy_cmd = ""
+        if create_args.proxy_server:
+            apt_proxy_cmd = textwrap.dedent(f"""
+            RUN mkdir -p /etc/apt/apt.conf.d && \\
+                echo 'Acquire::http::Proxy "{create_args.proxy_server}";' > /etc/apt/apt.conf.d/95proxies && \\
+                echo 'Acquire::https::Proxy "{create_args.proxy_server}";' >> /etc/apt/apt.conf.d/95proxies
+            """)
+
+        proxy_ca_cert_cmd = ""
+        if create_args.proxy_ca_cert:
+            cert_filename = os.path.basename(create_args.proxy_ca_cert)
+            proxy_ca_cert_cmd = textwrap.dedent(f"""
+            COPY {cert_filename} /usr/local/share/ca-certificates/{cert_filename}
+            RUN update-ca-certificates
+            ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+            """)
+
         pip_config_cmd = ""
         if create_args.proxy_server:
             pip_config_cmd = textwrap.dedent(f"""
@@ -699,14 +723,14 @@ class CreateVerb(VerbExtension):
         if create_args.proxy_server:
             git_config_cmd = textwrap.dedent(f"""
             RUN git config --global http.proxy {create_args.proxy_server} && \\
-                git config --global https.proxy {create_args.proxy_server} && \\
-                git config --global http.sslVerify false && \\
-                git config --global https.sslVerify false
+                git config --global https.proxy {create_args.proxy_server}
             """)
 
         return textwrap.dedent(f"""
 FROM {create_args.base_image_name}
 {proxy_env_cmds}
+{apt_proxy_cmd}
+{proxy_ca_cert_cmd}
 {update_key_cmds}
 RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
 {apt_packages_cmd}
@@ -731,16 +755,39 @@ RUN rm -rf /var/lib/apt/lists/*
                 f"'{create_args.intermediate_dockerfile_abs_path}'"
             )
 
+        # copy proxy CA certificate to build context if provided
+        docker_build_context = os.path.join(
+            create_args.intermediate_dockerfile_save_folder, "../.."
+        )
+        cert_dest_path = None
+        if create_args.proxy_ca_cert:
+            cert_src_path = os.path.abspath(create_args.proxy_ca_cert)
+            cert_filename = os.path.basename(create_args.proxy_ca_cert)
+            cert_dest_path = os.path.join(docker_build_context, cert_filename)
+            if not os.path.exists(cert_src_path):
+                raise RuntimeError(f"Proxy CA certificate file '{cert_src_path}' does not exist.")
+            shutil.copy2(cert_src_path, cert_dest_path)
+            logger.info(f"Copied proxy CA certificate to build context: {cert_dest_path}")
+
         # build intermediate docker image
         if not docker_build(
             tag=create_args.final_image_name,
-            dockerfile_path=os.path.join(create_args.intermediate_dockerfile_save_folder, "../.."),
+            dockerfile_path=docker_build_context,
             file=create_args.intermediate_dockerfile_abs_path,
         ):
+            # clean up certificate file from build context even on failure
+            if cert_dest_path and os.path.exists(cert_dest_path):
+                os.remove(cert_dest_path)
+                logger.info(f"Removed proxy CA certificate from build context: {cert_dest_path}")
             raise RuntimeError(
                 "Failed to build intermediate docker image for "
                 f"'{create_args.final_image_name}'"
             )
+
+        # clean up certificate file from build context after successful build
+        if cert_dest_path and os.path.exists(cert_dest_path):
+            os.remove(cert_dest_path)
+            logger.info(f"Removed proxy CA certificate from build context: {cert_dest_path}")
 
         # check if the intermediate docker image exists
         if not is_docker_tag_valid(create_args.final_image_name):
