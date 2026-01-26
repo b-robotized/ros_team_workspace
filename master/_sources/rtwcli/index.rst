@@ -179,6 +179,59 @@ workspaces.
    (rolling_ws)$ ros2 run demo_nodes_cpp listener
 
 
+How to use proxy for Docker workspaces
+""""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-proxy-usage:
+
+When working behind a corporate proxy, the CLI provides options to configure
+proxy settings for Docker workspaces. This ensures that apt, pip, and git
+can access the internet through the proxy during the Docker image build process.
+
+* Proxy options:
+   * ``--proxy-server <url>``: Proxy server URL (e.g., ``http://proxy.company.com:8080``)
+   * ``--proxy-ca-cert <path>``: Path to company CA certificate file for SSL inspection proxies
+
+* What the proxy configuration does:
+   * Sets environment variables (``http_proxy``, ``https_proxy``, ``HTTP_PROXY``, ``HTTPS_PROXY``, ``PIP_PROXY``, ``no_proxy``, ``NO_PROXY``)
+   * Configures apt proxy in ``/etc/apt/apt.conf.d/95proxies``
+   * Configures pip proxy and trusted hosts in ``/root/.config/pip/pip.conf``
+   * Configures git proxy settings
+   * If CA certificate is provided:
+      * Copies the certificate to ``/usr/local/share/ca-certificates/``
+      * Runs ``update-ca-certificates`` to register it
+      * Sets ``REQUESTS_CA_BUNDLE`` environment variable for Python requests
+
+* Example with proxy server only:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_docker_ws \
+      --ros-distro jazzy \
+      --docker \
+      --proxy-server http://proxy.company.com:8080
+
+* Example with proxy server and CA certificate:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_docker_ws \
+      --ros-distro jazzy \
+      --docker \
+      --proxy-server http://proxy.company.com:8080 \
+      --proxy-ca-cert /path/to/company-ca.crt
+
+.. note::
+   The CA certificate file will be temporarily copied to the Docker build context
+   during the build process and automatically removed after the build completes.
+
+.. important::
+   If your company uses SSL inspection (MITM proxy), you must provide the
+   company CA certificate using ``--proxy-ca-cert`` to avoid SSL verification
+   errors during package installation.
+
+
 How to install rocker fork with the new features
 """"""""""""""""""""""""""""""""""""""""""""""""""
 .. _rtwcli-setup-rocker-fork:

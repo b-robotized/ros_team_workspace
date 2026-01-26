@@ -58,6 +58,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-to-use-the-cli">How to use the CLI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-a-new-workspace">Setting up a new workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-setup-ros2-rtw-for-inter-communication">How to setup ROS2 RTW for inter communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-proxy-for-docker-workspaces">How to use proxy for Docker workspaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install-rocker-fork-with-the-new-features">How to install rocker fork with the new features</a></li>
 </ul>
 </li>
@@ -276,6 +277,71 @@ rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w
 
 <span class="o">(</span>rolling_ws<span class="o">)</span>$<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>demo_nodes_cpp<span class="w"> </span>listener
 </pre></div>
+</div>
+</section>
+<section id="how-to-use-proxy-for-docker-workspaces">
+<h2>How to use proxy for Docker workspaces<a class="headerlink" href="#how-to-use-proxy-for-docker-workspaces" title="Permalink to this heading"></a></h2>
+<p id="rtwcli-proxy-usage">When working behind a corporate proxy, the CLI provides options to configure
+proxy settings for Docker workspaces. This ensures that apt, pip, and git
+can access the internet through the proxy during the Docker image build process.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Proxy options:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--proxy-server</span> <span class="pre">&lt;url&gt;</span></code>: Proxy server URL (e.g., <code class="docutils literal notranslate"><span class="pre">http://proxy.company.com:8080</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--proxy-ca-cert</span> <span class="pre">&lt;path&gt;</span></code>: Path to company CA certificate file for SSL inspection proxies</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>What the proxy configuration does:</dt><dd><ul>
+<li><p>Sets environment variables (<code class="docutils literal notranslate"><span class="pre">http_proxy</span></code>, <code class="docutils literal notranslate"><span class="pre">https_proxy</span></code>, <code class="docutils literal notranslate"><span class="pre">HTTP_PROXY</span></code>, <code class="docutils literal notranslate"><span class="pre">HTTPS_PROXY</span></code>, <code class="docutils literal notranslate"><span class="pre">PIP_PROXY</span></code>, <code class="docutils literal notranslate"><span class="pre">no_proxy</span></code>, <code class="docutils literal notranslate"><span class="pre">NO_PROXY</span></code>)</p></li>
+<li><p>Configures apt proxy in <code class="docutils literal notranslate"><span class="pre">/etc/apt/apt.conf.d/95proxies</span></code></p></li>
+<li><p>Configures pip proxy and trusted hosts in <code class="docutils literal notranslate"><span class="pre">/root/.config/pip/pip.conf</span></code></p></li>
+<li><p>Configures git proxy settings</p></li>
+<li><dl class="simple">
+<dt>If CA certificate is provided:</dt><dd><ul>
+<li><p>Copies the certificate to <code class="docutils literal notranslate"><span class="pre">/usr/local/share/ca-certificates/</span></code></p></li>
+<li><p>Runs <code class="docutils literal notranslate"><span class="pre">update-ca-certificates</span></code> to register it</p></li>
+<li><p>Sets <code class="docutils literal notranslate"><span class="pre">REQUESTS_CA_BUNDLE</span></code> environment variable for Python requests</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Example with proxy server only:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_docker_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--proxy-server<span class="w"> </span>http://proxy.company.com:8080
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Example with proxy server and CA certificate:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_docker_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--proxy-server<span class="w"> </span>http://proxy.company.com:8080<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--proxy-ca-cert<span class="w"> </span>/path/to/company-ca.crt
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CA certificate file will be temporarily copied to the Docker build context
+during the build process and automatically removed after the build completes.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If your company uses SSL inspection (MITM proxy), you must provide the
+company CA certificate using <code class="docutils literal notranslate"><span class="pre">--proxy-ca-cert</span></code> to avoid SSL verification
+errors during package installation.</p>
 </div>
 </section>
 <section id="how-to-install-rocker-fork-with-the-new-features">
