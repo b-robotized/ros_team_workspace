@@ -487,7 +487,7 @@ let_user_select_license() {
       break
       ;;
     "$licence_proprietary")
-      read -p "Enter name of license (e.g. 'Propriatery License'): " NAME_OF_LICENSE
+      read -p "Enter name of license (e.g. 'Proprietary License'): " NAME_OF_LICENSE
       YEAR=$(date +'%Y')
       license=$(<"${LICENSE_TEMPLATES}/proprietary_company_header.txt")
       license=$(echo "${license}" | sed -e "s/\\\$YEAR\\\$/${YEAR}/g; s/\\\$NAME_ON_LICENSE\\\$/${NAME_OF_LICENSE}/g")
