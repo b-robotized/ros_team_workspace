@@ -42,6 +42,10 @@ Docker workspace from ``.repos`` file:
 
    rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
 
+.. note::
+   For more advanced options such as proxy configuration, standalone workspaces,
+   IPC communication setup, and other features, check the :doc:`../rtwcli/index` page.
+
 Create new package in an existing workspace
 --------------------------------------------------------
 For more details, check :ref:`use-case description <uc-new-package>`.
