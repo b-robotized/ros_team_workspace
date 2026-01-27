@@ -17,6 +17,7 @@ import argparse
 from dataclasses import dataclass, field, fields
 import os
 import shutil
+import subprocess
 import textwrap
 from typing import Any, List
 import questionary
@@ -123,7 +124,8 @@ class CreateVerbArgs:
     disable_nvidia: bool = False
     docker: bool = False
     enable_ipc: bool = False
-    disable_upgrade: bool = False
+    docker_disable_upgrade: bool = False
+    enable_local_updates: bool = False
     update_key: bool = False
     env_file: str = ""
     proxy_server: str = ""
@@ -407,9 +409,15 @@ class CreateVerb(VerbExtension):
             default=False,
         )
         parser.add_argument(
-            "--disable-upgrade",
+            "--docker-disable-upgrade",
             action="store_true",
-            help="Disable execution of 'apt-get upgrade' when creating workspace.",
+            help="Disable execution of 'apt-get upgrade' when creating Docker workspace.",
+            default=False,
+        )
+        parser.add_argument(
+            "--enable-local-updates",
+            action="store_true",
+            help="Enable system updates (apt-get update and rosdep update) for local workspaces.",
             default=False,
         )
         parser.add_argument(
@@ -732,7 +740,7 @@ FROM {create_args.base_image_name}
 {apt_proxy_cmd}
 {proxy_ca_cert_cmd}
 {update_key_cmds}
-RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
+RUN apt-get update {"&& apt-get upgrade -y" if not create_args.docker_disable_upgrade else ""}
 {apt_packages_cmd}
 {pip_config_cmd}
 {git_config_cmd}
@@ -831,7 +839,11 @@ RUN rm -rf /var/lib/apt/lists/*
             create_args.upstream_ws_src_abs_path
         )
 
-        rosdep_cmds = [["sudo", "apt-get", "update"], ["rosdep", "update"]]
+        if create_args.docker or create_args.enable_local_updates:
+            rosdep_cmds = [["sudo", "apt-get", "update"], ["rosdep", "update"]]
+        else:
+            rosdep_cmds = []
+        os_codename = subprocess.check_output(["lsb_release", "-c", "-s"], text=True).strip()
         rosdep_install_cmd_base = [
             "rosdep",
             "install",
@@ -839,6 +851,7 @@ RUN rm -rf /var/lib/apt/lists/*
             "-r",
             "-y",
             f"--rosdistro={create_args.ros_distro}",
+            f"--os=ubuntu:{os_codename}",
             "--from-paths",
         ]
         if has_upstream_ws_packages:
@@ -853,7 +866,8 @@ RUN rm -rf /var/lib/apt/lists/*
             else:
                 ws_src_abs_path = create_args.ws_src_abs_path
             rosdep_cmds.append(rosdep_install_cmd_base + [ws_src_abs_path])
-        rosdep_cmds.append(["sudo", "rm", "-rf", "/var/lib/apt/lists/*"])
+        if create_args.docker:
+            rosdep_cmds.append(["sudo", "rm", "-rf", "/var/lib/apt/lists/*"])
 
         compile_cmds = []
         if create_args.docker:
