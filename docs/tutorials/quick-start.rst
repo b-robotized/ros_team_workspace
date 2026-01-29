@@ -42,6 +42,13 @@ Docker workspace from ``.repos`` file:
 
    rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
 
+.. warning::
+   When using ``.repos`` files, ``rosdep install`` may fail if the package
+   references in your repositories are outdated or if the rosdep database
+   is not up-to-date. Ensure your ``.repos`` files point to the correct branches
+   for your ROS distro and that packages have valid ``package.xml`` files with
+   correct dependencies.
+
 .. note::
    For more advanced options such as proxy configuration, standalone workspaces,
    IPC communication setup, and other features, check the :doc:`../rtwcli/index` page.
