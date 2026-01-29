@@ -153,7 +153,7 @@ def vcs_import(
     if makedirs:
         os.makedirs(path, exist_ok=True)
 
-    vcs_import_cmd = ["vcs", "import", "--input", repos_file_path, "--workers", "1"]
+    vcs_import_cmd = ["vcs", "import", "--recursive", "--input", repos_file_path, "--workers", "1"]
     if skip_existing:
         vcs_import_cmd.append("--skip-existing")
     return run_command(vcs_import_cmd, cwd=path)

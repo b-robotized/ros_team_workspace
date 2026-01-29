@@ -59,6 +59,9 @@ repositories.
         * Upstream ws repos format: ``{repo_name}.{ros_distro}.upstream.repos``
       * ``--repos-branch <branch>``: Branch of the repository containing the
         ``.repos`` files
+      * ``--enable-local-updates``: Enable system updates (``apt-get update``
+        and ``rosdep update``) for local workspaces. By default, these updates
+        are only run for Docker workspaces.
 
 * Minimal example:
 
@@ -93,6 +96,17 @@ repositories.
    If you don't have nvidia graphics card or you don't want to use nvidia capabilits
    in the container add ``--disable-nvidia`` flag to the command.
 
+.. warning::
+   When using ``.repos`` files, ``rosdep install`` may fail if the package
+   references in your repositories are outdated or if the rosdep database
+   is not up-to-date. In such cases:
+
+   * Ensure your ``.repos`` files point to the correct branches for your ROS distro
+   * Run ``rosdep update`` before creating the workspace
+   * Check that the packages in your repositories have valid ``package.xml`` files
+     with correct dependencies
+   * For Docker workspaces, the rosdep database is updated automatically during
+     the build process
 
 * Example of a ``standalone`` workspace and ``robot`` user:
 
