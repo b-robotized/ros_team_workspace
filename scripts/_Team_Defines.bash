@@ -85,7 +85,7 @@ alias setup-auto-sourcing=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup_auto_sourcing.
 # VCS Aliases and helpers
 function rtw-ws-import () {
   # TODO: if not argument use WS default path for this after #169 is merged
-  vcs import --debug -w 1 --input "$*" $ROS_WS/src
+  vcs import --recursive --debug -w 1 --input "$*" $ROS_WS/src
 }
 
 # Temporary files cleaning
