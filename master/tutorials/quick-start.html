@@ -128,6 +128,14 @@ If that is not the case, please follow the <a class="reference internal" href="s
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--docker<span class="w"> </span>--repos-containing-repository-url<span class="w"> </span>&lt;my_git_url&gt;<span class="w"> </span>--repos-branch<span class="w"> </span>&lt;my_git_branch_with_repos&gt;<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
 </pre></div>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files, <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">install</span></code> may fail if the package
+references in your repositories are outdated or if the rosdep database
+is not up-to-date. Ensure your <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files point to the correct branches
+for your ROS distro and that packages have valid <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> files with
+correct dependencies.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For more advanced options such as proxy configuration, standalone workspaces,

@@ -154,6 +154,9 @@ containing the <code class="docutils literal notranslate"><span class="pre">.rep
 * Upstream ws repos format: <code class="docutils literal notranslate"><span class="pre">{repo_name}.{ros_distro}.upstream.repos</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--repos-branch</span> <span class="pre">&lt;branch&gt;</span></code>: Branch of the repository containing the
 <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--enable-local-updates</span></code>: Enable system updates (<code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">update</span></code>
+and <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">update</span></code>) for local workspaces. By default, these updates
+are only run for Docker workspaces.</p></li>
 </ul>
 </dd>
 </dl>
@@ -198,6 +201,20 @@ repository <code class="docutils literal notranslate"><span class="pre">br_dummy
 <p class="admonition-title">Important</p>
 <p>If you don’t have nvidia graphics card or you don’t want to use nvidia capabilits
 in the container add <code class="docutils literal notranslate"><span class="pre">--disable-nvidia</span></code> flag to the command.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files, <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">install</span></code> may fail if the package
+references in your repositories are outdated or if the rosdep database
+is not up-to-date. In such cases:</p>
+<ul class="simple">
+<li><p>Ensure your <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files point to the correct branches for your ROS distro</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">update</span></code> before creating the workspace</p></li>
+<li><p>Check that the packages in your repositories have valid <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> files
+with correct dependencies</p></li>
+<li><p>For Docker workspaces, the rosdep database is updated automatically during
+the build process</p></li>
+</ul>
 </div>
 <ul class="simple">
 <li><p>Example of a <code class="docutils literal notranslate"><span class="pre">standalone</span></code> workspace and <code class="docutils literal notranslate"><span class="pre">robot</span></code> user:</p></li>
