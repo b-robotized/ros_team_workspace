@@ -20,7 +20,7 @@ import shutil
 import subprocess
 import textwrap
 from typing import Any, List
-import questionary
+
 import rich
 from rtwcli import logger
 from rtwcli.constants import (
@@ -38,9 +38,12 @@ from rtwcli.docker_utils import (
     docker_exec_bash_cmd,
     docker_stop,
     is_docker_tag_valid,
+    remove_docker_container,
+    remove_docker_image,
 )
 from rtwcli.rocker_utils import execute_rocker_cmd, generate_rocker_flags
 from rtwcli.utils import (
+    ask_yes_no,
     create_file_and_write,
     create_temp_file,
     get_display_manager,
@@ -232,13 +235,14 @@ class CreateVerbArgs:
         )
 
         if not os.listdir(self.upstream_ws_src_abs_path):
-            remove_upstream_ws = questionary.confirm(
+            remove_upstream_ws = ask_yes_no(
                 f"Upstream workspace src folder '{self.upstream_ws_src_abs_path}' "
                 "is empty after importing the repos. Do you want to remove the upstream "
                 f"workspace folder {self.upstream_ws_abs_path} "
                 f"({os.listdir(self.upstream_ws_src_abs_path)})"
-                "and create only the main workspace?"
-            ).ask()
+                "and create only the main workspace?",
+                default=False,
+            )
             if remove_upstream_ws:
                 logger.info(f"Removing upstream workspace folder '{self.upstream_ws_abs_path}'")
                 shutil.rmtree(self.upstream_ws_abs_path)
@@ -292,10 +296,11 @@ class CreateVerbArgs:
 
     def handle_non_empty_src_folder(self, ws_type: str, ws_src_path: str):
         # ask the user to still create the workspace even if the src folder is not empty
-        still_create_ws = questionary.confirm(
+        still_create_ws = ask_yes_no(
             f"{ws_type} src folder '{ws_src_path}' is not empty. "
-            "Do you still want to proceed and create the workspace?"
-        ).ask()
+            "Do you still want to proceed and create the workspace?",
+            default=False,
+        )
         if not still_create_ws:
             exit("Not creating the workspace.")
 
@@ -727,12 +732,12 @@ class CreateVerb(VerbExtension):
                 echo "               files.pythonhosted.org" >> /root/.config/pip/pip.conf
             """)
 
-        git_config_cmd = ""
+        git_config_lines = ['git config --global --add safe.directory "*"']
         if create_args.proxy_server:
-            git_config_cmd = textwrap.dedent(f"""
-            RUN git config --global http.proxy {create_args.proxy_server} && \\
-                git config --global https.proxy {create_args.proxy_server}
-            """)
+            git_config_lines.append(f"git config --global http.proxy {create_args.proxy_server}")
+            git_config_lines.append(f"git config --global https.proxy {create_args.proxy_server}")
+
+        git_config_cmd = f"RUN {' && '.join(git_config_lines)}"
 
         return textwrap.dedent(f"""
 FROM {create_args.base_image_name}
@@ -1033,6 +1038,110 @@ RUN rm -rf /var/lib/apt/lists/*
         # stop the intermediate container after committing
         docker_stop(intermediate_container.id)
 
+    def delete_workspace_resources(self, create_args: CreateVerbArgs) -> None:
+        """Delete all workspace resources (Docker container, image, folders)."""
+        logger.info("Deleting workspace files and Docker resources...")
+
+        # Remove Docker resources if docker workspace
+        if create_args.docker:
+            # Stop and remove container
+            if docker_container_exists(create_args.container_name):
+                docker_stop(create_args.container_name)
+                if remove_docker_container(create_args.container_name):
+                    logger.info(f"Removed Docker container '{create_args.container_name}'")
+                else:
+                    logger.warning(
+                        f"Failed to remove Docker container '{create_args.container_name}'"
+                    )
+
+            # Remove Docker image
+            if is_docker_tag_valid(create_args.final_image_name):
+                if remove_docker_image(create_args.final_image_name):
+                    logger.info(f"Removed Docker image '{create_args.final_image_name}'")
+                else:
+                    logger.warning(
+                        f"Failed to remove Docker image '{create_args.final_image_name}'"
+                    )
+
+        # Remove workspace folders
+        if not create_args.standalone:
+            # Fix permissions using docker before deletion if docker was used
+            if create_args.docker:
+                import docker
+
+                client = docker.from_env()
+                uid = os.getuid()
+                gid = os.getgid()
+
+                paths_to_fix = []
+                if os.path.exists(create_args.ws_abs_path):
+                    paths_to_fix.append(create_args.ws_abs_path)
+                if create_args.has_upstream_ws and os.path.exists(
+                    create_args.upstream_ws_abs_path
+                ):
+                    paths_to_fix.append(create_args.upstream_ws_abs_path)
+
+                for path in paths_to_fix:
+                    try:
+                        logger.info(f"Fixing permissions for '{path}' before deletion...")
+                        client.containers.run(
+                            image="alpine:latest",
+                            command=f"chown -R {uid}:{gid} /work",
+                            volumes={path: {"bind": "/work", "mode": "rw"}},
+                            remove=True,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to fix permissions for '{path}': {e}")
+
+            if os.path.exists(create_args.ws_abs_path):
+                shutil.rmtree(create_args.ws_abs_path)
+                logger.info(f"Removed workspace folder '{create_args.ws_abs_path}'")
+
+            if create_args.has_upstream_ws and os.path.exists(create_args.upstream_ws_abs_path):
+                shutil.rmtree(create_args.upstream_ws_abs_path)
+                logger.info(
+                    f"Removed upstream workspace folder '{create_args.upstream_ws_abs_path}'"
+                )
+
+        logger.info("Workspace cleanup completed.")
+
+    def handle_failed_workspace_creation(
+        self, create_args: CreateVerbArgs, error_msg: str
+    ) -> bool:
+        """
+        Handle failed workspace creation by asking user to keep or delete the workspace.
+
+        Returns True if the workspace was kept, False if it was deleted.
+        """
+        logger.error(f"Workspace creation failed: {error_msg}")
+
+        if create_args.docker:
+            prompt_msg = (
+                "Workspace creation failed. Do you want to keep the workspace files and "
+                "add it to the config?\n"
+                "(Note: For Docker workspaces, we cannot distinguish between dependency "
+                "installation and compilation failures.\n"
+                "If you choose 'No', all created files and Docker resources will be deleted)"
+            )
+        else:
+            prompt_msg = (
+                "Workspace creation failed. Do you want to keep the workspace files and "
+                "add it to the config?\n"
+                "(If you choose 'no', all created files will be deleted)"
+            )
+
+        keep_workspace = ask_yes_no(prompt_msg, default=False)
+
+        if keep_workspace is None:  # User cancelled (Ctrl+C)
+            logger.info("User cancelled. Workspace will be kept but not added to config.")
+            return True
+
+        if keep_workspace:
+            return True
+        else:
+            self.delete_workspace_resources(create_args)
+            return False
+
     def main(self, *, args):
         ws_name = args.ws_name if args.ws_name else os.path.basename(args.ws_folder)
         if ws_name in get_workspace_names():
@@ -1087,7 +1196,13 @@ RUN rm -rf /var/lib/apt/lists/*
             )
 
         if create_args.docker:
-            self.build_intermediate_docker_image(create_args)
+            try:
+                self.build_intermediate_docker_image(create_args)
+            except RuntimeError as e:
+                logger.error(f"Docker image build failed: {e}")
+                logger.info("Cleaning up workspace resources...")
+                self.delete_workspace_resources(create_args)
+                raise
 
         intermediate_container = None
         if create_args.docker:
@@ -1097,7 +1212,25 @@ RUN rm -rf /var/lib/apt/lists/*
         logger.info("### WS CMDS ###")
         rich.print(ws_cmds)
         logger.info("### WS CMDS ###")
-        self.execute_ws_cmds(create_args, ws_cmds, intermediate_container)
+
+        # Track if workspace commands failed but user chose to keep the workspace
+        ws_cmds_failed = False
+        try:
+            self.execute_ws_cmds(create_args, ws_cmds, intermediate_container)
+        except RuntimeError as e:
+            # Stop the intermediate container if it exists
+            if intermediate_container:
+                docker_stop(intermediate_container.id)
+
+            kept = self.handle_failed_workspace_creation(create_args, str(e))
+            if not kept:
+                # User chose to delete, exit early
+                return
+            ws_cmds_failed = True
+            # User chose to keep, continue with the rest of the flow
+            # Need to restart the container for permission changes
+            if create_args.docker:
+                intermediate_container = self.run_intermediate_container(create_args)
 
         if create_args.docker:
             self.change_ws_folder_permissions(create_args, intermediate_container)
@@ -1128,9 +1261,10 @@ RUN rm -rf /var/lib/apt/lists/*
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):
                 # ask the user to still save ws config even if there was a rocker error
-                still_save_config = questionary.confirm(
-                    "Rocker command failed. Do you still want to save the workspace config?"
-                ).ask()
+                still_save_config = ask_yes_no(
+                    "Rocker command failed. Do you still want to save the workspace config?",
+                    default=False,
+                )
                 if not still_save_config:
                     exit("Not saving the workspace config.")
 
@@ -1161,6 +1295,13 @@ RUN rm -rf /var/lib/apt/lists/*
         )
         if not update_workspaces_config(WORKSPACES_PATH, local_main_ws):
             raise RuntimeError("Failed to update workspaces config with main workspace.")
+
+        # Inform user if workspace was kept despite build failure
+        if ws_cmds_failed:
+            logger.info(
+                f"Workspace '{create_args.ws_name}' added to config despite build failure. "
+                "You can fix the issues and rebuild manually."
+            )
 
         # remove the local files if the standalone flag is set
         if create_args.standalone:

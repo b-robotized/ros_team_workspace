@@ -187,3 +187,31 @@ def get_filtered_args(args: argparse.Namespace, dataclass_fields: List[Field]) -
     args_dict = vars(args)
     valid_fields = {field.name for field in dataclass_fields}
     return {key: args_dict[key] for key in valid_fields if key in args_dict}
+
+
+def ask_yes_no(prompt: str, default: bool = False) -> Union[bool, None]:
+    """
+    Ask user a no/yes question and wait for Enter.
+
+    :param prompt: The question to ask
+    :param default: Default value if user just presses Enter (default: False)
+    :return: True for yes/y, False for no/n, None if cancelled (Ctrl+C)
+    """
+    if default is True:
+        prompt_suffix = "(yes/no) [yes]: "
+    else:
+        prompt_suffix = "(yes/no) [no]: "
+
+    try:
+        response = input(f"{prompt} {prompt_suffix}").strip().lower()
+        if not response and default is not None:
+            return default
+        if response in ("yes", "y"):
+            return True
+        if response in ("no", "n"):
+            return False
+        # Invalid input, ask again
+        print("Please enter 'yes', 'y', 'no', or 'n'")
+        return ask_yes_no(prompt, default)
+    except (KeyboardInterrupt, EOFError):
+        return None
