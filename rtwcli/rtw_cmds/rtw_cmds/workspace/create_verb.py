@@ -1065,6 +1065,34 @@ RUN rm -rf /var/lib/apt/lists/*
 
         # Remove workspace folders
         if not create_args.standalone:
+            # Fix permissions using docker before deletion if docker was used
+            if create_args.docker:
+                import docker
+
+                client = docker.from_env()
+                uid = os.getuid()
+                gid = os.getgid()
+
+                paths_to_fix = []
+                if os.path.exists(create_args.ws_abs_path):
+                    paths_to_fix.append(create_args.ws_abs_path)
+                if create_args.has_upstream_ws and os.path.exists(
+                    create_args.upstream_ws_abs_path
+                ):
+                    paths_to_fix.append(create_args.upstream_ws_abs_path)
+
+                for path in paths_to_fix:
+                    try:
+                        logger.info(f"Fixing permissions for '{path}' before deletion...")
+                        client.containers.run(
+                            image="alpine:latest",
+                            command=f"chown -R {uid}:{gid} /work",
+                            volumes={path: {"bind": "/work", "mode": "rw"}},
+                            remove=True,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to fix permissions for '{path}': {e}")
+
             if os.path.exists(create_args.ws_abs_path):
                 shutil.rmtree(create_args.ws_abs_path)
                 logger.info(f"Removed workspace folder '{create_args.ws_abs_path}'")
