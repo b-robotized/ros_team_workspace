@@ -18,10 +18,8 @@ from dataclasses import dataclass, fields
 import questionary
 from rtw_cmds.workspace.create_verb import (
     DEFAULT_HOSTNAME_FORMAT,
-    DEFAULT_SSH_ABS_PATH,
-    DEFAULT_FINAL_IMAGE_NAME_FORMAT,
-    DEFAULT_CONTAINER_NAME_FORMAT,
 )
+from rtwcli.utils import ask_yes_no
 from rtwcli.constants import WORKSPACES_PATH
 from rtwcli.rocker_utils import execute_rocker_cmd, generate_rocker_flags
 from rtwcli.utils import get_filtered_args, replace_user_name_in_path
@@ -152,9 +150,10 @@ class ImportVerb(VerbExtension):
 
         if not execute_rocker_cmd(rocker_flags, import_args.standalone_docker_image):
             # ask the user to still save ws config even if there was a rocker error
-            still_save_config = questionary.confirm(
-                "Rocker command failed. Do you still want to save the workspace config?"
-            ).ask()
+            still_save_config = ask_yes_no(
+                "Rocker command failed. Do you still want to save the workspace config?",
+                default=False,
+            )
             if not still_save_config:
                 exit("Not saving the workspace config.")
 

@@ -20,7 +20,7 @@ import shutil
 import subprocess
 import textwrap
 from typing import Any, List
-import questionary
+
 import rich
 from rtwcli import logger
 from rtwcli.constants import (
@@ -43,6 +43,7 @@ from rtwcli.docker_utils import (
 )
 from rtwcli.rocker_utils import execute_rocker_cmd, generate_rocker_flags
 from rtwcli.utils import (
+    ask_yes_no,
     create_file_and_write,
     create_temp_file,
     get_display_manager,
@@ -234,13 +235,14 @@ class CreateVerbArgs:
         )
 
         if not os.listdir(self.upstream_ws_src_abs_path):
-            remove_upstream_ws = questionary.confirm(
+            remove_upstream_ws = ask_yes_no(
                 f"Upstream workspace src folder '{self.upstream_ws_src_abs_path}' "
                 "is empty after importing the repos. Do you want to remove the upstream "
                 f"workspace folder {self.upstream_ws_abs_path} "
                 f"({os.listdir(self.upstream_ws_src_abs_path)})"
-                "and create only the main workspace?"
-            ).ask()
+                "and create only the main workspace?",
+                default=False,
+            )
             if remove_upstream_ws:
                 logger.info(f"Removing upstream workspace folder '{self.upstream_ws_abs_path}'")
                 shutil.rmtree(self.upstream_ws_abs_path)
@@ -294,10 +296,11 @@ class CreateVerbArgs:
 
     def handle_non_empty_src_folder(self, ws_type: str, ws_src_path: str):
         # ask the user to still create the workspace even if the src folder is not empty
-        still_create_ws = questionary.confirm(
+        still_create_ws = ask_yes_no(
             f"{ws_type} src folder '{ws_src_path}' is not empty. "
-            "Do you still want to proceed and create the workspace?"
-        ).ask()
+            "Do you still want to proceed and create the workspace?",
+            default=False,
+        )
         if not still_create_ws:
             exit("Not creating the workspace.")
 
@@ -1095,12 +1098,12 @@ RUN rm -rf /var/lib/apt/lists/*
             prompt_msg = (
                 "Workspace creation failed. Do you want to keep the workspace files and "
                 "add it to the config?\n"
-                "(If you choose 'No', all created files will be deleted)"
+                "(If you choose 'no', all created files will be deleted)"
             )
 
-        keep_workspace = questionary.confirm(prompt_msg).ask()
+        keep_workspace = ask_yes_no(prompt_msg, default=False)
 
-        if keep_workspace is None:  # User cancelled
+        if keep_workspace is None:  # User cancelled (Ctrl+C)
             logger.info("User cancelled. Workspace will be kept but not added to config.")
             return True
 
@@ -1229,9 +1232,10 @@ RUN rm -rf /var/lib/apt/lists/*
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):
                 # ask the user to still save ws config even if there was a rocker error
-                still_save_config = questionary.confirm(
-                    "Rocker command failed. Do you still want to save the workspace config?"
-                ).ask()
+                still_save_config = ask_yes_no(
+                    "Rocker command failed. Do you still want to save the workspace config?",
+                    default=False,
+                )
                 if not still_save_config:
                     exit("Not saving the workspace config.")
 
