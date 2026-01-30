@@ -732,12 +732,12 @@ class CreateVerb(VerbExtension):
                 echo "               files.pythonhosted.org" >> /root/.config/pip/pip.conf
             """)
 
-        git_config_cmd = ""
+        git_config_lines = ['git config --global --add safe.directory "*"']
         if create_args.proxy_server:
-            git_config_cmd = textwrap.dedent(f"""
-            RUN git config --global http.proxy {create_args.proxy_server} && \\
-                git config --global https.proxy {create_args.proxy_server}
-            """)
+            git_config_lines.append(f"git config --global http.proxy {create_args.proxy_server}")
+            git_config_lines.append(f"git config --global https.proxy {create_args.proxy_server}")
+
+        git_config_cmd = f"RUN {' && '.join(git_config_lines)}"
 
         return textwrap.dedent(f"""
 FROM {create_args.base_image_name}
