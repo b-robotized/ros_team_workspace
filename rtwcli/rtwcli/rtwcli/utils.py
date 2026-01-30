@@ -190,14 +190,12 @@ def get_filtered_args(args: argparse.Namespace, dataclass_fields: List[Field]) -
 
 
 def ask_yes_no(prompt: str, default: bool = False) -> Union[bool, None]:
-    """Ask user a yes/no question and wait for Enter.
+    """
+    Ask user a no/yes question and wait for Enter.
 
-    Args:
-        prompt: The question to ask
-        default: Default value if user just presses Enter (default: False)
-
-    Returns:
-        True for yes/y, False for no/n, None if cancelled (Ctrl+C)
+    :param prompt: The question to ask
+    :param default: Default value if user just presses Enter (default: False)
+    :return: True for yes/y, False for no/n, None if cancelled (Ctrl+C)
     """
     if default is True:
         prompt_suffix = "(yes/no) [yes]: "

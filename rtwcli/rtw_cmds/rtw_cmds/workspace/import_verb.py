@@ -15,9 +15,11 @@
 import argparse
 from dataclasses import dataclass, fields
 
-import questionary
 from rtw_cmds.workspace.create_verb import (
+    DEFAULT_CONTAINER_NAME_FORMAT,
+    DEFAULT_FINAL_IMAGE_NAME_FORMAT,
     DEFAULT_HOSTNAME_FORMAT,
+    DEFAULT_SSH_ABS_PATH,
 )
 from rtwcli.utils import ask_yes_no
 from rtwcli.constants import WORKSPACES_PATH

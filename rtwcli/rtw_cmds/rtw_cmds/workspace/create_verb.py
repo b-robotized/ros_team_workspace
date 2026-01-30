@@ -1108,7 +1108,8 @@ RUN rm -rf /var/lib/apt/lists/*
     def handle_failed_workspace_creation(
         self, create_args: CreateVerbArgs, error_msg: str
     ) -> bool:
-        """Handle failed workspace creation by asking user to keep or delete the workspace.
+        """
+        Handle failed workspace creation by asking user to keep or delete the workspace.
 
         Returns True if the workspace was kept, False if it was deleted.
         """
