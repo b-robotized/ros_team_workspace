@@ -27,19 +27,17 @@ Author: Dr. Denis
        description="URDF/XACRO description file with the robot."/>
   <arg name="prefix"
        default=""
-       description="Prefix of the joint names, useful for multi-robot setup. If changed, joint names in controller config must also be updated."/>
+       description="Prefix of the joint names, useful for multi-robot setup. If changed than also joint names in the controllers' configuration have to be updated."/>
   <arg name="use_mock"
        default="true"
        description="Choose if to start mock hardware or real hardware."/>
+  <arg name="robot_ip"
+       default="192.168.0.100"
+       description="IP address of the robot controller."/>
 
-  <include file="$(find-pkg-share $(var description_package))/launch/load_description.launch.xml">
-    <arg name="description_package" value="$(var description_package)"/>
-    <arg name="description_file" value="$(var description_file)"/>
-    <arg name="prefix" value="$(var prefix)"/>
-    <arg name="use_mock" value="$(var use_mock)"/>
-  </include>
+  <let name="robot_description_content" value="$(command '$(find-exec xacro) $(find-pkg-share $(var description_package))/urdf/$(var description_file).urdf.xacro prefix:=$(var prefix) use_mock:=$(var use_mock) robot_ip:=$(var robot_ip)')"/>
 
-  <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_node"/>
-
-  <node pkg="rviz2" exec="rviz2" name="rviz2" output="both" args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz"/>
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" output="both">
+    <param name="robot_description" value="$(var robot_description_content)" />
+  </node>
 </launch>
