@@ -81,23 +81,25 @@ mkdir -p launch
 # Copy config files
 ROBOT_CONTROLLERS_YAML="config/${ROBOT_NAME}_controllers.yaml"
 ROBOT_FPC_PUB_YAML="config/test_goal_publishers_config.yaml"
-cp -n $ROS2_CONTROL_TEMPLATES/robot_controllers.yaml $ROBOT_CONTROLLERS_YAML
+cp -n $ROS2_CONTROL_TEMPLATES/controllers.yaml $ROBOT_CONTROLLERS_YAML
 cp -n $ROS2_CONTROL_TEMPLATES/test_goal_publishers_config.yaml $ROBOT_FPC_PUB_YAML
 
 # Copy launch files
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   # Construct the file paths
-  ROBOT_LAUNCH="launch/${ROBOT_NAME}.launch${file_type}"
+  CONTROL_BRINGUP_LAUNCH="launch/bringup_control.launch${file_type}"
+  START_OFFLINE_LAUNCH="launch/start_offline.launch${file_type}"
   TEST_FWD_POS_CTRL_LAUNCH="launch/test_forward_position_controller.launch${file_type}"
   TEST_JTC_LAUNCH="launch/test_joint_trajectory_controller.launch${file_type}"
 
   # Copy the templates to the destination with the specified file type
-  cp -n "$ROS2_CONTROL_TEMPLATES/robot_ros2_control.launch${file_type}" "${ROBOT_LAUNCH}"
+  cp -n "$ROS2_CONTROL_TEMPLATES/control_bringup.launch${file_type}" "${CONTROL_BRINGUP_LAUNCH}"
+  cp -n "$ROS2_CONTROL_TEMPLATES/start_offline.launch${file_type}" "${START_OFFLINE_LAUNCH}"
   cp -n "$ROS2_CONTROL_TEMPLATES/test_forward_position_controller.launch${file_type}" "${TEST_FWD_POS_CTRL_LAUNCH}"
   cp -n "$ROS2_CONTROL_TEMPLATES/test_joint_trajectory_controller.launch${file_type}" "${TEST_JTC_LAUNCH}"
 
   # sed all needed files
-  FILES_TO_SED=($ROBOT_LAUNCH $TEST_FWD_POS_CTRL_LAUNCH $TEST_JTC_LAUNCH)
+  FILES_TO_SED=($CONTROL_BRINGUP_LAUNCH $START_OFFLINE_LAUNCH $TEST_FWD_POS_CTRL_LAUNCH $TEST_JTC_LAUNCH)
 
   for SED_FILE in "${FILES_TO_SED[@]}"; do
     sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
@@ -137,4 +139,4 @@ fi
 compile_and_source_package $PKG_NAME
 
 echo ""
-echo -e "${TERMINAL_COLOR_USER_NOTICE}FINISHED: You can test the configuration by executing 'ros2 launch $PKG_NAME ${ROBOT_NAME}.launch${LAUNCH_FILE_TYPES[*]}'${TERMINAL_COLOR_NC}"
+echo -e "${TERMINAL_COLOR_USER_NOTICE}FINISHED: You can test the configuration by executing 'ros2 launch $PKG_NAME start_offline.launch${LAUNCH_FILE_TYPES[*]}'${TERMINAL_COLOR_NC}"
