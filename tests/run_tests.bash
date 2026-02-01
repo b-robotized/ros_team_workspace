@@ -67,12 +67,62 @@ echo "----------------------------------------------------------------"
 echo "Testing launch files..."
 source install/setup.bash
 
+# Function to kill background process on exit or error
+cleanup() {
+  if [ -n "$PID_DESC" ]; then kill $PID_DESC 2>/dev/null || true; fi
+  if [ -n "$PID_CTRL" ]; then kill $PID_CTRL 2>/dev/null || true; fi
+}
+trap cleanup EXIT
+
 # Test description launch
 echo "Launching my_robot_description load_description.launch.xml..."
-timeout 10s ros2 launch my_robot_description load_description.launch.xml || if [ $? -eq 124 ]; then echo "Launch started successfully (timed out as expected)"; else echo "Launch failed"; exit 1; fi
+ros2 launch my_robot_description load_description.launch.xml &
+PID_DESC=$!
+echo "Waiting for launch file to start..."
+sleep 10
+
+echo "Checking for /robot_description topic..."
+if ros2 topic list | grep -q "/robot_description"; then
+    echo "Topic /robot_description found."
+else
+    echo "Error: Topic /robot_description not found."
+    exit 1
+fi
+
+echo "Checking for data on /robot_description..."
+if ros2 topic echo /robot_description --once --timeout 5 > /dev/null; then
+    echo "Data received on /robot_description."
+else
+    echo "Error: No data received on /robot_description."
+    exit 1
+fi
+
+kill $PID_DESC
+PID_DESC=""
+sleep 5
 
 # Test bringup launch (start_offline)
 echo "Launching my_robot_control start_offline.launch.xml..."
-timeout 10s ros2 launch my_robot_control start_offline.launch.xml || if [ $? -eq 124 ]; then echo "Launch started successfully (timed out as expected)"; else echo "Launch failed"; exit 1; fi
+ros2 launch my_robot_control start_offline.launch.xml &
+PID_CTRL=$!
+echo "Waiting for launch file to start..."
+sleep 20
+
+echo "Checking controllers..."
+CONTROLLER_LIST=$(ros2 control list_controllers)
+echo "$CONTROLLER_LIST"
+
+ACTIVE_COUNT=$(echo "$CONTROLLER_LIST" | grep "active" | wc -l)
+echo "Found $ACTIVE_COUNT active controllers."
+
+if [ "$ACTIVE_COUNT" -ge 2 ]; then
+    echo "Success: At least 2 controllers are active."
+else
+    echo "Error: Expected at least 2 active controllers, found $ACTIVE_COUNT."
+    exit 1
+fi
+
+kill $PID_CTRL
+PID_CTRL=""
 
 echo "All tests passed!"
