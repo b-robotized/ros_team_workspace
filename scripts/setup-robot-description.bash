@@ -90,8 +90,8 @@ cp -n "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/materials.xacro
 # Copy launch files for testing the description
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   mkdir -p launch
-  ROBOT_DESCRIPTION_LAUNCH="launch/${ROBOT_NAME}.launch.xml"
-  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
+  ROBOT_DESCRIPTION_LAUNCH="launch/load_description.launch.xml"
+  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/load_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
   VIEW_ROBOT_LAUNCH="launch/view_${ROBOT_NAME}.launch${file_type}"
   cp -n "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" $VIEW_ROBOT_LAUNCH
 

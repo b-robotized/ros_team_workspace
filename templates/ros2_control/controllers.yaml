@@ -1,4 +1,4 @@
-# Copyright (c) 20224 b»robotized group
+# Copyright (c) 2025 b-robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,28 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#
-# Source of this file are templates in
-# [RosTeamWorkspace](https://github.com/b-robotized/ros_team_workspace) repository.
-#
-# Author: Dr. Denis
-#
-
-controller_manager:
+joint_state_broadcaster:
   ros__parameters:
-    update_rate: 100  # Hz
-
-    joint_state_broadcaster:
-      type: joint_state_broadcaster/JointStateBroadcaster
-
-    forward_position_controller:              # delete entry if controller is not applicable
-      type: forward_command_controller/ForwardCommandController
-
-    forward_velocity_controller:              # delete entry if controller is not applicable
-      type: forward_command_controller/ForwardCommandController
-
-    joint_trajectory_controller:              # delete entry if controller is not applicable
-      type: joint_trajectory_controller/JointTrajectoryController
+    type: joint_state_broadcaster/JointStateBroadcaster
 
 forward_position_controller:                  # delete entry if controller is not applicable
   ros__parameters:
@@ -45,17 +26,6 @@ forward_position_controller:                  # delete entry if controller is no
       - joint5
       - joint6
     interface_name: position
-
-forward_velocity_controller:                  # delete entry if controller is not applicable
-  ros__parameters:
-    joints:
-      - joint1
-      - joint2
-      - joint3
-      - joint4
-      - joint5
-      - joint6
-    interface_name: velocity
 
 joint_trajectory_controller:                  # delete entry if controller is not applicable
   ros__parameters:
