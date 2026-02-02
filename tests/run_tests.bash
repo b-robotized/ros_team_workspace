@@ -59,6 +59,8 @@ echo "----------------------------------------------------------------"
 echo "Building workspace..."
 cd ~/ws
 apt-get update
+# Install ros2controlcli for testing
+apt-get install -y ros-$ROS_DISTRO-ros2controlcli
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 colcon build
