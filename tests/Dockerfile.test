@@ -1,4 +1,4 @@
-FROM osrf/ros:rolling-desktop
+FROM osrf/ros:jazzy-desktop
 
 # Install dependencies
 # pigz, pv are used in _RosTeamWs_Defines.bash
