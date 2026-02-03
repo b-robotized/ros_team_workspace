@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moving Parts (to different reference Systems) &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/faq/moving_parts_to_different_reference_system.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Introduction to FreeCAD" href="introduction_to_freecad.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/humble.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">FAQ</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#on-docker">On Docker</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#guides">Guides</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introduction_to_freecad.html">Introduction to FreeCAD</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Moving Parts (to different reference Systems)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#moving-the-objects-in-freecad-from-the-local-frame-to-the-global-frame">Moving the objects in FreeCAD from the local frame to the global frame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-the-objects-in-freecad-from-their-frame-to-some-reference-frame">Moving the objects in FreeCAD from their frame to some reference frame</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Humble</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">FAQ</a></li>
+      <li class="breadcrumb-item active">Moving Parts (to different reference Systems)</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/faq/moving_parts_to_different_reference_system.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="moving-parts-to-different-reference-systems">
+<h1>Moving Parts (to different reference Systems)<a class="headerlink" href="#moving-parts-to-different-reference-systems" title="Permalink to this heading"></a></h1>
+<p>Sometimes, you have to move part of the global coordinate system to have the correct export. This can be done simply by <code class="docutils literal notranslate"><span class="pre">drag</span> <span class="pre">'n'</span> <span class="pre">drop</span></code> removing the part from the parent object (assembly). However, depending on the coordinate system of the parent object, the part might change its position. This means you should put the part into the correct global coordinate system.</p>
+<p><strong>FreeCAD’s Python console is very helpful for doing this fast.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To show the Python console use <code class="docutils literal notranslate"><span class="pre">View</span> <span class="pre">--&gt;</span> <span class="pre">Panels</span> <span class="pre">--&gt;</span> <span class="pre">Python</span> <span class="pre">Console</span></code></p>
+</div>
+<section id="moving-the-objects-in-freecad-from-the-local-frame-to-the-global-frame">
+<h2>Moving the objects in FreeCAD from the local frame to the global frame<a class="headerlink" href="#moving-the-objects-in-freecad-from-the-local-frame-to-the-global-frame" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Select the object that you want to move.</p></li>
+<li><p>Get the global placement of the object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">obj_placement</span> <span class="o">=</span> <span class="n">Gui</span><span class="o">.</span><span class="n">Selection</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getGlobalPlacement</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Move the object the top level of the document (<em>drag ‘n’ drop</em>).</p></li>
+<li><p>Set the placement of the object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Gui</span><span class="o">.</span><span class="n">Selection</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Placement</span> <span class="o">=</span> <span class="n">obj_placement</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="moving-the-objects-in-freecad-from-their-frame-to-some-reference-frame">
+<h2>Moving the objects in FreeCAD from their frame to some reference frame<a class="headerlink" href="#moving-the-objects-in-freecad-from-their-frame-to-some-reference-frame" title="Permalink to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is only to give you an idea of the concept - needs polishing to be <code class="docutils literal notranslate"><span class="pre">copy-pastable</span></code></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Enable visualization of models’ <code class="docutils literal notranslate"><span class="pre">origin</span></code> in FreeCAD by default:
+<code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">--&gt;</span> <span class="pre">Preferences</span> <span class="pre">--&gt;</span> <span class="pre">Display</span> <span class="pre">--&gt;</span> <span class="pre">3D</span> <span class="pre">View</span> <span class="pre">(tab)</span> <span class="pre">--&gt;</span> <span class="pre">Show</span> <span class="pre">Axes</span> <span class="pre">Cross</span> <span class="pre">by</span> <span class="pre">default</span></code></p>
+</div>
+<ol class="arabic">
+<li><p>Select an object/coordinate system that should be the source of the joint</p></li>
+<li><p>Get the inverse of the object placement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref_object</span> <span class="o">=</span> <span class="n">Gui</span><span class="o">.</span><span class="n">Selection</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Placement</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Move the object to the origin:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref_object</span> <span class="o">=</span> <span class="n">ref_object</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span> <span class="o">*</span> <span class="n">ref_object</span>
+</pre></div>
+</div>
+</li>
+<li><p>Move other objects to the coordinate system of the object:</p>
+<p><em>first select the second object</em></p>
+<p><code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">=</span> <span class="pre">ref_object.inverse()</span> <span class="pre">*</span> <span class="pre">object</span></code></p>
+</li>
+<li><p>Get the following joint by selecting the object/coordinate system and get its placement in the global coordinate system:</p>
+<p><code class="docutils literal notranslate"><span class="pre">object.getGlobalPlacement()</span></code></p>
+</li>
+</ol>
+<p><strong>Commands:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ref_obj_global</span> <span class="o">=</span> <span class="n">Gui</span><span class="o">.</span><span class="n">Selection</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getGlobalPlacement</span><span class="p">()</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Gui</span><span class="o">.</span><span class="n">Selection</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">Label</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">Placement</span> <span class="o">=</span> <span class="n">ref_obj_global</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span> <span class="o">*</span> <span class="n">obj</span><span class="o">.</span><span class="n">Placement</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction_to_freecad.html" class="btn btn-neutral float-left" title="Introduction to FreeCAD" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
+      <dd><a href="moving_parts_to_different_reference_system.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../humble/index.html">Humble (recommended)</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

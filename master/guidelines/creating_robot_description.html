@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating Robot Description &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/guidelines/creating_robot_description.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development Guidelines" href="development.html" />
+    <link rel="prev" title="Guidelines" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/humble.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guidelines</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Creating Robot Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-description-files">Create Description files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparing-robot-meshes-workflow">Preparing robot meshes - workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#make-sure-you-have-the-step-or-stp-files-and-open-them-in-freecad">Make sure you have the .step or .stp files and open them in FreeCAD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exporting-dae-files-from-freecad">Exporting <code class="docutils literal notranslate"><span class="pre">.dae</span></code> files from FreeCAD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-the-mesh-origin">Moving the mesh origin</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#blender-resources">Blender resources</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#simplify-visual-meshes">Simplify visual meshes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#manuel-for-the-process-of-simplifying-visual-meshes">Manuel for the process of Simplifying Visual Meshes</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-collision-meshes">Generate collision meshes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coloring-the-visual-meshes">Coloring the visual meshes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="development.html">Development Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_workflow.html">Working as a team with Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robot_package_structure.html">ROS-Robot Package structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Humble</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Guidelines</a></li>
+      <li class="breadcrumb-item active">Creating Robot Description</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/guidelines/creating_robot_description.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creating-robot-description">
+<h1>Creating Robot Description<a class="headerlink" href="#creating-robot-description" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>If you are unfamiliar with FreeCAD, check its introduction first.</strong></p>
+<p><a class="reference internal" href="../faq/introduction_to_freecad.html"><span class="doc">Introduction to FreeCAD</span></a></p>
+<p>Also check out <a class="reference internal" href="../faq/moving_parts_to_different_reference_system.html"><span class="doc">Moving Parts (to different reference Systems)</span></a>.</p>
+</div>
+<section id="create-description-files">
+<h2>Create Description files<a class="headerlink" href="#create-description-files" title="Permalink to this heading"></a></h2>
+<p>Follow the RTW manual: <a class="reference external" href="https://rtw.stoglrobotics.de/master/use-cases/ros_packages/setup_robot_description_package.html">https://rtw.stoglrobotics.de/master/use-cases/ros_packages/setup_robot_description_package.html</a></p>
+</section>
+<section id="preparing-robot-meshes-workflow">
+<h2>Preparing robot meshes - workflow<a class="headerlink" href="#preparing-robot-meshes-workflow" title="Permalink to this heading"></a></h2>
+<p>This workflow describes how to take the <code class="docutils literal notranslate"><span class="pre">.step</span></code> or <code class="docutils literal notranslate"><span class="pre">.stp</span></code> files of the robot in question and produce <code class="docutils literal notranslate"><span class="pre">visual</span></code> and <code class="docutils literal notranslate"><span class="pre">collision</span></code> meshes for robot use.</p>
+<p>We do this for the following reasons:</p>
+<ol class="arabic simple">
+<li><p>To split the robot model into parts, with one mesh per part, so they can be included in the <code class="docutils literal notranslate"><span class="pre">URDF</span></code> files;</p></li>
+<li><p>To reduce visual mesh size and adjust origins to match joint origins;</p></li>
+<li><p>To generate simplified collision meshes (less vertices per part) for faster path planning.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To achieve this, we use the following workflow and tools</p>
+<p><strong>FreeCAD</strong> - for <code class="docutils literal notranslate"><span class="pre">.step</span></code> file manipulation <em>(delete unnecessary parts, group parts, measure joint origin)</em></p>
+<p><strong>MeshLab</strong> - for <code class="docutils literal notranslate"><span class="pre">.dae</span></code> mesh manipulation <em>(simplify mesh, create convex hull for collision)</em></p>
+<p><strong>Blender</strong> - for <code class="docutils literal notranslate"><span class="pre">.dae</span></code> origin manipulation <em>(move joint origin)</em></p>
+</div>
+<section id="make-sure-you-have-the-step-or-stp-files-and-open-them-in-freecad">
+<h3>Make sure you have the .step or .stp files and open them in FreeCAD<a class="headerlink" href="#make-sure-you-have-the-step-or-stp-files-and-open-them-in-freecad" title="Permalink to this heading"></a></h3>
+<p>The robot model should be split into parts already. Below is an example of such a file opened in FreeCAD.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">.stp</span></code> files can be really messy. They can have many parts that are unnecessary for prurposes of visualization, and the parts may not be grouped by sections we intend to use.</p>
+<p>Make sure to remove unnecessary parts and group them to have one part per link.</p>
+</div>
+<img alt="How a typical .stp file might look at first" src="../_images/1.png" />
+<img alt="2.png" src="../_images/2.png" />
+</section>
+<section id="exporting-dae-files-from-freecad">
+<h3>Exporting <code class="docutils literal notranslate"><span class="pre">.dae</span></code> files from FreeCAD<a class="headerlink" href="#exporting-dae-files-from-freecad" title="Permalink to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Sort the elements according to colors. This means that the parts of the same color, may be in the same group (object/assembly).</p></li>
+<li><p>Mark the objects you want to export to COLLADA mesh format.</p></li>
+<li><p>Choose <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">--&gt;</span> <span class="pre">Export</span></code> and choose <code class="docutils literal notranslate"><span class="pre">.dae</span></code> as file format.</p>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>COLLADA export options need to be checked, especially scaling. Make sure you export in <code class="docutils literal notranslate"><span class="pre">m</span></code> units, as this is the unit ROS 2 expects.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="moving-the-mesh-origin">
+<h3>Moving the mesh origin<a class="headerlink" href="#moving-the-mesh-origin" title="Permalink to this heading"></a></h3>
+<p>It is likely that the robot parts will have the same origin, in the base of the robot.</p>
+<p>Before exporting each part as <code class="docutils literal notranslate"><span class="pre">.dae</span></code> , we ideally want the origin of each mesh to align with the origin of the joint. This is done so that no additional origin transformations have to be applied in the <code class="docutils literal notranslate"><span class="pre">URDF</span></code>, rather the mesh files can be imported directly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sometimes, measuring the parts and adjusting origins in the <code class="docutils literal notranslate"><span class="pre">URDF</span></code> can be easier than shifting origins, but produces a more cluttered <code class="docutils literal notranslate"><span class="pre">URDF</span></code>.</p>
+</div>
+<p>This part does not have a workflow that will work in all cases, as it depends on the state of the received <code class="docutils literal notranslate"><span class="pre">.stp</span></code> files.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For moving joint origins in <code class="docutils literal notranslate"><span class="pre">.dae</span></code> format, Blender is the software of choice. Make sure you have simplified the meshes and determined joint origins!</p>
+</div>
+<section id="blender-resources">
+<h4>Blender resources<a class="headerlink" href="#blender-resources" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>You can move object, object origin only, you can fix global or local x, y, or z axis while doing so! <a class="reference external" href="https://www.youtube.com/watch?v=8DbqvMOo_3s">Experiment some</a>, these are really useful when inputting exact values for joint origins.</p></li>
+<li><p>You might need to set up blender for working with exact <code class="docutils literal notranslate"><span class="pre">mm</span></code> values, so that the scale of the objects is preserved. <a class="reference external" href="https://www.youtube.com/watch?v=8DbqvMOo_3s">Check out this video</a></p></li>
+<li><p>Here is a useful <a class="reference external" href="https://www.youtube.com/watch?v=9bxOKHx2VuU">video on object origin manipulation</a></p></li>
+</ul>
+</section>
+</section>
+<section id="simplify-visual-meshes">
+<h3>Simplify visual meshes<a class="headerlink" href="#simplify-visual-meshes" title="Permalink to this heading"></a></h3>
+<p>Now we open MeshLab to simplify the visual mesh. In the resulting mesh, we are aiming for several thousand vertices, depending on the complexity of the part. This is usually enough for all of the visual information to be preserved without introducing unwanted visual artifacts</p>
+<section id="manuel-for-the-process-of-simplifying-visual-meshes">
+<h4>Manuel for the process of Simplifying Visual Meshes<a class="headerlink" href="#manuel-for-the-process-of-simplifying-visual-meshes" title="Permalink to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Open the file in MeshLab and reduce its size
+<code class="docutils literal notranslate"><span class="pre">Filters</span> <span class="pre">--&gt;</span> <span class="pre">Remeshing,</span> <span class="pre">Simplification</span> <span class="pre">and</span> <span class="pre">Reconstruction</span> <span class="pre">--&gt;</span> <span class="pre">Simplification:</span> <span class="pre">Quadratic</span> <span class="pre">Edge</span> <span class="pre">Collapse</span> <span class="pre">Decimation</span></code></p></li>
+<li><p>Apply and export as <code class="docutils literal notranslate"><span class="pre">.dae</span></code></p>
+<img alt="simplified visual mesh" src="../_images/5.png" />
+</li>
+</ol>
+</section>
+</section>
+<section id="generate-collision-meshes">
+<h3>Generate collision meshes<a class="headerlink" href="#generate-collision-meshes" title="Permalink to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>It is also possible for you to export</strong> <code class="docutils literal notranslate"><span class="pre">.stl</span></code> <strong>directly from FreeCAD. This will not be transformed! Therefore, always first export</strong> <code class="docutils literal notranslate"><span class="pre">.dae</span></code> <strong>and then convert to</strong> <code class="docutils literal notranslate"><span class="pre">.stl</span></code> <strong>as needed.</strong></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is also a trick on how to export transformed. Use the <code class="docutils literal notranslate"><span class="pre">Part_Fuse</span></code> tool from <code class="docutils literal notranslate"><span class="pre">Part</span></code> workbench to get all the objects into one.</p>
+</div>
+<p>For collision meshes, a low vertex count is crucial for the speed of planning algorithms. To get a mesh that is simple but encapsulates the whole part, we do the following:</p>
+<ol class="arabic">
+<li><p>Open the visual mesh in MeshLab and generate a Convex Hull
+<code class="docutils literal notranslate"><span class="pre">Filters</span> <span class="pre">--&gt;</span> <span class="pre">Remeshing,</span> <span class="pre">Simplification</span> <span class="pre">and</span> <span class="pre">Reconstruction</span> <span class="pre">--&gt;</span> <span class="pre">Convex</span> <span class="pre">Hull</span></code></p></li>
+<li><p>Export the collision mesh as <code class="docutils literal notranslate"><span class="pre">.stl</span></code></p></li>
+<li><p>If possible, without significant loss of details, reduce the mesh size further. <code class="docutils literal notranslate"><span class="pre">Filters</span> <span class="pre">--&gt;</span> <span class="pre">Remeshing,</span> <span class="pre">Simplification</span> <span class="pre">and</span> <span class="pre">Reconstruction</span> <span class="pre">--&gt;</span> <span class="pre">Simplification:</span> <span class="pre">Quadratic</span> <span class="pre">Edge</span> <span class="pre">Collapse</span> <span class="pre">Decimation</span></code></p></li>
+<li><p>Apply and export as <code class="docutils literal notranslate"><span class="pre">.stl</span></code></p>
+<img alt="Generated convex hull for the visual mesh" src="../_images/4.png" />
+</li>
+</ol>
+<p><strong>All done!</strong> You now have both visual and collision meshes  <code class="docutils literal notranslate"><span class="pre">.stl</span></code>  for your robot.</p>
+</section>
+<section id="coloring-the-visual-meshes">
+<h3>Coloring the visual meshes<a class="headerlink" href="#coloring-the-visual-meshes" title="Permalink to this heading"></a></h3>
+<p>After exporting from FreeCAD and decimating the mesh in Meshlab, color information is lost along the way. We can color the mesh manually using the following workflow:</p>
+<ol class="arabic">
+<li><p>Import <code class="docutils literal notranslate"><span class="pre">.dae</span></code> mesh to FreeCAD</p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">MESH</span> <span class="pre">WORKBENCH</span></code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sometimes, <code class="docutils literal notranslate"><span class="pre">.dae</span></code> mesh is already split to basic components. In the cases of more complex shapes, we can further separate mesh by components for finer control over colors of those components.</p>
+</div>
+<img alt="3.png" src="../_images/3.png" />
+</li>
+<li><p>Select desired components and merge them by color. Here you can also delete some decimation artifacts if you see they don’t impact the visual.</p>
+<img alt="6.png" src="../_images/6.png" />
+</li>
+<li><p>Convert the grouped mesh components to parts using <code class="docutils literal notranslate"><span class="pre">PART</span> <span class="pre">WORKBENCH</span></code></p>
+<img alt="9.png" src="../_images/9.png" />
+<ol class="arabic">
+<li><p>Set the part colors</p>
+<img alt="8.png" src="../_images/8.png" />
+<img alt="7.png" src="../_images/7.png" />
+<p>All done! You can now export your parts as <code class="docutils literal notranslate"><span class="pre">.dae</span></code> once more and use them in your package.</p>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="development.html" class="btn btn-neutral float-right" title="Development Guidelines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
+      <dd><a href="creating_robot_description.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../humble/index.html">Humble (recommended)</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

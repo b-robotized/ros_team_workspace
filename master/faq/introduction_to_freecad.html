@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to FreeCAD &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/faq/introduction_to_freecad.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Moving Parts (to different reference Systems)" href="moving_parts_to_different_reference_system.html" />
+    <link rel="prev" title="FAQ" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/humble.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">FAQ</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#on-docker">On Docker</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#guides">Guides</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction to FreeCAD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#install-useful-add-ons">Install Useful Add-ons</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#viewing-an-object">Viewing an object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#orientation">Orientation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#measurements">Measurements</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#linear-closest-point-measurements">Linear (closest point) measurements</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#circles">Circles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moving_parts_to_different_reference_system.html">Moving Parts (to different reference Systems)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Humble</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">FAQ</a></li>
+      <li class="breadcrumb-item active">Introduction to FreeCAD</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/faq/introduction_to_freecad.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction-to-freecad">
+<h1>Introduction to FreeCAD<a class="headerlink" href="#introduction-to-freecad" title="Permalink to this heading"></a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<p>First, make sure you have version 0.21 or higher. Versions lower than this import the .stp file as one entity, which is not what we want.</p>
+<ol class="arabic simple">
+<li><p>Debian packages are usually behind, so go to <a class="reference external" href="https://www.freecad.org/downloads.php">https://www.freecad.org/downloads.php</a> and download the AppImage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">FreeCAD-0.21.2-Linux-x86_64.AppImage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">./FreeCAD-0.21.2-Linux-x86_64.AppImage</span></code></p></li>
+</ol>
+<section id="install-useful-add-ons">
+<h3>Install Useful Add-ons<a class="headerlink" href="#install-useful-add-ons" title="Permalink to this heading"></a></h3>
+<p>FreeCad provides some valuable add-ons. You can install them via the <em>Addon Manager</em>. (<code class="docutils literal notranslate"><span class="pre">Tools&gt;Addon</span> <span class="pre">manager</span></code>).  You should install the following Add-ons:</p>
+<ul class="simple">
+<li><p><strong>Manipulator Workbench</strong>
+Open <em>Add-on Manager</em> and select <em>Workbenches.</em> Then, search for the Manipulator Workbench and install it.</p></li>
+</ul>
+<img alt="install_addons (4).png" src="../_images/install_addons_4.png" />
+</section>
+</section>
+<section id="viewing-an-object">
+<h2>Viewing an object<a class="headerlink" href="#viewing-an-object" title="Permalink to this heading"></a></h2>
+<p>If you get lost by “zooming” around the object or if the object is not directly visible after opening a file. You can easily fit the screen by clicking on the small cube under the “view” cube in the right upper corner of the object view and selecting <em>Fit all</em> (or using the shortcut, by pressing first <code class="docutils literal notranslate"><span class="pre">V</span></code> and immediately after <code class="docutils literal notranslate"><span class="pre">F</span></code>).</p>
+<img alt="Adjusting view to fit all" src="../_images/slika.png" />
+</section>
+<section id="navigation">
+<h2>Navigation<a class="headerlink" href="#navigation" title="Permalink to this heading"></a></h2>
+<p>You can select different navigation styles by <em>right click&gt; Navigation styles.</em> In my opinion, the <strong>OpenInvetor</strong> style is the most intuitive for navigating around. In this style you have to press <em>shift + left click</em> to select lines, planes or objects.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On the status bar (in the lower-right corner), you can also choose and switch fast between different Navigation styles as it suits you.</p>
+</div>
+</section>
+<section id="orientation">
+<h2>Orientation<a class="headerlink" href="#orientation" title="Permalink to this heading"></a></h2>
+<p>If you select the isometric view</p>
+<ol class="arabic simple">
+<li><p>First, select start</p></li>
+<li><p>Press isometric view</p></li>
+</ol>
+<img alt="freecad_isometric_view.png" src="../_images/freecad_isometric_view.png" />
+<p>And the robot is not showing as expected, you can transform the model as following:</p>
+<p>First set the navigation style to blender as this allows to rotate specific angles like 90°.</p>
+<ol class="arabic simple">
+<li><p>Select the model as shown</p></li>
+<li><p>Right click and select transform</p></li>
+<li><p>A coordinate system should pop up where you can rotate and translate.</p></li>
+<li><p>Accept by pressing on ok in the task tab (right next to model in step one)</p></li>
+</ol>
+<img alt="transform (2).png" src="../_images/transform_2.png" />
+</section>
+<section id="measurements">
+<h2>Measurements<a class="headerlink" href="#measurements" title="Permalink to this heading"></a></h2>
+<p>There are different measurement tools for different measurement tasks. There are tools for linear measurement and circular.</p>
+<section id="linear-closest-point-measurements">
+<h3>Linear (closest point) measurements<a class="headerlink" href="#linear-closest-point-measurements" title="Permalink to this heading"></a></h3>
+<p>Can be used to measure distance between two parallel lines/planes or the like.</p>
+<ol class="arabic simple">
+<li><p>Select the part workbench</p></li>
+<li><p>The toolbar should show some measure tape symbols. The most left one in the picture is for linear measurements. The next one for measuring angles.</p></li>
+</ol>
+<img alt="linear measurement tool" src="../_images/linear_meassurments.png" />
+<p>Lines-Line, Line-Plane, Plane-Plane:</p>
+<ol class="arabic simple">
+<li><p>Select the measure tape symbol.</p></li>
+<li><p>In the task tab a selection and control box will pop up. You can then select a line/plane by clicking on it (shift + left click if you are in OpenInventor navigation style)</p></li>
+<li><p>The selection box shows you if your selection was successful</p></li>
+<li><p>Select first line/edge</p></li>
+<li><p>Select second line/edge</p></li>
+<li><p>The measurement will pop up, showing you the distances</p></li>
+<li><p>With the control box you can deselect/delete/clear measurements</p></li>
+</ol>
+<img alt="linear measurement" src="../_images/linear-meassurment_3.png" />
+</section>
+<section id="circles">
+<h3>Circles<a class="headerlink" href="#circles" title="Permalink to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>Manipulator</strong> workbench add-on has to be installed.</p>
+</div>
+<ol class="arabic">
+<li><p>Select the Manipulator workbench.</p></li>
+<li><p>Select the caliper</p></li>
+<li><p>The measure toolbox will open:</p>
+<ol class="loweralpha simple">
+<li><p>The caliper symbol has to be clicked to take measurements</p></li>
+<li><p>This shows if your selections were successful</p></li>
+<li><p>You can select different meassurtypes. e.g. circle center, arcs, circles</p></li>
+</ol>
+<p>The selected one (2 blue lines and blue circle with dot) can be used to measure the distance between circle-circle or circle-line/plane</p>
+</li>
+</ol>
+<img alt="circular_measurments.png" src="../_images/circular_measurments.png" />
+<p>Radius:</p>
+<p>First select the Manipulator workbench.</p>
+<ol class="arabic">
+<li><p>Select the Caliper Tool (press on the caliper symbol at the top)</p></li>
+<li><p>This should open a small rectangular sub-window with different options like: measuring an ark or circle, get length of an edge, get angle…</p></li>
+<li><p>Press on the <em>Get radius or arc or circle</em> option</p></li>
+<li><p>Select an edge of a circular shape by pressing <code class="docutils literal notranslate"><span class="pre">ctrl+&lt;left</span> <span class="pre">mouse&gt;</span></code></p></li>
+<li><p>Repeat for second point</p></li>
+<li><p>The calculated middle point and radius should now be visible in the screen</p>
+<img alt="How to measure a circular shape" src="../_images/meassure_circle_drawio_3.png" />
+</li>
+</ol>
+<p>Circle-Line, Circle-Plane, Circle-Circle:</p>
+<img alt="circle circle measurement" src="../_images/circlular_measurment.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="moving_parts_to_different_reference_system.html" class="btn btn-neutral float-right" title="Moving Parts (to different reference Systems)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
+      <dd><a href="introduction_to_freecad.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../humble/index.html">Humble (recommended)</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

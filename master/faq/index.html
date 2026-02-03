@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ &mdash; ROS Team Workspace Documentation: Humble Jan 2026 documentation</title>
+  <title>FAQ &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -27,6 +27,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Introduction to FreeCAD" href="introduction_to_freecad.html" />
     <link rel="prev" title="Supported ros versions and operating systems" href="../docker/supported_versions/supported_versions.html" /> 
 </head>
 
@@ -62,6 +63,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#how-to-use-nvidia-driver-in-docker">How to use nvidia driver in docker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sudo-unable-to-resolve-host-hostname-name-or-service-not-known">sudo: unable to resolve host &lt;hostname&gt;: Name or service not known</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#docker-and-ros-ros1-can-not-start-my-roscore">Docker and ROS (ROS1): Can not start my roscore.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#guides">Guides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="introduction_to_freecad.html">Introduction to FreeCAD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moving_parts_to_different_reference_system.html">Moving Parts (to different reference Systems)</a></li>
 </ul>
 </li>
 </ul>
@@ -114,6 +120,15 @@ The forwarding is done automatically by adding docker user to the X Server acces
 <p>If you try to start your roscore inside the docker container with <code class="docutils literal notranslate"><span class="pre">roscore</span></code>-command and get the following error message: <code class="docutils literal notranslate"><span class="pre">RLException:</span> <span class="pre">Unable</span> <span class="pre">to</span> <span class="pre">contact</span> <span class="pre">my</span> <span class="pre">own</span> <span class="pre">server</span> <span class="pre">at</span> <span class="pre">[http://&lt;hostname&gt;:&lt;port&gt;]</span></code>. You have to add <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span> <span class="pre">&lt;hostname&gt;</span></code> to the <code class="docutils literal notranslate"><span class="pre">/etc/hosts</span></code> file inside the container.</p>
 </section>
 </section>
+<section id="guides">
+<h2>Guides<a class="headerlink" href="#guides" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction_to_freecad.html">Introduction to FreeCAD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moving_parts_to_different_reference_system.html">Moving Parts (to different reference Systems)</a></li>
+</ul>
+</div>
+</section>
 </section>
 
 
@@ -121,6 +136,7 @@ The forwarding is done automatically by adding docker user to the X Server acces
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../docker/supported_versions/supported_versions.html" class="btn btn-neutral float-left" title="Supported ros versions and operating systems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="introduction_to_freecad.html" class="btn btn-neutral float-right" title="Introduction to FreeCAD" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
