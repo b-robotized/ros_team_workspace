@@ -1,0 +1,19 @@
+name: CI Tests
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [ master, main ]
+
+jobs:
+  docker_tests:
+    name: Run RTW Tests (Docker)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t rtw_test -f tests/Dockerfile.test .
+
+      - name: Run tests
+        run: docker run --rm rtw_test
