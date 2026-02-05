@@ -1,12 +1,28 @@
-#include <gtest/gtest.h>
-#include <pluginlib/class_loader.hpp>
-#include <kinematics_interface/kinematics_interface.hpp>
-#include <rclcpp/rclcpp.hpp>
-#include <Eigen/Geometry>
+// Copyright (c) 2026, b»robotized group
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-class DummyDeepTest : public ::testing::Test {
+#include <gtest/gtest.h>
+#include <Eigen/Geometry>
+#include <kinematics_interface/kinematics_interface.hpp>
+#include <pluginlib/class_loader.hpp>
+#include <rclcpp/rclcpp.hpp>
+
+class DummyDeepTest : public ::testing::Test
+{
 protected:
-  void SetUp() override {
+  void SetUp() override
+  {
     loader_ = std::make_unique<pluginlib::ClassLoader<kinematics_interface::KinematicsInterface>>(
       "kinematics_interface", "kinematics_interface::KinematicsInterface");
 
@@ -28,7 +44,8 @@ protected:
 };
 
 // --- 1. UNIT TEST: FORWARD KINEMATICS ---
-TEST_F(DummyDeepTest, TestForwardKinematicsConsistency) {
+TEST_F(DummyDeepTest, TestForwardKinematicsConsistency)
+{
   Eigen::VectorXd q = Eigen::VectorXd::Zero(num_joints_);
   Eigen::Isometry3d T1, T2;
 
@@ -41,9 +58,10 @@ TEST_F(DummyDeepTest, TestForwardKinematicsConsistency) {
 }
 
 // --- 2. UNIT TEST: JACOBIAN ACCURACY ---
-TEST_F(DummyDeepTest, TestJacobianRank) {
+TEST_F(DummyDeepTest, TestJacobianRank)
+{
   Eigen::VectorXd q(num_joints_);
-  q << 0.1, 0.2, 0.3, 0.4, 0.5, 0.6; // Non-singular position
+  q << 0.1, 0.2, 0.3, 0.4, 0.5, 0.6;  // Non-singular position
 
   Eigen::Matrix<double, 6, Eigen::Dynamic> J;
   J.resize(6, num_joints_);
@@ -56,8 +74,9 @@ TEST_F(DummyDeepTest, TestJacobianRank) {
 }
 
 // --- 3. UNIT TEST: SINGULARITY HANDLING (Damping Test) ---
-TEST_F(DummyDeepTest, TestSingularityDamping) {
-  Eigen::VectorXd q_singular = Eigen::VectorXd::Zero(num_joints_); // Usually singular
+TEST_F(DummyDeepTest, TestSingularityDamping)
+{
+  Eigen::VectorXd q_singular = Eigen::VectorXd::Zero(num_joints_);  // Usually singular
 
   Eigen::Matrix<double, Eigen::Dynamic, 6> J_inv;
   J_inv.resize(num_joints_, 6);
@@ -65,13 +84,15 @@ TEST_F(DummyDeepTest, TestSingularityDamping) {
   // This test ensures that even at a singularity, the inverse is NOT infinite.
   ASSERT_TRUE(instance_->calculate_jacobian_inverse(q_singular, "link_6", J_inv));
 
-  for(int i=0; i < J_inv.size(); ++i) {
+  for (int i = 0; i < J_inv.size(); ++i)
+  {
     EXPECT_TRUE(std::isfinite(J_inv.data()[i]));
   }
 }
 
 // --- 4. UNIT TEST: INVERSE KINEMATICS (The "Big One") ---
-TEST_F(DummyDeepTest, TestIKPositionSolution) {
+TEST_F(DummyDeepTest, TestIKPositionSolution)
+{
   Eigen::VectorXd q_expected(num_joints_);
   q_expected << 0.5, -0.4, 0.8, 0.0, 0.5, 0.1;
 
@@ -80,7 +101,10 @@ TEST_F(DummyDeepTest, TestIKPositionSolution) {
 
   // 1. Use a smaller offset
   Eigen::VectorXd q_current = q_expected;
-  for(int i=0; i<num_joints_; ++i) q_current[i] += 0.001;
+  for (int i = 0; i < num_joints_; ++i)
+  {
+    q_current[i] += 0.001;
+  }
 
   Eigen::Isometry3d current_pose;
   instance_->calculate_link_transform(q_current, "link_6", current_pose);
@@ -107,7 +131,8 @@ TEST_F(DummyDeepTest, TestIKPositionSolution) {
   EXPECT_LT(error_after, error_before);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char ** argv)
+{
   rclcpp::init(argc, argv);
   testing::InitGoogleTest(&argc, argv);
   int result = RUN_ALL_TESTS();

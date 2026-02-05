@@ -13,7 +13,6 @@
 // limitations under the License.
 //
 
-
 #include "kinematics_interface_ikfast/kinematics_interface_ikfast.hpp"
 
 #ifdef IKFAST_NO_MAIN
@@ -27,27 +26,28 @@
 #define IKFAST_HAS_LIBRARY
 
 // Include the ikfast file for the dummy robot
-#include "dummy_ikfast.cpp"
+#include "dummy_ikfast.cpp"  // NOLINT
 
 namespace dummy_ikfast
 {
 class DummyKinematics : public kinematics_interface_ikfast::KinematicsInterfaceIKFast
 {
 public:
-  int get_num_joints_internal() override {
-    return GetNumJoints();
-}
+  int get_num_joints_internal() override { return GetNumJoints(); }
 
-  void compute_fk(const double* j, double* etrans, double* erot) override {
+  void compute_fk(const double * j, double * etrans, double * erot) override
+  {
     ComputeFk(j, etrans, erot);
   }
 
-  void compute_ik(const double* etrans, const double* erot, const double* free, void* solutions) override {
-    auto* sol_list = static_cast<ikfast::IkSolutionListBase<double>*>(solutions);
+  void compute_ik(
+    const double * etrans, const double * erot, const double * free, void * solutions) override
+  {
+    auto * sol_list = static_cast<ikfast::IkSolutionListBase<double> *>(solutions);
     ComputeIk(etrans, erot, free, *sol_list);
   }
 };
-} // namespace dummy_ikfast
+}  // namespace dummy_ikfast
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(dummy_ikfast::DummyKinematics, kinematics_interface::KinematicsInterface)
