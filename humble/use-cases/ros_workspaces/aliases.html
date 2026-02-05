@@ -53,6 +53,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtwcli/index.html">RTW CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guidelines/index.html">Guidelines</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Use Cases</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../operating_system/create_setup_workspace.html">Setup a new Workspace</a></li>
@@ -66,6 +67,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#standard-rtw-aliases">Standard RTW Aliases</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#explanation-of-standard-aliases">Explanation of Standard Aliases</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#entering-workspace-folders">Entering Workspace Folders</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#installing-dependencies">Installing dependencies</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#building-packages-in-workspace">Building Packages in Workspace</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#executing-package-tests">Executing Package Tests</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#executing-multiple-commands">Executing Multiple Commands</a></li>
@@ -124,8 +126,10 @@ The aliases set for each workspace (see <a class="reference internal" href="../.
 <section id="entering-workspace-folders">
 <h4>Entering Workspace Folders<a class="headerlink" href="#entering-workspace-folders" title="Permalink to this heading"></a></h4>
 <dl class="simple">
-<dt>rosd</dt><dd><p>Enter the root directory of the ROS workspace.
-Alias for command: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">$ROS_WS</span></code></p>
+<dt>rosd [&lt;package_name&gt;]</dt><dd><p>Enter the root directory of the ROS workspace.
+Alias for command: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">$ROS_WS</span></code>
+If you add argument <code class="docutils literal notranslate"><span class="pre">&lt;package_name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">rosd</span></code> enters the source folder of that package.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
 <dt>rosds</dt><dd><p>Enter <code class="docutils literal notranslate"><span class="pre">src</span></code> directory of the ROS workspace.
 Alias for command: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">$ROS_WS/src</span></code></p>
@@ -138,20 +142,32 @@ Alias for command: <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 </section>
+<section id="installing-dependencies">
+<h4>Installing dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this heading"></a></h4>
+<dl class="simple" id="uc-aliases-dependencies">
+<dt>rosdep_prep</dt><dd><p>Updating the system and <code class="docutils literal notranslate"><span class="pre">rosdep</span></code> references before installing dependencies.</p>
+</dd>
+<dt>rosdepi</dt><dd><p>Installing dependencies for the packages in <code class="docutils literal notranslate"><span class="pre">$ROS_WS/src</span></code> folder.
+Makes the <code class="docutils literal notranslate"><span class="pre">rosdep</span></code> command shorter and simpler to use: <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">install</span> <span class="pre">-y</span> <span class="pre">-i</span> <span class="pre">--from-paths</span> <span class="pre">\$ROS_WS/src</span></code></p>
+</dd>
+</dl>
+</section>
 <section id="building-packages-in-workspace">
 <h4>Building Packages in Workspace<a class="headerlink" href="#building-packages-in-workspace" title="Permalink to this heading"></a></h4>
 <p>Every alias has optional package names. If none is provided the whole workspace is built.</p>
 <dl class="simple">
-<dt>cb [package1_name, package2_name]</dt><dd><p>Building named packages or the whole workspace.
-Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span> <span class="pre">--symlink-install</span> <span class="pre">--cmake-args</span> <span class="pre">-DCMAKE_BUILD_TYPE=RelWithDebInfo</span></code>.</p>
+<dt>cb [&lt;package1_name&gt;, &lt;package2_name&gt;]</dt><dd><p>Building named packages or the whole workspace.
+Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span> <span class="pre">--symlink-install</span> <span class="pre">--cmake-args</span> <span class="pre">-DCMAKE_BUILD_TYPE=RelWithDebInfo</span></code>.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
-<dt>cbup [package1_name, package2_name]</dt><dd><p>Building all packages up the named package (build all dependencies).
-Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span> <span class="pre">--symlink-install</span> <span class="pre">--cmake-args</span> <span class="pre">-DCMAKE_BUILD_TYPE=RelWithDebInfo</span> <span class="pre">--packages-up-to</span></code>.</p>
+<dt>cbup &lt;package1_name&gt;</dt><dd><p>Building all packages up to the named packages (build all dependencies).
+Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span> <span class="pre">--symlink-install</span> <span class="pre">--cmake-args</span> <span class="pre">-DCMAKE_BUILD_TYPE=RelWithDebInfo</span> <span class="pre">--packages-up-to</span></code>.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
-<dt>cbd [package1_name, package2_name]</dt><dd><p>Building named packages or the whole workspace as <em>Debug</em> build type.
+<dt>cbd [&lt;package1_name&gt;, &lt;package2_name&gt;]</dt><dd><p>Building named packages or the whole workspace as <em>Debug</em> build type.
 Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span> <span class="pre">--symlink-install</span> <span class="pre">--cmake-args</span> <span class="pre">-DCMAKE_BUILD_TYPE=Debug</span></code>.</p>
 </dd>
-<dt>cbr [package1_name, package2_name]</dt><dd><p>Building named packages or the whole workspace as <em>Release</em> build type.
+<dt>cbr [&lt;package1_name&gt;, &lt;package2_name&gt;]</dt><dd><p>Building named packages or the whole workspace as <em>Release</em> build type.
 Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span> <span class="pre">--symlink-install</span> <span class="pre">--cmake-args</span> <span class="pre">-DCMAKE_BUILD_TYPE=Release</span></code>.</p>
 </dd>
 </dl>
@@ -160,14 +176,16 @@ Alias for command: <code class="docutils literal notranslate"><span class="pre">
 <h4>Executing Package Tests<a class="headerlink" href="#executing-package-tests" title="Permalink to this heading"></a></h4>
 <p>Every alias has optional package names. If none is provided the whole workspace is built.</p>
 <dl class="simple">
-<dt>ct [package1_name, package2_name]</dt><dd><p>Testing named packages or the whole workspace.
-Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">test</span></code>.</p>
+<dt>ct [&lt;package1_name&gt;, &lt;package2_name&gt;]</dt><dd><p>Testing named packages or the whole workspace.
+Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">test</span></code>.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
-<dt>ctup [package_name]</dt><dd><p>Testing named packages up to the workspace (build all dependencies).
+<dt>ctup &lt;package_name&gt;</dt><dd><p>Testing named packages up to the named package (build all dependencies).
 Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">test</span> <span class="pre">--packages-up-to</span></code>.</p>
 </dd>
-<dt>ctres [package_name]</dt><dd><p>Get test results for the whole workspace or a package. If using package the output will be <code class="docutils literal notranslate"><span class="pre">grep</span></code>-processed to filter-out the package you are looking for.
-Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">test-result</span> <span class="pre">--all</span></code></p>
+<dt>ctres &lt;package_name&gt;</dt><dd><p>Get test results for the whole workspace or a package. If using package, the output will be <code class="docutils literal notranslate"><span class="pre">grep</span></code>-processed to filter-out the package you are looking for.
+Alias for command: <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">test-result</span> <span class="pre">--all</span></code>
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
 </dl>
 </section>
@@ -175,16 +193,19 @@ Alias for command: <code class="docutils literal notranslate"><span class="pre">
 <h4>Executing Multiple Commands<a class="headerlink" href="#executing-multiple-commands" title="Permalink to this heading"></a></h4>
 <p>Every alias has optional package names. If none is provided the whole workspace is built.</p>
 <dl class="simple">
-<dt>ca [package1_name, package2_name]</dt><dd><p>Build, test and show test results for the named packages or the whole workspace.</p>
+<dt>ca [&lt;package1_name&gt;, &lt;package2_name&gt;]</dt><dd><p>Build, test and show test results for the named packages or the whole workspace.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
-<dt>caup [package_name]</dt><dd><p>Build, test and show test results for the package and all its dependencies.</p>
+<dt>caup &lt;package_name&gt;</dt><dd><p>Build, test and show test results for the package and all its dependencies.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
 </dl>
 </section>
 <section id="cleaning-workspace">
 <h4>Cleaning Workspace<a class="headerlink" href="#cleaning-workspace" title="Permalink to this heading"></a></h4>
 <dl class="simple">
-<dt>crm [package1_name, package2_name]</dt><dd><p>Remove <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">log</span></code> and <code class="docutils literal notranslate"><span class="pre">install</span></code> folders for the workspace or corresponding sub-folders for specific packages.</p>
+<dt>crm [&lt;package1_name&gt;, &lt;package2_name&gt;]</dt><dd><p>Remove <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">log</span></code> and <code class="docutils literal notranslate"><span class="pre">install</span></code> folders for the workspace or corresponding sub-folders for specific packages.
+<em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
 </dl>
 </section>

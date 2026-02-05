@@ -53,11 +53,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtwcli/index.html">RTW CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guidelines/index.html">Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../use-cases/index.html">Use Cases</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Docker</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">General information on docker</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-of-docker">Installation of Docker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#useful-commands">Useful commands</a></li>
 </ul>
 </li>
@@ -97,8 +98,8 @@
   <section id="general-information-on-docker">
 <h1>General information on docker<a class="headerlink" href="#general-information-on-docker" title="Permalink to this heading"></a></h1>
 <p id="general-info-on-docker-index">Generally you can always have a look at the <a class="reference external" href="https://docs.docker.com/">docs of docker</a>.</p>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<section id="installation-of-docker">
+<h2>Installation of Docker<a class="headerlink" href="#installation-of-docker" title="Permalink to this heading"></a></h2>
 <p id="general-info-on-docker-installation">You have to install docker which is dependent on the operating system you are using.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.docker.com/desktop/windows/install/">Windows</a></p></li>
@@ -112,12 +113,12 @@
 <p>which should print out a “Hello from Docker!” message.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>However make sure your user is in the docker group. Check with: <code class="docutils literal notranslate"><span class="pre">groups</span></code> command. To add your user to the docker group run: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">usermod</span> <span class="pre">-aG</span> <span class="pre">docker</span> <span class="pre">&lt;username&gt;</span></code>.</p>
+<p>However make sure your user is in the docker group. Check with: <code class="docutils literal notranslate"><span class="pre">groups</span></code> command. To add your user to the docker group run: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">usermod</span> <span class="pre">-aG</span> <span class="pre">docker</span> <span class="pre">$(whoami)</span></code>.</p>
 </div>
 </section>
 <section id="useful-commands">
 <h2>Useful commands<a class="headerlink" href="#useful-commands" title="Permalink to this heading"></a></h2>
-<p>For complete list of commands have a look at <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/cli/">official docker cli reference</a>.</p>
+<p>For a complete list of commands have a look at <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/cli/">official docker cli reference</a>.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">container</span> <span class="pre">&lt;command&gt;</span></code>:</p>
 <blockquote>

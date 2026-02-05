@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1. Quick start with RosTeamWorkspace &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+  <title>2. Quick start with RTW &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -27,8 +27,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2. Setting up RosTeamWorkspace" href="setting_up_rtw.html" />
-    <link rel="prev" title="Tutorials" href="index.html" /> 
+    <link rel="next" title="3. Managing multiple workspaces" href="managing_multiple_workspaces.html" />
+    <link rel="prev" title="1. Setting up RosTeamWorkspace (RTW)" href="setting_up_rtw.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,19 +53,20 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Quick start with RosTeamWorkspace</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#clone-and-source-the-rosteamworkspace">1.1. Clone and source the RosTeamWorkspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-new-package-in-an-existing-workspace">1.2. Create new package in an existing workspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-robot-description-package">1.3. Create robot description package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-robot-bringup-package">1.4. Create robot bringup package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setup-ros2-control-control-hardware">1.5. Setup  ros2_control control hardware</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setup-ros2-control-controller">1.6. Setup  ros2_control controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setting_up_rtw.html">1. Setting up RosTeamWorkspace (RTW)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Quick start with RTW</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-new-workspace-rtw">2.1. Creating a new workspace (RTW)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-new-package-in-an-existing-workspace">2.2. Create new package in an existing workspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-robot-description-package">2.3. Create robot description package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-robot-bringup-package">2.4. Create robot bringup package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-ros2-control-control-hardware">2.5. Setup  ros2_control control hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-ros2-control-controller">2.6. Setup  ros2_control controller</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="setting_up_rtw.html">2. Setting up RosTeamWorkspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="managing_multiple_workspaces.html">3. Managing multiple workspaces</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
@@ -87,7 +88,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">1. </span>Quick start with RosTeamWorkspace</li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Quick start with RTW</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/b-robotized/ros_team_workspace/blob/humble//docs/tutorials/quick-start.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -97,23 +98,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="quick-start-with-rosteamworkspace">
-<h1><span class="section-number">1. </span>Quick start with RosTeamWorkspace<a class="headerlink" href="#quick-start-with-rosteamworkspace" title="Permalink to this heading"></a></h1>
-<p id="tutorial-quick-start">This tutorial show use of RosTeamWorkspace for very common use-cases that can be done without permanent changes to your environment.
-First you have to clone and source the workspace and then continue with the use-case you are interested in:</p>
+  <section id="quick-start-with-rtw">
+<h1><span class="section-number">2. </span>Quick start with RTW<a class="headerlink" href="#quick-start-with-rtw" title="Permalink to this heading"></a></h1>
+<p id="tutorial-quick-start">This tutorial shows the use of RosTeamWorkspace (RTW) for very common use-cases that can
+be done without permanent changes to your environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This tutorial assumes that RTW is already set up and sourced.
+If that is not the case, please follow the <a class="reference internal" href="setting_up_rtw.html"><span class="doc">Setting up RosTeamWorkspace (RTW)</span></a> tutorial first.</p>
+</div>
 <div class="toctree-wrapper compound">
 </div>
-<section id="clone-and-source-the-rosteamworkspace">
-<h2><span class="section-number">1.1. </span>Clone and source the RosTeamWorkspace<a class="headerlink" href="#clone-and-source-the-rosteamworkspace" title="Permalink to this heading"></a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StoglRobotics/ros_team_workspace.git
-<span class="nb">source</span><span class="w"> </span>ros_team_workspace/setup.bash
-setup-auto-sourcing<span class="w">  </span><span class="c1"># Make RosTeamWorkspace automatically sourced when open a new terminal (The best experience)</span>
+<section id="creating-a-new-workspace-rtw">
+<h2><span class="section-number">2.1. </span>Creating a new workspace (RTW)<a class="headerlink" href="#creating-a-new-workspace-rtw" title="Permalink to this heading"></a></h2>
+<p>For more details on options and flags check <a class="reference internal" href="../rtwcli/index.html#rtwcli-setup-workspace"><span class="std std-ref">use-case description</span></a>.</p>
+<p>Local, empty workspace:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
 </pre></div>
+</div>
+<p>Docker, empty workspace:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--docker<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
+</pre></div>
+</div>
+<p>Local workspace from <code class="docutils literal notranslate"><span class="pre">.repos</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--repos-containing-repository-url<span class="w"> </span>&lt;my_git_url&gt;<span class="w"> </span>--repos-branch<span class="w"> </span>&lt;my_git_branch_with_repos&gt;<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
+</pre></div>
+</div>
+<p>Docker workspace from <code class="docutils literal notranslate"><span class="pre">.repos</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span>--docker<span class="w"> </span>--repos-containing-repository-url<span class="w"> </span>&lt;my_git_url&gt;<span class="w"> </span>--repos-branch<span class="w"> </span>&lt;my_git_branch_with_repos&gt;<span class="w"> </span>--ws-folder<span class="w"> </span>my_workspace
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files, <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">install</span></code> may fail if the package
+references in your repositories are outdated or if the rosdep database
+is not up-to-date. Ensure your <code class="docutils literal notranslate"><span class="pre">.repos</span></code> files point to the correct branches
+for your ROS distro and that packages have valid <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> files with
+correct dependencies.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more advanced options such as proxy configuration, standalone workspaces,
+IPC communication setup, and other features, check the <a class="reference internal" href="../rtwcli/index.html"><span class="doc">RTW CLI</span></a> page.</p>
 </div>
 </section>
 <section id="create-new-package-in-an-existing-workspace">
-<h2><span class="section-number">1.2. </span>Create new package in an existing workspace<a class="headerlink" href="#create-new-package-in-an-existing-workspace" title="Permalink to this heading"></a></h2>
-<p>For more details check <a class="reference internal" href="../use-cases/ros_packages/create_package.html#uc-new-package"><span class="std std-ref">use-case description</span></a>.</p>
+<h2><span class="section-number">2.2. </span>Create new package in an existing workspace<a class="headerlink" href="#create-new-package-in-an-existing-workspace" title="Permalink to this heading"></a></h2>
+<p>For more details, check <a class="reference internal" href="../use-cases/ros_packages/create_package.html#uc-new-package"><span class="std std-ref">use-case description</span></a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>&lt;path<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/install/setup.bash
 <span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;
 
@@ -124,42 +155,65 @@ create-new-package<span class="w"> </span>&lt;my_new_package_name&gt;<span class
 </div>
 </section>
 <section id="create-robot-description-package">
-<h2><span class="section-number">1.3. </span>Create robot description package<a class="headerlink" href="#create-robot-description-package" title="Permalink to this heading"></a></h2>
-<p>For more details check <a class="reference internal" href="../use-cases/ros_packages/setup_robot_description_package.html#uc-setup-robot-description"><span class="std std-ref">use-case description</span></a>.</p>
+<h2><span class="section-number">2.3. </span>Create robot description package<a class="headerlink" href="#create-robot-description-package" title="Permalink to this heading"></a></h2>
+<p>For more details, check
+<a class="reference internal" href="../use-cases/ros_packages/setup_robot_description_package.html#uc-setup-robot-description"><span class="std std-ref">use-case description</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You must have a &lt;my_cool_robot_description_package_name&gt; package of
+build type <strong>ament_cmake</strong> to hold the robot description.</p>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>&lt;path<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/install/setup.bash
-<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;package_name&gt;
+<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;my_cool_robot_description_package_name&gt;
 
 setup-robot-description<span class="w"> </span>&lt;my_cool_robot_name&gt;
 </pre></div>
 </div>
 </section>
 <section id="create-robot-bringup-package">
-<h2><span class="section-number">1.4. </span>Create robot bringup package<a class="headerlink" href="#create-robot-bringup-package" title="Permalink to this heading"></a></h2>
-<p>For more details check <a class="reference internal" href="../use-cases/ros_packages/setup_robot_bringup_package.html#uc-setup-robot-bringup"><span class="std std-ref">use-case description</span></a>.</p>
+<h2><span class="section-number">2.4. </span>Create robot bringup package<a class="headerlink" href="#create-robot-bringup-package" title="Permalink to this heading"></a></h2>
+<p>For more details, check <a class="reference internal" href="../use-cases/ros_packages/setup_robot_bringup_package.html#uc-setup-robot-bringup"><span class="std std-ref">use-case description</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You must have a &lt;my_cool_robot_bringup_package_name&gt; package of
+build type <strong>ament_cmake</strong> to hold the robot bringup.</p>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>&lt;path<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/install/setup.bash
-<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;package_name&gt;
+<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;my_cool_robot_bringup_package_name&gt;
 
 setup-robot-bringup<span class="w"> </span>&lt;my_cool_robot_name&gt;<span class="w"> </span>&lt;my_cool_robot_description_package_name&gt;
 </pre></div>
 </div>
 </section>
 <section id="setup-ros2-control-control-hardware">
-<h2><span class="section-number">1.5. </span>Setup  ros2_control control hardware<a class="headerlink" href="#setup-ros2-control-control-hardware" title="Permalink to this heading"></a></h2>
-<p>For more details check <a class="reference internal" href="../use-cases/ros2_control/setup_robot_hardware_interface.html#uc-setup-ros2-control-hardware"><span class="std std-ref">use-case description</span></a>.</p>
+<h2><span class="section-number">2.5. </span>Setup  ros2_control control hardware<a class="headerlink" href="#setup-ros2-control-control-hardware" title="Permalink to this heading"></a></h2>
+<p>For more details, check
+<a class="reference internal" href="../use-cases/ros2_control/setup_robot_hardware_interface.html#uc-setup-ros2-control-hardware"><span class="std std-ref">use-case description</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You must have a &lt;my_cool_robot_control_package_name&gt; package of
+build type <strong>ament_cmake</strong> to hold the robot’s ros2_control
+hardware interface.</p>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>&lt;path<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/install/setup.bash
-<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;package_name&gt;
+<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;my_cool_robot_control_package_name&gt;
 
-ros2_control_setup-hardware-interface-package<span class="w"> </span>&lt;control_hardware_file_name&gt;
+ros2_control_setup-hardware-interface-package<span class="w"> </span>&lt;my_cool_robot_hardware&gt;<span class="w"> </span><span class="o">[</span>&lt;MyCoolRobotHW&gt;<span class="o">]</span>
 </pre></div>
 </div>
 </section>
 <section id="setup-ros2-control-controller">
-<h2><span class="section-number">1.6. </span>Setup  ros2_control controller<a class="headerlink" href="#setup-ros2-control-controller" title="Permalink to this heading"></a></h2>
-<p>For more details check <a class="reference internal" href="../use-cases/ros2_control/setup_controller.html#uc-setup-ros2-controller"><span class="std std-ref">use-case description</span></a>.</p>
+<h2><span class="section-number">2.6. </span>Setup  ros2_control controller<a class="headerlink" href="#setup-ros2-control-controller" title="Permalink to this heading"></a></h2>
+<p>For more details, check <a class="reference internal" href="../use-cases/ros2_control/setup_controller.html#uc-setup-ros2-controller"><span class="std std-ref">use-case description</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You must have a &lt;my_cool_robot_controller_package_name&gt; package of
+build type <strong>ament_cmake</strong> to hold the robot’s ros2_control controller.</p>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>&lt;path<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/install/setup.bash
-<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;package_name&gt;
+<span class="nb">cd</span><span class="w"> </span>&lt;src<span class="w"> </span>folder<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>ROS<span class="w"> </span>workspace&gt;/&lt;my_cool_robot_controller_package_name&gt;
 
-ros2_control_setup-controller-package<span class="w"> </span>&lt;controller_file_name&gt;
+ros2_control_setup-controller-package<span class="w"> </span>&lt;my_controller_file_name&gt;
 </pre></div>
 </div>
 </section>
@@ -169,8 +223,8 @@ ros2_control_setup-controller-package<span class="w"> </span>&lt;controller_file
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="setting_up_rtw.html" class="btn btn-neutral float-right" title="2. Setting up RosTeamWorkspace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="setting_up_rtw.html" class="btn btn-neutral float-left" title="1. Setting up RosTeamWorkspace (RTW)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="managing_multiple_workspaces.html" class="btn btn-neutral float-right" title="3. Managing multiple workspaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

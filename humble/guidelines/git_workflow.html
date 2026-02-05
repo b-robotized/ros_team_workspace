@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working as a team with Git &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/guidelines/git_workflow.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ROS-Robot Package structure" href="robot_package_structure.html" />
+    <link rel="prev" title="Development Guidelines" href="development.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/humble.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guidelines</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="development.html">Development Guidelines</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working as a team with Git</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-main-branch">The main branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-branch-naming-convention">Git branch naming convention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merge-pull-requests">Merge/pull requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#releases-and-versioning">Releases and versioning</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="robot_package_structure.html">ROS-Robot Package structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker/index.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Humble</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Guidelines</a></li>
+      <li class="breadcrumb-item active">Working as a team with Git</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/humble//docs/guidelines/git_workflow.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="working-as-a-team-with-git">
+<h1>Working as a team with Git<a class="headerlink" href="#working-as-a-team-with-git" title="Permalink to this heading"></a></h1>
+<p>We all have different experiences and habits working on GIT.
+Which are very valid and not to be diminished.
+When working together as a group, we should strive towards unifying them and have a common agreement on how we work together.</p>
+<p>This is the exact purpose of this document - to set a standard on how development should happen using Git.
+At least for our workgroup.</p>
+<section id="the-main-branch">
+<h2>The main branch<a class="headerlink" href="#the-main-branch" title="Permalink to this heading"></a></h2>
+<p>Let’s start with the basic setup that every repository should have: a protected <code class="docutils literal notranslate"><span class="pre">main</span></code>/<code class="docutils literal notranslate"><span class="pre">master</span></code> branch.
+Protecting a branch means that at no point is anyone allowed to push to it directly.
+Every modification of the code should happen through pull/merge requests (see guidelines below - Merge/pull requests).</p>
+<p>When starting work on a new feature, bugfix, documentation improvement or anything else, follow the …</p>
+</section>
+<section id="git-branch-naming-convention">
+<h2>Git branch naming convention<a class="headerlink" href="#git-branch-naming-convention" title="Permalink to this heading"></a></h2>
+<div class="line-block">
+<div class="line">As the saying goes:</div>
+<div class="line"><em>“A large number of branches with seemingly no purpose on a single repository is a strong sign of upcoming chaos.”</em></div>
+<div class="line">- Timo</div>
+</div>
+<p>Joking aside, branching a repository should happen for a reason.
+And the branch should also exist for a reason.
+Despite these two statements being seemingly obvious, experience shows that they are often overlooked.
+This can then result in a large number of branches that are unmaintained, forgotten and nobody knows why they exist in the first place.</p>
+<p>Therefore, we state that there are two distinctive reasons for a branch to exist: it is actively being worked on or contains code that is useful in a certain scenario.
+If the scenario becomes irrelevant, so does the code and the branch that hosts it and should therefore be deleted/archived.</p>
+<p>In light of this, we set forth the following guideline.
+When creating a branch on a repository, have a clear understanding what are you doing it for.
+After this, select a prefix from the list below and finally give it a clear name:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feature/</span></code> or <code class="docutils literal notranslate"><span class="pre">feat/</span></code> - When creating a new feature or improving the code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bugfix/</span></code> or <code class="docutils literal notranslate"><span class="pre">fix/</span></code> - When fixing a known bug.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hotfix/</span></code> - Those little things you spotted that you wanted to fix (typo in the documentation, missing image, wrong comment, delete commented out line, etc.).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doc/</span></code> - When your task is to extend the documentation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">release/</span></code> - Use this for adding changes to the CHANGELOG.md before a new release.</p></li>
+</ul>
+<p>The name should also be rather descriptive but at the same time not too long. Use dashes <code class="docutils literal notranslate"><span class="pre">-</span></code> to separate words.</p>
+</section>
+<section id="merge-pull-requests">
+<h2>Merge/pull requests<a class="headerlink" href="#merge-pull-requests" title="Permalink to this heading"></a></h2>
+<p>As discussed above, we will add improvements to our code through pull requests.
+These allows the author of the code to present their work to others and request their review.</p>
+<p>It is very important that the author of the pull request provide sufficient information to the reviewers!
+Therefore, each merge request should contain the following elements:</p>
+<ul class="simple">
+<li><p>A brief description what it does and what changes does it introduce</p></li>
+<li><p>Instructions how to test the code and the expected results</p></li>
+<li><p>Any additional information that will help the reviewer</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Commenting-out sections of code</strong></p>
+<p>As a general rule of thumb, if a portion of code is not needed, it should simply not be there.
+When developing locally, we often test things by commenting-out sections of code.
+While this is perfectly fine for when we develop, such commented-out section should not make it into the PR.
+Code is either needed or it is not.</p>
+<p>However, there are of course exceptions to this rule.
+If you think that a commented-out section of code should be left there for whatever reason - note it!
+Simple add a comment at the beginning of this explaining why is this code commented-out and why is it staying: <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">The</span> <span class="pre">code</span> <span class="pre">blow</span> <span class="pre">is</span> <span class="pre">commented-out</span> <span class="pre">but</span> <span class="pre">we</span> <span class="pre">decided</span> <span class="pre">to</span> <span class="pre">keep</span> <span class="pre">it</span> <span class="pre">because</span> <span class="pre">...</span></code></p>
+<p>This will significantly ease the work of the reviewer when they see such sections.</p>
+</div>
+</section>
+<section id="releases-and-versioning">
+<h2>Releases and versioning<a class="headerlink" href="#releases-and-versioning" title="Permalink to this heading"></a></h2>
+<p>At one point you will likely find yourself in a situation that you want to label the state of the code with a version.
+This is typically done when development milestone is reached.
+When using Git, this is done through tags.
+One can name a tag whatever they want.
+However, we recommend using <a class="reference external" href="https://semver.org/">Semantic Versioning (SemVer)</a> for naming tags.
+In short, this will make your tags (labels) look like this: <code class="docutils literal notranslate"><span class="pre">MAJOR.MINOR.PATCH</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">1.2.3</span></code>).
+If you prefer, you can add the <code class="docutils literal notranslate"><span class="pre">v</span></code> prefix: <code class="docutils literal notranslate"><span class="pre">v1.2.3</span></code>.</p>
+<p>One benefit of using tags (or versions) is dependency handling.
+Some other components of your project might depend on a specific version of your code.
+Using tags allows you to easily point to a specific state of the code.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="development.html" class="btn btn-neutral float-left" title="Development Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="robot_package_structure.html" class="btn btn-neutral float-right" title="ROS-Robot Package structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: humble
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
+      <dd><a href="../../master/guidelines/git_workflow.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="git_workflow.html">Humble (recommended)</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

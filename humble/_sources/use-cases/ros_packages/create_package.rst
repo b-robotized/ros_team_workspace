@@ -3,14 +3,15 @@ Create New Package
 =====================
 .. _uc-new-package:
 
-This use-case describes how to create a new package using scripts from the ROS Team Workspace (RosTeamWS) framework.
+This use-case describes how to create a new package using scripts from the ROS Team Workspace (RTW) framework.
 
 
 General Script for Creating Packages
 =====================================
 
 ``create-new-package`` script is used, accepting the package name and description as parameters.
-The script **has to be executed** from the *source* folder of your workspace.
+
+  .. warning:: The script **has to be executed** from the *source* folder of your workspace.
 
 .. code-block:: bash
    :caption: Usage of script for setting up new packages.

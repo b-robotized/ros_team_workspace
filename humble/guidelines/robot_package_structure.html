@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Use Cases" href="../use-cases/index.html" />
-    <link rel="prev" title="Development Guidelines" href="development.html" /> 
+    <link rel="prev" title="Working as a team with Git" href="git_workflow.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,8 +53,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Guidelines</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="development.html">Development Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_workflow.html">Working as a team with Git</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">ROS-Robot Package structure</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#package-structure-for-robot-support-in-ros">Package structure for Robot support in ROS</a></li>
 </ul>
@@ -93,11 +95,11 @@
              
   <section id="ros-robot-package-structure">
 <h1>ROS-Robot Package structure<a class="headerlink" href="#ros-robot-package-structure" title="Permalink to this heading"></a></h1>
-<p>This documents proposes guidelines for structure of ROS packages in larger detail than provided by <a class="reference external" href="https://github.com/ros-infrastructure/rep">ROS Enhancement Proposals (REPs)</a></p>
-<p><strong>NOTE</strong>: All the proposal here are the resuls of authors’ personal experiences. Saying that, if you don’t like some of it, you are free to change what you want and need (and hopefully propose it as PR).</p>
+<p>This document proposes guidelines for the structure of ROS packages in larger details than provided by <a class="reference external" href="https://github.com/ros-infrastructure/rep">ROS Enhancement Proposals (REPs)</a></p>
+<p><strong>NOTE</strong>: All the proposal here are the results of authors’ personal experiences. Saying that, if you don’t like some of it, you are free to change what you want and need (and hopefully propose it as PR).</p>
 <section id="package-structure-for-robot-support-in-ros">
 <h2>Package structure for Robot support in ROS<a class="headerlink" href="#package-structure-for-robot-support-in-ros" title="Permalink to this heading"></a></h2>
-<p>Here proposed architecture try to split the robot’s files to minimize per-package dependencies.</p>
+<p>The here down proposed architecture tries to split the robot’s files to minimize per-package dependencies.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;manufacturer&gt;_&lt;robot_name&gt;[_&lt;type&gt;]/                     # Repository
 ├── &lt;manufacturer&gt;[_&lt;robot_name&gt;[_&lt;type&gt;]|_manipulators]/       # Meta-package of the robot
 │   ├── CMakeLists.txt
@@ -105,8 +107,8 @@
 ├── &lt;robot_name&gt;_bringup/                              # Launch and config files for starting the robot using ros2_control
 │   ├── [CMakeLists.txt]                               # if ament_cmake is used (recommended)
 │   ├── package.xml
-│   ├── [setup.py]                                     # if amend_python is used
-│   ├── [setup.cfg]                                    # if amend_python is used
+│   ├── [setup.py]                                     # if ament_python is used
+│   ├── [setup.cfg]                                    # if ament_python is used
 │   ├── config/
 │   │   ├── &lt;robot_name&gt;_controllers.yaml              # Controllers&#39; configuration for ros2_control
 │   │   ├── &lt;robot_name&gt;_forward_position_publisher.yaml  # Setup test publisher for forward position controller
@@ -118,8 +120,8 @@
 ├── &lt;manufacturer|robot_name&gt;_description/             # Robot&#39;s description files
 │   ├── [CMakeLists.txt]                               # if ament_cmake is used (recommended)
 │   ├── package.xml
-│   ├── [setup.py]                                     # if amend_python is used
-│   ├── [setup.cfg]                                    # if amend_python is used
+│   ├── [setup.py]                                     # if ament_python is used
+│   ├── [setup.cfg]                                    # if ament_python is used
 │   ├── config/                                        # general YAML files for a robot
 │   │   └── &lt;robot_name&gt;_&lt;someting_specific&gt;.yaml
 │   ├── launch/                                        # launch files related to testing robots&#39; description
@@ -166,7 +168,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="development.html" class="btn btn-neutral float-left" title="Development Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="git_workflow.html" class="btn btn-neutral float-left" title="Working as a team with Git" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../use-cases/index.html" class="btn btn-neutral float-right" title="Use Cases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
