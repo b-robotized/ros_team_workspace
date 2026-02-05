@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Robot MoveIt Package &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/use-cases/ros_packages/setup_robot_moveit_package.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ros2_control: Setup controller package" href="../ros2_control/setup_controller.html" />
+    <link rel="prev" title="Setup robot description" href="setup_robot_description_package.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/humble.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Use Cases</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../operating_system/create_setup_workspace.html">Setup a new Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure_repository.html">Configure Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html">Create New Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup_ikfast_plugin.html">Setup IKFast Kinematics Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup_robot_bringup_package.html">Setup robot bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup_robot_description_package.html">Setup robot description</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setup Robot MoveIt Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#arguments">Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-steps">Interactive Steps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generated-files-and-structure">Generated Files and Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updates-to-existing-files">Updates to Existing Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-generation-steps">Post-Generation Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ros2_control/setup_controller.html">ros2_control: Setup controller package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ros2_control/setup_robot_hardware_interface.html">ros2_control: Setup robot’s hardware package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ros_workspaces/aliases.html">RTW Aliases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../docker/index.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS Team Workspace Documentation: Humble</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Use Cases</a></li>
+      <li class="breadcrumb-item active">Setup Robot MoveIt Package</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/use-cases/ros_packages/setup_robot_moveit_package.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setup-robot-moveit-package">
+<span id="uc-setup-moveit-package"></span><h1>Setup Robot MoveIt Package<a class="headerlink" href="#setup-robot-moveit-package" title="Permalink to this heading"></a></h1>
+<p>This script facilitates the setup of a ROS 2 package for robot motion planning using MoveIt 2.
+It generates the necessary configuration files, launch files, and directory structure to use MoveIt with your robot.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>An existing ROS 2 package (create one using <code class="docutils literal notranslate"><span class="pre">create-new-package</span></code> if needed).</p></li>
+<li><p>A robot description package (created with <code class="docutils literal notranslate"><span class="pre">setup-robot-description</span></code>).</p></li>
+<li><p>A robot control/bringup package (created with <code class="docutils literal notranslate"><span class="pre">setup-robot-bringup</span></code>).</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<p>Execute the script from the root of your target package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setup-robot-moveit<span class="w"> </span>CELL_NAME<span class="w"> </span>CONTROL_PKG_NAME<span class="w"> </span>CONTROL_LAUNCH_FILE<span class="w"> </span>DESCRIPTION_PKG_NAME
+</pre></div>
+</div>
+<section id="arguments">
+<h3>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CELL_NAME</span></code>: The name of the robot, cell, or scenario (e.g., <code class="docutils literal notranslate"><span class="pre">myrobot</span></code>). This is used for naming files and parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONTROL_PKG_NAME</span></code>: The name of the package containing the robot’s control launch files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONTROL_LAUNCH_FILE</span></code>: The name of the launch file (without extension) in the control package that brings up the robot hardware/simulation (e.g., <code class="docutils literal notranslate"><span class="pre">start_offline</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DESCRIPTION_PKG_NAME</span></code>: The name of the package containing the robot description (URDF/XACRO).</p></li>
+</ul>
+</section>
+</section>
+<section id="interactive-steps">
+<h2>Interactive Steps<a class="headerlink" href="#interactive-steps" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Launch File Type Selection</strong>: Choose whether to generate XML, Python, or both types of launch files.</p></li>
+<li><p><strong>Confirmation</strong>: Review the configuration summary and press Enter to proceed.</p></li>
+<li><p><strong>SRDF Generation</strong>: Choose whether to generate a template SRDF file in this package. If “no” (default), it assumes the SRDF is provided by the description package.</p></li>
+</ol>
+</section>
+<section id="generated-files-and-structure">
+<h2>Generated Files and Structure<a class="headerlink" href="#generated-files-and-structure" title="Permalink to this heading"></a></h2>
+<p>The script creates the following structure in your package:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$PKG_NAME$/
+├── config/
+│   └── moveit/
+│       ├── move_group_config.yaml         # Move group node configuration
+│       ├── moveit_controllers.yaml        # Controller manager configuration
+│       ├── joint_limits.yaml              # Joint limits overriding URDF
+│       ├── kinematics.yaml                # Kinematics solver configuration
+│       ├── sensors_3d.yaml                # Perception configuration
+│       └── &lt;planner&gt;_planning.yaml        # Planner configurations (OMPL, Pilz, CHOMP, STOMP)
+├── launch/
+│   └── moveit.launch.xml                  # Main MoveIt launch file
+├── srdf/                                  # (Optional, if selected)
+│   ├── $CELL_NAME$_macro.srdf.xacro       # Semantic robot description macro
+│   └── $CELL_NAME$.srdf.xacro             # Semantic robot description
+└── rviz/
+    ├── moveit.rviz                        # RViZ config with MotionPlanning widget
+    └── moveit_config.rviz                 # RViZ config for MoveIt Setup Assistant
+</pre></div>
+</div>
+</section>
+<section id="updates-to-existing-files">
+<h2>Updates to Existing Files<a class="headerlink" href="#updates-to-existing-files" title="Permalink to this heading"></a></h2>
+<p>The script automatically updates:</p>
+<ul class="simple">
+<li><p><strong>package.xml</strong>: Adds dependencies on <code class="docutils literal notranslate"><span class="pre">moveit_ros_move_group</span></code>, <code class="docutils literal notranslate"><span class="pre">moveit_kinematics</span></code>, <code class="docutils literal notranslate"><span class="pre">moveit_planners</span></code>, and <code class="docutils literal notranslate"><span class="pre">moveit_simple_controller_manager</span></code>.</p></li>
+<li><p><strong>CMakeLists.txt</strong>: Adds install rules for the new directories (<code class="docutils literal notranslate"><span class="pre">config</span></code>, <code class="docutils literal notranslate"><span class="pre">launch</span></code>, <code class="docutils literal notranslate"><span class="pre">rviz</span></code>, and optionally <code class="docutils literal notranslate"><span class="pre">srdf</span></code>).</p></li>
+<li><p><strong>README.md</strong>: Appends instructions on how to use the generated MoveIt configuration.</p></li>
+</ul>
+</section>
+<section id="post-generation-steps">
+<h2>Post-Generation Steps<a class="headerlink" href="#post-generation-steps" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Configure SRDF</strong>: If you generated the SRDF templates, edit <code class="docutils literal notranslate"><span class="pre">srdf/$CELL_NAME$.srdf.xacro</span></code> to define your robot’s groups, end-effectors, and virtual joints.</p></li>
+<li><p><strong>Configure Controllers</strong>: Verify <code class="docutils literal notranslate"><span class="pre">config/moveit/moveit_controllers.yaml</span></code> matches your robot’s controller configuration.</p></li>
+<li><p><strong>Configure Joint Limits</strong>: Adjust <code class="docutils literal notranslate"><span class="pre">config/moveit/joint_limits.yaml</span></code> if needed.</p></li>
+<li><p><strong>Build</strong>:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>cb &lt;your_package_name&gt;</p>
+</div></blockquote>
+</li>
+<li><p><strong>Run</strong>:
+First, launch the robot bringup (simulation or real hardware):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>&lt;control_pkg&gt;<span class="w"> </span>&lt;control_launch_file&gt;.launch.xml
+</pre></div>
+</div>
+<p>Then, launch MoveIt:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>&lt;your_package_name&gt;<span class="w"> </span>moveit.launch.xml
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="setup_robot_description_package.html" class="btn btn-neutral float-left" title="Setup robot description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ros2_control/setup_controller.html" class="btn btn-neutral float-right" title="ros2_control: Setup controller package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
+      <dd><a href="setup_robot_moveit_package.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../../humble/index.html">Humble (recommended)</a></dd>
+        <dd><a href="../../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
