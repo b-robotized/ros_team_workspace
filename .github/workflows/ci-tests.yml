@@ -24,4 +24,6 @@ jobs:
           apt-get install -y git nano pigz pv wget
 
       - name: Run tests
-        run: ./tests/run_tests.bash
+        run: |
+          chmod +x tests/run_tests.bash
+          ./tests/run_tests.bash
