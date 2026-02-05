@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup IKFast Kinematics Plugin &mdash; ROS Team Workspace Documentation: Humble Feb 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/humble//humble/use-cases/ros_packages/setup_ikfast_plugin.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Setup robot bringup" href="setup_robot_bringup_package.html" />
+    <link rel="prev" title="Create New Package" href="create_package.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/humble.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Use Cases</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../operating_system/create_setup_workspace.html">Setup a new Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure_repository.html">Configure Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html">Create New Package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setup IKFast Kinematics Plugin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#arguments">Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-steps">Interactive Steps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generated-files">Generated Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updates-to-existing-files">Updates to Existing Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-generation-steps">Post-Generation Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setup_robot_bringup_package.html">Setup robot bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup_robot_description_package.html">Setup robot description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ros2_control/setup_controller.html">ros2_control: Setup controller package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ros2_control/setup_robot_hardware_interface.html">ros2_control: Setup robot’s hardware package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ros_workspaces/aliases.html">RTW Aliases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../docker/index.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ROS Team Workspace Documentation: Humble</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Use Cases</a></li>
+      <li class="breadcrumb-item active">Setup IKFast Kinematics Plugin</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/use-cases/ros_packages/setup_ikfast_plugin.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setup-ikfast-kinematics-plugin">
+<span id="uc-setup-ikfast-plugin"></span><h1>Setup IKFast Kinematics Plugin<a class="headerlink" href="#setup-ikfast-kinematics-plugin" title="Permalink to this heading"></a></h1>
+<p>This script facilitates the creation of a ROS 2 kinematics plugin wrapper around an IKFast solver generated by OpenRAVE.
+It generates the necessary C++ wrapper code, plugin configuration, and updates the build system to compile the plugin.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script does <strong>not</strong> generate the IKFast solver C++ file itself. You must generate it using OpenRAVE (e.g., using a docker image like <code class="docutils literal notranslate"><span class="pre">openrave-ikfast</span></code>) and place the resulting <code class="docutils literal notranslate"><span class="pre">&lt;robot_name&gt;_ikfast.cpp</span></code> file in the <code class="docutils literal notranslate"><span class="pre">src</span></code> folder of your package.</p>
+</div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>An existing ROS 2 package (create one using <code class="docutils literal notranslate"><span class="pre">create-new-package.bash</span></code> if needed).</p></li>
+<li><p>The IKFast solver file generated by OpenRAVE (usually named <code class="docutils literal notranslate"><span class="pre">&lt;robot_name&gt;_ikfast.cpp</span></code>).</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<p>Execute the script from the root of your target package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setup-ikfast-plugin.bash<span class="w"> </span>ROBOT_NAME<span class="w"> </span><span class="o">[</span>CLASS_NAME<span class="o">]</span>
+</pre></div>
+</div>
+<section id="arguments">
+<h3>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ROBOT_NAME</span></code>: The name of the robot. This should match the prefix of your IKFast solver file (e.g., if file is <code class="docutils literal notranslate"><span class="pre">myrobot_ikfast.cpp</span></code>, use <code class="docutils literal notranslate"><span class="pre">myrobot</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CLASS_NAME</span></code> (Optional): The C++ class name for the plugin. If omitted, it is auto-generated from the robot name (e.g., <code class="docutils literal notranslate"><span class="pre">myrobot</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">MyrobotKinematics</span></code>).</p></li>
+</ul>
+</section>
+</section>
+<section id="interactive-steps">
+<h2>Interactive Steps<a class="headerlink" href="#interactive-steps" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>License Selection</strong>: Choose a license header for the generated files.</p></li>
+<li><p><strong>Configuration Check</strong>: Confirm if <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> and <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> are already configured for an IKFast plugin. If “no” (default), the script will automatically add dependencies and build rules.</p></li>
+<li><p><strong>Confirmation</strong>: Review the proposed names and paths before proceeding.</p></li>
+</ol>
+</section>
+<section id="generated-files">
+<h2>Generated Files<a class="headerlink" href="#generated-files" title="Permalink to this heading"></a></h2>
+<p>The script creates the following files in your package:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">src/&lt;robot_name&gt;_ikfast_plugin.cpp</span></code>: The ROS 2 plugin wrapper implementation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;robot_name&gt;_ikfast.xml</span></code>: Plugin description file for <code class="docutils literal notranslate"><span class="pre">pluginlib</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test/test_&lt;robot_name&gt;_ikfast_plugin.cpp</span></code>: A GoogleTest file to verify the plugin’s functionality (FK, Jacobian, IK).</p></li>
+</ul>
+</section>
+<section id="updates-to-existing-files">
+<h2>Updates to Existing Files<a class="headerlink" href="#updates-to-existing-files" title="Permalink to this heading"></a></h2>
+<p>If you selected “no” for the configuration check, the script updates:</p>
+<ul class="simple">
+<li><p><strong>package.xml</strong>: Adds dependencies on <code class="docutils literal notranslate"><span class="pre">pluginlib</span></code>, <code class="docutils literal notranslate"><span class="pre">kinematics_interface</span></code>, <code class="docutils literal notranslate"><span class="pre">kinematics_interface_ikfast</span></code>, and <code class="docutils literal notranslate"><span class="pre">rclcpp</span></code>.</p></li>
+<li><p><strong>CMakeLists.txt</strong>: Adds library target, include directories, dependencies, and install rules. It also configures the test target.</p></li>
+</ul>
+</section>
+<section id="post-generation-steps">
+<h2>Post-Generation Steps<a class="headerlink" href="#post-generation-steps" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Ensure your generated IKFast solver file (e.g., <code class="docutils literal notranslate"><span class="pre">src/&lt;robot_name&gt;_ikfast.cpp</span></code>) is present.</p></li>
+<li><p>Build the package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cb<span class="w"> </span>--packages-select<span class="w"> </span>&lt;your_package_name&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Run the generated tests to verify the plugin:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ct<span class="w"> </span>--packages-select<span class="w"> </span>&lt;your_package_name&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="create_package.html" class="btn btn-neutral float-left" title="Create New Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="setup_robot_bringup_package.html" class="btn btn-neutral float-right" title="Setup robot bringup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
+      <dd><a href="setup_ikfast_plugin.html">Master (latest)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../../humble/index.html">Humble (recommended)</a></dd>
+        <dd><a href="../../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
