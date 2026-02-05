@@ -68,7 +68,7 @@ Updates to Existing Files
 The script automatically updates:
 
 *   **package.xml**: Adds dependencies on ``moveit_ros_move_group``, ``moveit_kinematics``, ``moveit_planners``, and ``moveit_simple_controller_manager``.
-*   **CMakeLists.txt**: Adds install rules for the new directories (`config`, `launch`, `rviz`, and optionally `srdf`).
+*   **CMakeLists.txt**: Adds install rules for the new directories (``config``, ``launch``, ``rviz``, and optionally ``srdf``).
 *   **README.md**: Appends instructions on how to use the generated MoveIt configuration.
 
 Post-Generation Steps
@@ -76,7 +76,7 @@ Post-Generation Steps
 
 1.  **Configure SRDF**: If you generated the SRDF templates, edit ``srdf/$CELL_NAME$.srdf.xacro`` to define your robot's groups, end-effectors, and virtual joints.
 2.  **Configure Controllers**: Verify ``config/moveit/moveit_controllers.yaml`` matches your robot's controller configuration.
-3.  **Configure Joint Limits**: Adjust `config/moveit/joint_limits.yaml` if needed.
+3.  **Configure Joint Limits**: Adjust ``config/moveit/joint_limits.yaml`` if needed.
 4.  **Build**:
     .. code-block:: bash
 
