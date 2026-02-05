@@ -1,4 +1,4 @@
-FROM osrf/ros:jazzy-desktop
+FROM ghcr.io/ros-controls/ros:jazzy-ubuntu
 
 # Install dependencies
 # pigz, pv are used in _RosTeamWs_Defines.bash
