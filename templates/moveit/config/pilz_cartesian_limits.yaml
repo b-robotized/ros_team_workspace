@@ -1,4 +1,4 @@
-# Copyright (c) 20224 b»robotized group
+# Copyright (c) 2025, b»robotized
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,15 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 #
 # Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
+# Template authors: Nikola Banovic, Daniel Azanov, Dr. Denis
 #
 
-test_dummy_controller:
+/**:
   ros__parameters:
-
-    joints:
-      - joint1
-
-    interface_name: acceleration
+    robot_description_planning:
+      cartesian_limits:
+        max_trans_vel: 1.0
+        max_trans_acc: 2.25
+        max_trans_dec: -5.0
+        max_rot_vel: 1.57

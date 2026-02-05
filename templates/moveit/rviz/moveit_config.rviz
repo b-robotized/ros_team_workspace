@@ -1,0 +1,1958 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 87
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /TF1/Frames1
+        - /TF1/Tree1
+        - /MotionPlanning1/Planning Request1
+      Splitter Ratio: 0.5283018946647644
+    Tree Height: 1077
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Expanded:
+      - /2D Goal Pose1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz_default_plugins/Grid
+      Color: 160; 160; 164
+      Enabled: false
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: false
+    - Alpha: 1
+      Class: rviz_default_plugins/RobotModel
+      Collision Enabled: false
+      Description File: ""
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Mass Properties:
+        Inertia: false
+        Mass: false
+      Name: RobotModel
+      TF Prefix: ""
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        access_point_link:
+          Value: true
+        base:
+          Value: false
+        base_link:
+          Value: false
+        carrier_base_link:
+          Value: false
+        carrier_rail_link:
+          Value: false
+        cell_base:
+          Value: false
+        cell_celing:
+          Value: false
+        cell_collisions:
+          Value: false
+        cell_front_port_collision:
+          Value: false
+        cell_link:
+          Value: true
+        flange:
+          Value: false
+        gripper_coupling:
+          Value: false
+        hand_e_base_link:
+          Value: false
+        hande_finger_distance_link:
+          Value: false
+        hande_left_finger:
+          Value: false
+        hande_right_finger:
+          Value: false
+        link_0:
+          Value: false
+        link_1:
+          Value: false
+        link_2:
+          Value: false
+        link_3:
+          Value: false
+        link_4:
+          Value: false
+        link_5:
+          Value: false
+        link_6:
+          Value: false
+        rack_0000:
+          Value: false
+        rack_0000_grasp_position:
+          Value: false
+        rack_0000_t00:
+          Value: false
+        rack_0000_t01:
+          Value: false
+        rack_0000_t02:
+          Value: false
+        rack_0000_t03:
+          Value: false
+        rack_0000_t04:
+          Value: false
+        rack_0000_t05:
+          Value: false
+        rack_0000_t06:
+          Value: false
+        rack_0000_t07:
+          Value: false
+        rack_0000_t08:
+          Value: false
+        rack_0000_t09:
+          Value: false
+        rack_0001:
+          Value: false
+        rack_0001_grasp_position:
+          Value: false
+        rack_0001_t00:
+          Value: false
+        rack_0001_t01:
+          Value: false
+        rack_0001_t02:
+          Value: false
+        rack_0001_t03:
+          Value: false
+        rack_0001_t04:
+          Value: false
+        rack_0001_t05:
+          Value: false
+        rack_0001_t06:
+          Value: false
+        rack_0001_t07:
+          Value: false
+        rack_0001_t08:
+          Value: false
+        rack_0001_t09:
+          Value: false
+        rack_0002:
+          Value: false
+        rack_0002_grasp_position:
+          Value: false
+        rack_0002_t00:
+          Value: false
+        rack_0002_t01:
+          Value: false
+        rack_0002_t02:
+          Value: false
+        rack_0002_t03:
+          Value: false
+        rack_0002_t04:
+          Value: false
+        rack_0002_t05:
+          Value: false
+        rack_0002_t06:
+          Value: false
+        rack_0002_t07:
+          Value: false
+        rack_0002_t08:
+          Value: false
+        rack_0002_t09:
+          Value: false
+        rack_0003:
+          Value: false
+        rack_0003_grasp_position:
+          Value: false
+        rack_0003_t00:
+          Value: false
+        rack_0003_t01:
+          Value: false
+        rack_0003_t02:
+          Value: false
+        rack_0003_t03:
+          Value: false
+        rack_0003_t04:
+          Value: false
+        rack_0003_t05:
+          Value: false
+        rack_0003_t06:
+          Value: false
+        rack_0003_t07:
+          Value: false
+        rack_0003_t08:
+          Value: false
+        rack_0003_t09:
+          Value: false
+        rack_0004:
+          Value: false
+        rack_0004_grasp_position:
+          Value: false
+        rack_0004_t00:
+          Value: false
+        rack_0004_t01:
+          Value: false
+        rack_0004_t02:
+          Value: false
+        rack_0004_t03:
+          Value: false
+        rack_0004_t04:
+          Value: false
+        rack_0004_t05:
+          Value: false
+        rack_0004_t06:
+          Value: false
+        rack_0004_t07:
+          Value: false
+        rack_0004_t08:
+          Value: false
+        rack_0004_t09:
+          Value: false
+        rack_0005:
+          Value: false
+        rack_0005_grasp_position:
+          Value: false
+        rack_0005_t00:
+          Value: false
+        rack_0005_t01:
+          Value: false
+        rack_0005_t02:
+          Value: false
+        rack_0005_t03:
+          Value: false
+        rack_0005_t04:
+          Value: false
+        rack_0005_t05:
+          Value: false
+        rack_0005_t06:
+          Value: false
+        rack_0005_t07:
+          Value: false
+        rack_0005_t08:
+          Value: false
+        rack_0005_t09:
+          Value: false
+        rack_0006:
+          Value: false
+        rack_0006_grasp_position:
+          Value: false
+        rack_0006_t00:
+          Value: false
+        rack_0006_t01:
+          Value: false
+        rack_0006_t02:
+          Value: false
+        rack_0006_t03:
+          Value: false
+        rack_0006_t04:
+          Value: false
+        rack_0006_t05:
+          Value: false
+        rack_0006_t06:
+          Value: false
+        rack_0006_t07:
+          Value: false
+        rack_0006_t08:
+          Value: false
+        rack_0006_t09:
+          Value: false
+        rack_0007:
+          Value: false
+        rack_0007_grasp_position:
+          Value: false
+        rack_0007_t00:
+          Value: false
+        rack_0007_t01:
+          Value: false
+        rack_0007_t02:
+          Value: false
+        rack_0007_t03:
+          Value: false
+        rack_0007_t04:
+          Value: false
+        rack_0007_t05:
+          Value: false
+        rack_0007_t06:
+          Value: false
+        rack_0007_t07:
+          Value: false
+        rack_0007_t08:
+          Value: false
+        rack_0007_t09:
+          Value: false
+        rack_0008:
+          Value: false
+        rack_0008_grasp_position:
+          Value: false
+        rack_0008_t00:
+          Value: false
+        rack_0008_t01:
+          Value: false
+        rack_0008_t02:
+          Value: false
+        rack_0008_t03:
+          Value: false
+        rack_0008_t04:
+          Value: false
+        rack_0008_t05:
+          Value: false
+        rack_0008_t06:
+          Value: false
+        rack_0008_t07:
+          Value: false
+        rack_0008_t08:
+          Value: false
+        rack_0008_t09:
+          Value: false
+        rack_0009:
+          Value: false
+        rack_0009_grasp_position:
+          Value: false
+        rack_0009_t00:
+          Value: false
+        rack_0009_t01:
+          Value: false
+        rack_0009_t02:
+          Value: false
+        rack_0009_t03:
+          Value: false
+        rack_0009_t04:
+          Value: false
+        rack_0009_t05:
+          Value: false
+        rack_0009_t06:
+          Value: false
+        rack_0009_t07:
+          Value: false
+        rack_0009_t08:
+          Value: false
+        rack_0009_t09:
+          Value: false
+        rack_0010:
+          Value: false
+        rack_0010_grasp_position:
+          Value: false
+        rack_0010_t00:
+          Value: false
+        rack_0010_t01:
+          Value: false
+        rack_0010_t02:
+          Value: false
+        rack_0010_t03:
+          Value: false
+        rack_0010_t04:
+          Value: false
+        rack_0010_t05:
+          Value: false
+        rack_0010_t06:
+          Value: false
+        rack_0010_t07:
+          Value: false
+        rack_0010_t08:
+          Value: false
+        rack_0010_t09:
+          Value: false
+        rack_0011:
+          Value: false
+        rack_0011_grasp_position:
+          Value: false
+        rack_0011_t00:
+          Value: false
+        rack_0011_t01:
+          Value: false
+        rack_0011_t02:
+          Value: false
+        rack_0011_t03:
+          Value: false
+        rack_0011_t04:
+          Value: false
+        rack_0011_t05:
+          Value: false
+        rack_0011_t06:
+          Value: false
+        rack_0011_t07:
+          Value: false
+        rack_0011_t08:
+          Value: false
+        rack_0011_t09:
+          Value: false
+        rack_0012:
+          Value: false
+        rack_0012_grasp_position:
+          Value: false
+        rack_0012_t00:
+          Value: false
+        rack_0012_t01:
+          Value: false
+        rack_0012_t02:
+          Value: false
+        rack_0012_t03:
+          Value: false
+        rack_0012_t04:
+          Value: false
+        rack_0012_t05:
+          Value: false
+        rack_0012_t06:
+          Value: false
+        rack_0012_t07:
+          Value: false
+        rack_0012_t08:
+          Value: false
+        rack_0012_t09:
+          Value: false
+        rack_0013:
+          Value: false
+        rack_0013_grasp_position:
+          Value: false
+        rack_0013_t00:
+          Value: false
+        rack_0013_t01:
+          Value: false
+        rack_0013_t02:
+          Value: false
+        rack_0013_t03:
+          Value: false
+        rack_0013_t04:
+          Value: false
+        rack_0013_t05:
+          Value: false
+        rack_0013_t06:
+          Value: false
+        rack_0013_t07:
+          Value: false
+        rack_0013_t08:
+          Value: false
+        rack_0013_t09:
+          Value: false
+        rack_0014:
+          Value: false
+        rack_0014_grasp_position:
+          Value: false
+        rack_0014_t00:
+          Value: false
+        rack_0014_t01:
+          Value: false
+        rack_0014_t02:
+          Value: false
+        rack_0014_t03:
+          Value: false
+        rack_0014_t04:
+          Value: false
+        rack_0014_t05:
+          Value: false
+        rack_0014_t06:
+          Value: false
+        rack_0014_t07:
+          Value: false
+        rack_0014_t08:
+          Value: false
+        rack_0014_t09:
+          Value: false
+        rack_0015:
+          Value: false
+        rack_0015_grasp_position:
+          Value: false
+        rack_0015_t00:
+          Value: false
+        rack_0015_t01:
+          Value: false
+        rack_0015_t02:
+          Value: false
+        rack_0015_t03:
+          Value: false
+        rack_0015_t04:
+          Value: false
+        rack_0015_t05:
+          Value: false
+        rack_0015_t06:
+          Value: false
+        rack_0015_t07:
+          Value: false
+        rack_0015_t08:
+          Value: false
+        rack_0015_t09:
+          Value: false
+        rack_0016:
+          Value: false
+        rack_0016_grasp_position:
+          Value: false
+        rack_0016_t00:
+          Value: false
+        rack_0016_t01:
+          Value: false
+        rack_0016_t02:
+          Value: false
+        rack_0016_t03:
+          Value: false
+        rack_0016_t04:
+          Value: false
+        rack_0016_t05:
+          Value: false
+        rack_0016_t06:
+          Value: false
+        rack_0016_t07:
+          Value: false
+        rack_0016_t08:
+          Value: false
+        rack_0016_t09:
+          Value: false
+        rack_0017:
+          Value: false
+        rack_0017_grasp_position:
+          Value: false
+        rack_0017_t00:
+          Value: false
+        rack_0017_t01:
+          Value: false
+        rack_0017_t02:
+          Value: false
+        rack_0017_t03:
+          Value: false
+        rack_0017_t04:
+          Value: false
+        rack_0017_t05:
+          Value: false
+        rack_0017_t06:
+          Value: false
+        rack_0017_t07:
+          Value: false
+        rack_0017_t08:
+          Value: false
+        rack_0017_t09:
+          Value: false
+        rack_0018:
+          Value: false
+        rack_0018_grasp_position:
+          Value: false
+        rack_0018_t00:
+          Value: false
+        rack_0018_t01:
+          Value: false
+        rack_0018_t02:
+          Value: false
+        rack_0018_t03:
+          Value: false
+        rack_0018_t04:
+          Value: false
+        rack_0018_t05:
+          Value: false
+        rack_0018_t06:
+          Value: false
+        rack_0018_t07:
+          Value: false
+        rack_0018_t08:
+          Value: false
+        rack_0018_t09:
+          Value: false
+        rack_0019:
+          Value: false
+        rack_0019_grasp_position:
+          Value: false
+        rack_0019_t00:
+          Value: false
+        rack_0019_t01:
+          Value: false
+        rack_0019_t02:
+          Value: false
+        rack_0019_t03:
+          Value: false
+        rack_0019_t04:
+          Value: false
+        rack_0019_t05:
+          Value: false
+        rack_0019_t06:
+          Value: false
+        rack_0019_t07:
+          Value: false
+        rack_0019_t08:
+          Value: false
+        rack_0019_t09:
+          Value: false
+        rack_holder_0_base_link:
+          Value: false
+        rack_holder_0_link:
+          Value: false
+        rack_holder_0_place_location:
+          Value: false
+        rack_holder_10_base_link:
+          Value: false
+        rack_holder_10_link:
+          Value: false
+        rack_holder_10_place_location:
+          Value: false
+        rack_holder_11_base_link:
+          Value: false
+        rack_holder_11_link:
+          Value: false
+        rack_holder_11_place_location:
+          Value: false
+        rack_holder_12_base_link:
+          Value: false
+        rack_holder_12_link:
+          Value: false
+        rack_holder_12_place_location:
+          Value: false
+        rack_holder_13_base_link:
+          Value: false
+        rack_holder_13_link:
+          Value: false
+        rack_holder_13_place_location:
+          Value: false
+        rack_holder_14_base_link:
+          Value: false
+        rack_holder_14_link:
+          Value: false
+        rack_holder_14_place_location:
+          Value: false
+        rack_holder_15_base_link:
+          Value: false
+        rack_holder_15_link:
+          Value: false
+        rack_holder_15_place_location:
+          Value: false
+        rack_holder_16_base_link:
+          Value: false
+        rack_holder_16_link:
+          Value: false
+        rack_holder_16_place_location:
+          Value: false
+        rack_holder_17_base_link:
+          Value: false
+        rack_holder_17_link:
+          Value: false
+        rack_holder_17_place_location:
+          Value: false
+        rack_holder_18_base_link:
+          Value: false
+        rack_holder_18_link:
+          Value: false
+        rack_holder_18_place_location:
+          Value: false
+        rack_holder_19_base_link:
+          Value: false
+        rack_holder_19_link:
+          Value: false
+        rack_holder_19_place_location:
+          Value: false
+        rack_holder_1_base_link:
+          Value: false
+        rack_holder_1_link:
+          Value: false
+        rack_holder_1_place_location:
+          Value: false
+        rack_holder_2_base_link:
+          Value: false
+        rack_holder_2_link:
+          Value: false
+        rack_holder_2_place_location:
+          Value: false
+        rack_holder_3_base_link:
+          Value: false
+        rack_holder_3_link:
+          Value: false
+        rack_holder_3_place_location:
+          Value: false
+        rack_holder_4_base_link:
+          Value: false
+        rack_holder_4_link:
+          Value: false
+        rack_holder_4_place_location:
+          Value: false
+        rack_holder_5_base_link:
+          Value: false
+        rack_holder_5_link:
+          Value: false
+        rack_holder_5_place_location:
+          Value: false
+        rack_holder_6_base_link:
+          Value: false
+        rack_holder_6_link:
+          Value: false
+        rack_holder_6_place_location:
+          Value: false
+        rack_holder_7_base_link:
+          Value: false
+        rack_holder_7_link:
+          Value: false
+        rack_holder_7_place_location:
+          Value: false
+        rack_holder_8_base_link:
+          Value: false
+        rack_holder_8_link:
+          Value: false
+        rack_holder_8_place_location:
+          Value: false
+        rack_holder_9_base_link:
+          Value: false
+        rack_holder_9_link:
+          Value: false
+        rack_holder_9_place_location:
+          Value: false
+        rack_input_base_link:
+          Value: false
+        rack_input_link:
+          Value: false
+        rack_input_place_location:
+          Value: true
+        rack_output_base_link:
+          Value: false
+        rack_output_link:
+          Value: false
+        rack_output_place_location:
+          Value: true
+        robot_fixture_link:
+          Value: false
+        tcp_link:
+          Value: false
+        tcp_link_rack:
+          Value: true
+        tcp_link_tube:
+          Value: true
+        track_link:
+          Value: false
+        world:
+          Value: false
+      Marker Scale: 0.30000001192092896
+      Name: TF
+      Show Arrows: false
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          carrier_rail_link:
+            {}
+          cell_base:
+            cell_link:
+              carrier_base_link:
+                access_point_link:
+                  {}
+              cell_celing:
+                {}
+              cell_collisions:
+                {}
+              cell_front_port_collision:
+                {}
+              rack_holder_0_base_link:
+                rack_holder_0_link:
+                  rack_0000:
+                    rack_0000_grasp_position:
+                      {}
+                    rack_0000_t00:
+                      {}
+                    rack_0000_t01:
+                      {}
+                    rack_0000_t02:
+                      {}
+                    rack_0000_t03:
+                      {}
+                    rack_0000_t04:
+                      {}
+                    rack_0000_t05:
+                      {}
+                    rack_0000_t06:
+                      {}
+                    rack_0000_t07:
+                      {}
+                    rack_0000_t08:
+                      {}
+                    rack_0000_t09:
+                      {}
+                  rack_holder_0_place_location:
+                    {}
+              rack_holder_10_base_link:
+                rack_holder_10_link:
+                  rack_0010:
+                    rack_0010_grasp_position:
+                      {}
+                    rack_0010_t00:
+                      {}
+                    rack_0010_t01:
+                      {}
+                    rack_0010_t02:
+                      {}
+                    rack_0010_t03:
+                      {}
+                    rack_0010_t04:
+                      {}
+                    rack_0010_t05:
+                      {}
+                    rack_0010_t06:
+                      {}
+                    rack_0010_t07:
+                      {}
+                    rack_0010_t08:
+                      {}
+                    rack_0010_t09:
+                      {}
+                  rack_holder_10_place_location:
+                    {}
+              rack_holder_11_base_link:
+                rack_holder_11_link:
+                  rack_0011:
+                    rack_0011_grasp_position:
+                      {}
+                    rack_0011_t00:
+                      {}
+                    rack_0011_t01:
+                      {}
+                    rack_0011_t02:
+                      {}
+                    rack_0011_t03:
+                      {}
+                    rack_0011_t04:
+                      {}
+                    rack_0011_t05:
+                      {}
+                    rack_0011_t06:
+                      {}
+                    rack_0011_t07:
+                      {}
+                    rack_0011_t08:
+                      {}
+                    rack_0011_t09:
+                      {}
+                  rack_holder_11_place_location:
+                    {}
+              rack_holder_12_base_link:
+                rack_holder_12_link:
+                  rack_0012:
+                    rack_0012_grasp_position:
+                      {}
+                    rack_0012_t00:
+                      {}
+                    rack_0012_t01:
+                      {}
+                    rack_0012_t02:
+                      {}
+                    rack_0012_t03:
+                      {}
+                    rack_0012_t04:
+                      {}
+                    rack_0012_t05:
+                      {}
+                    rack_0012_t06:
+                      {}
+                    rack_0012_t07:
+                      {}
+                    rack_0012_t08:
+                      {}
+                    rack_0012_t09:
+                      {}
+                  rack_holder_12_place_location:
+                    {}
+              rack_holder_13_base_link:
+                rack_holder_13_link:
+                  rack_0013:
+                    rack_0013_grasp_position:
+                      {}
+                    rack_0013_t00:
+                      {}
+                    rack_0013_t01:
+                      {}
+                    rack_0013_t02:
+                      {}
+                    rack_0013_t03:
+                      {}
+                    rack_0013_t04:
+                      {}
+                    rack_0013_t05:
+                      {}
+                    rack_0013_t06:
+                      {}
+                    rack_0013_t07:
+                      {}
+                    rack_0013_t08:
+                      {}
+                    rack_0013_t09:
+                      {}
+                  rack_holder_13_place_location:
+                    {}
+              rack_holder_14_base_link:
+                rack_holder_14_link:
+                  rack_0014:
+                    rack_0014_grasp_position:
+                      {}
+                    rack_0014_t00:
+                      {}
+                    rack_0014_t01:
+                      {}
+                    rack_0014_t02:
+                      {}
+                    rack_0014_t03:
+                      {}
+                    rack_0014_t04:
+                      {}
+                    rack_0014_t05:
+                      {}
+                    rack_0014_t06:
+                      {}
+                    rack_0014_t07:
+                      {}
+                    rack_0014_t08:
+                      {}
+                    rack_0014_t09:
+                      {}
+                  rack_holder_14_place_location:
+                    {}
+              rack_holder_15_base_link:
+                rack_holder_15_link:
+                  rack_0015:
+                    rack_0015_grasp_position:
+                      {}
+                    rack_0015_t00:
+                      {}
+                    rack_0015_t01:
+                      {}
+                    rack_0015_t02:
+                      {}
+                    rack_0015_t03:
+                      {}
+                    rack_0015_t04:
+                      {}
+                    rack_0015_t05:
+                      {}
+                    rack_0015_t06:
+                      {}
+                    rack_0015_t07:
+                      {}
+                    rack_0015_t08:
+                      {}
+                    rack_0015_t09:
+                      {}
+                  rack_holder_15_place_location:
+                    {}
+              rack_holder_16_base_link:
+                rack_holder_16_link:
+                  rack_0016:
+                    rack_0016_grasp_position:
+                      {}
+                    rack_0016_t00:
+                      {}
+                    rack_0016_t01:
+                      {}
+                    rack_0016_t02:
+                      {}
+                    rack_0016_t03:
+                      {}
+                    rack_0016_t04:
+                      {}
+                    rack_0016_t05:
+                      {}
+                    rack_0016_t06:
+                      {}
+                    rack_0016_t07:
+                      {}
+                    rack_0016_t08:
+                      {}
+                    rack_0016_t09:
+                      {}
+                  rack_holder_16_place_location:
+                    {}
+              rack_holder_17_base_link:
+                rack_holder_17_link:
+                  rack_0017:
+                    rack_0017_grasp_position:
+                      {}
+                    rack_0017_t00:
+                      {}
+                    rack_0017_t01:
+                      {}
+                    rack_0017_t02:
+                      {}
+                    rack_0017_t03:
+                      {}
+                    rack_0017_t04:
+                      {}
+                    rack_0017_t05:
+                      {}
+                    rack_0017_t06:
+                      {}
+                    rack_0017_t07:
+                      {}
+                    rack_0017_t08:
+                      {}
+                    rack_0017_t09:
+                      {}
+                  rack_holder_17_place_location:
+                    {}
+              rack_holder_18_base_link:
+                rack_holder_18_link:
+                  rack_0018:
+                    rack_0018_grasp_position:
+                      {}
+                    rack_0018_t00:
+                      {}
+                    rack_0018_t01:
+                      {}
+                    rack_0018_t02:
+                      {}
+                    rack_0018_t03:
+                      {}
+                    rack_0018_t04:
+                      {}
+                    rack_0018_t05:
+                      {}
+                    rack_0018_t06:
+                      {}
+                    rack_0018_t07:
+                      {}
+                    rack_0018_t08:
+                      {}
+                    rack_0018_t09:
+                      {}
+                  rack_holder_18_place_location:
+                    {}
+              rack_holder_19_base_link:
+                rack_holder_19_link:
+                  rack_0019:
+                    rack_0019_grasp_position:
+                      {}
+                    rack_0019_t00:
+                      {}
+                    rack_0019_t01:
+                      {}
+                    rack_0019_t02:
+                      {}
+                    rack_0019_t03:
+                      {}
+                    rack_0019_t04:
+                      {}
+                    rack_0019_t05:
+                      {}
+                    rack_0019_t06:
+                      {}
+                    rack_0019_t07:
+                      {}
+                    rack_0019_t08:
+                      {}
+                    rack_0019_t09:
+                      {}
+                  rack_holder_19_place_location:
+                    {}
+              rack_holder_1_base_link:
+                rack_holder_1_link:
+                  rack_0001:
+                    rack_0001_grasp_position:
+                      {}
+                    rack_0001_t00:
+                      {}
+                    rack_0001_t01:
+                      {}
+                    rack_0001_t02:
+                      {}
+                    rack_0001_t03:
+                      {}
+                    rack_0001_t04:
+                      {}
+                    rack_0001_t05:
+                      {}
+                    rack_0001_t06:
+                      {}
+                    rack_0001_t07:
+                      {}
+                    rack_0001_t08:
+                      {}
+                    rack_0001_t09:
+                      {}
+                  rack_holder_1_place_location:
+                    {}
+              rack_holder_2_base_link:
+                rack_holder_2_link:
+                  rack_0002:
+                    rack_0002_grasp_position:
+                      {}
+                    rack_0002_t00:
+                      {}
+                    rack_0002_t01:
+                      {}
+                    rack_0002_t02:
+                      {}
+                    rack_0002_t03:
+                      {}
+                    rack_0002_t04:
+                      {}
+                    rack_0002_t05:
+                      {}
+                    rack_0002_t06:
+                      {}
+                    rack_0002_t07:
+                      {}
+                    rack_0002_t08:
+                      {}
+                    rack_0002_t09:
+                      {}
+                  rack_holder_2_place_location:
+                    {}
+              rack_holder_3_base_link:
+                rack_holder_3_link:
+                  rack_0003:
+                    rack_0003_grasp_position:
+                      {}
+                    rack_0003_t00:
+                      {}
+                    rack_0003_t01:
+                      {}
+                    rack_0003_t02:
+                      {}
+                    rack_0003_t03:
+                      {}
+                    rack_0003_t04:
+                      {}
+                    rack_0003_t05:
+                      {}
+                    rack_0003_t06:
+                      {}
+                    rack_0003_t07:
+                      {}
+                    rack_0003_t08:
+                      {}
+                    rack_0003_t09:
+                      {}
+                  rack_holder_3_place_location:
+                    {}
+              rack_holder_4_base_link:
+                rack_holder_4_link:
+                  rack_0004:
+                    rack_0004_grasp_position:
+                      {}
+                    rack_0004_t00:
+                      {}
+                    rack_0004_t01:
+                      {}
+                    rack_0004_t02:
+                      {}
+                    rack_0004_t03:
+                      {}
+                    rack_0004_t04:
+                      {}
+                    rack_0004_t05:
+                      {}
+                    rack_0004_t06:
+                      {}
+                    rack_0004_t07:
+                      {}
+                    rack_0004_t08:
+                      {}
+                    rack_0004_t09:
+                      {}
+                  rack_holder_4_place_location:
+                    {}
+              rack_holder_5_base_link:
+                rack_holder_5_link:
+                  rack_0005:
+                    rack_0005_grasp_position:
+                      {}
+                    rack_0005_t00:
+                      {}
+                    rack_0005_t01:
+                      {}
+                    rack_0005_t02:
+                      {}
+                    rack_0005_t03:
+                      {}
+                    rack_0005_t04:
+                      {}
+                    rack_0005_t05:
+                      {}
+                    rack_0005_t06:
+                      {}
+                    rack_0005_t07:
+                      {}
+                    rack_0005_t08:
+                      {}
+                    rack_0005_t09:
+                      {}
+                  rack_holder_5_place_location:
+                    {}
+              rack_holder_6_base_link:
+                rack_holder_6_link:
+                  rack_0006:
+                    rack_0006_grasp_position:
+                      {}
+                    rack_0006_t00:
+                      {}
+                    rack_0006_t01:
+                      {}
+                    rack_0006_t02:
+                      {}
+                    rack_0006_t03:
+                      {}
+                    rack_0006_t04:
+                      {}
+                    rack_0006_t05:
+                      {}
+                    rack_0006_t06:
+                      {}
+                    rack_0006_t07:
+                      {}
+                    rack_0006_t08:
+                      {}
+                    rack_0006_t09:
+                      {}
+                  rack_holder_6_place_location:
+                    {}
+              rack_holder_7_base_link:
+                rack_holder_7_link:
+                  rack_0007:
+                    rack_0007_grasp_position:
+                      {}
+                    rack_0007_t00:
+                      {}
+                    rack_0007_t01:
+                      {}
+                    rack_0007_t02:
+                      {}
+                    rack_0007_t03:
+                      {}
+                    rack_0007_t04:
+                      {}
+                    rack_0007_t05:
+                      {}
+                    rack_0007_t06:
+                      {}
+                    rack_0007_t07:
+                      {}
+                    rack_0007_t08:
+                      {}
+                    rack_0007_t09:
+                      {}
+                  rack_holder_7_place_location:
+                    {}
+              rack_holder_8_base_link:
+                rack_holder_8_link:
+                  rack_0008:
+                    rack_0008_grasp_position:
+                      {}
+                    rack_0008_t00:
+                      {}
+                    rack_0008_t01:
+                      {}
+                    rack_0008_t02:
+                      {}
+                    rack_0008_t03:
+                      {}
+                    rack_0008_t04:
+                      {}
+                    rack_0008_t05:
+                      {}
+                    rack_0008_t06:
+                      {}
+                    rack_0008_t07:
+                      {}
+                    rack_0008_t08:
+                      {}
+                    rack_0008_t09:
+                      {}
+                  rack_holder_8_place_location:
+                    {}
+              rack_holder_9_base_link:
+                rack_holder_9_link:
+                  rack_0009:
+                    rack_0009_grasp_position:
+                      {}
+                    rack_0009_t00:
+                      {}
+                    rack_0009_t01:
+                      {}
+                    rack_0009_t02:
+                      {}
+                    rack_0009_t03:
+                      {}
+                    rack_0009_t04:
+                      {}
+                    rack_0009_t05:
+                      {}
+                    rack_0009_t06:
+                      {}
+                    rack_0009_t07:
+                      {}
+                    rack_0009_t08:
+                      {}
+                    rack_0009_t09:
+                      {}
+                  rack_holder_9_place_location:
+                    {}
+              rack_input_base_link:
+                rack_input_link:
+                  rack_input_place_location:
+                    {}
+              rack_output_base_link:
+                rack_output_link:
+                  rack_output_place_location:
+                    {}
+              robot_fixture_link:
+                base_link:
+                  base:
+                    link_0:
+                      link_1:
+                        link_2:
+                          link_3:
+                            link_4:
+                              link_5:
+                                link_6:
+                                  flange:
+                                    gripper_coupling:
+                                      hand_e_base_link:
+                                        hande_finger_distance_link:
+                                          {}
+                                        hande_left_finger:
+                                          {}
+                                        hande_right_finger:
+                                          {}
+                                        tcp_link:
+                                          tcp_link_rack:
+                                            {}
+                                          tcp_link_tube:
+                                            {}
+          track_link:
+            {}
+      Update Interval: 0
+      Value: true
+    - Acceleration_Scaling_Factor: 0.1
+      Class: moveit_rviz_plugin/MotionPlanning
+      Enabled: false
+      Move Group Namespace: ""
+      MoveIt_Allow_Approximate_IK: false
+      MoveIt_Allow_External_Program: false
+      MoveIt_Allow_Replanning: false
+      MoveIt_Allow_Sensor_Positioning: false
+      MoveIt_Planning_Attempts: 10
+      MoveIt_Planning_Time: 5
+      MoveIt_Use_Cartesian_Path: false
+      MoveIt_Use_Constraint_Aware_IK: false
+      MoveIt_Workspace:
+        Center:
+          X: 0
+          Y: 0
+          Z: 0
+        Size:
+          X: 2
+          Y: 2
+          Z: 2
+      Name: MotionPlanning
+      Planned Path:
+        Color Enabled: false
+        Interrupt Display: false
+        Links:
+          All Links Enabled: true
+          Expand Joint Details: false
+          Expand Link Details: false
+          Expand Tree: false
+          Link Tree Style: Links in Alphabetic Order
+        Loop Animation: false
+        Robot Alpha: 0.5
+        Robot Color: 150; 50; 150
+        Show Robot Collision: false
+        Show Robot Visual: true
+        Show Trail: false
+        State Display Time: 3x
+        Trail Step Size: 1
+        Trajectory Topic: /display_planned_path
+        Use Sim Time: false
+      Planning Metrics:
+        Payload: 1
+        Show Joint Torques: false
+        Show Manipulability: false
+        Show Manipulability Index: false
+        Show Weight Limit: false
+        TextHeight: 0.07999999821186066
+      Planning Request:
+        Colliding Link Color: 255; 0; 0
+        Goal State Alpha: 1
+        Goal State Color: 250; 128; 0
+        Interactive Marker Size: 0
+        Joint Violation Color: 255; 0; 255
+        Planning Group: manipulator_rack
+        Query Goal State: true
+        Query Start State: false
+        Show Workspace: false
+        Start State Alpha: 1
+        Start State Color: 0; 255; 0
+      Planning Scene Topic: /monitored_planning_scene
+      Robot Description: robot_description
+      Scene Geometry:
+        Scene Alpha: 0.8999999761581421
+        Scene Color: 50; 230; 50
+        Scene Display Time: 0.009999999776482582
+        Show Scene Geometry: true
+        Voxel Coloring: Z-Axis
+        Voxel Rendering: Occupied Voxels
+      Scene Robot:
+        Attached Body Color: 150; 50; 150
+        Links:
+          All Links Enabled: true
+          Expand Joint Details: false
+          Expand Link Details: false
+          Expand Tree: false
+          Link Tree Style: Links in Alphabetic Order
+        Robot Alpha: 1
+        Show Robot Collision: false
+        Show Robot Visual: true
+      Value: false
+      Velocity_Scaling_Factor: 0.1
+    - Class: moveit_rviz_plugin/PlanningScene
+      Enabled: true
+      Move Group Namespace: ""
+      Name: PlanningScene
+      Planning Scene Topic: /monitored_planning_scene
+      Robot Description: robot_description
+      Scene Geometry:
+        Scene Alpha: 0.8999999761581421
+        Scene Color: 50; 230; 50
+        Scene Display Time: 0.009999999776482582
+        Show Scene Geometry: true
+        Voxel Coloring: Z-Axis
+        Voxel Rendering: Occupied Voxels
+      Scene Robot:
+        Attached Body Color: 150; 50; 150
+        Links:
+          All Links Enabled: true
+          Expand Joint Details: false
+          Expand Link Details: false
+          Expand Tree: false
+          Link Tree Style: Links in Alphabetic Order
+          access_point_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          carrier_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          carrier_rail_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cell_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cell_celing:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          cell_collisions:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cell_front_port_collision:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cell_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          flange:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_coupling:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          hand_e_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          hande_finger_distance_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          hande_left_finger:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          hande_right_finger:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_0_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_0_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_0_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_10_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_10_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_10_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_11_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_11_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_11_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_12_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_12_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_12_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_13_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_13_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_13_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_14_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_14_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_14_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_15_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_15_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_15_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_16_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_16_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_16_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_17_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_17_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_17_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_18_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_18_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_18_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_19_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_19_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_19_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_1_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_1_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_1_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_2_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_2_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_2_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_3_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_3_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_3_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_4_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_4_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_4_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_5_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_5_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_5_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_6_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_6_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_6_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_7_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_7_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_7_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_8_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_8_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_8_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_9_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_holder_9_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_holder_9_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_input_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_input_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_input_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_output_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rack_output_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rack_output_place_location:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          robot_fixture_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          tcp_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_link_rack:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_link_tube:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          track_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+        Robot Alpha: 1
+        Show Robot Collision: false
+        Show Robot Visual: true
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: base_link
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
+      Covariance x: 0.25
+      Covariance y: 0.25
+      Covariance yaw: 0.06853891909122467
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /initialpose
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Single click: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /clicked_point
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 1.073586106300354
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0.34488192200660706
+        Y: 0.4703526496887207
+        Z: -0.016691775992512703
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.6397977471351624
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 4.61858606338501
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 1382
+  Hide Left Dock: false
+  Hide Right Dock: false
+  MotionPlanning:
+    collapsed: false
+  MotionPlanning - Trajectory Slider:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001dd000004f7fc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000007100fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed0000043800000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc0000004a000004f7000001110100001dfa000000010100000002fb0000000a005600690065007700730100000000ffffffff0000010c00fffffffb000000100044006900730070006c0061007900730100000000000001b50000016600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004e00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000023c000001b9000001af00ffffff0000000100000138000005abfc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d0065010000000000000450000000000000000000000822000004f700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 2560
+  X: 0
+  Y: 1110

@@ -13,8 +13,7 @@
 // limitations under the License.
 
 //
-// Source of this file are templates in
-// [RosTeamWorkspace](https://github.com/b-robotized/ros_team_workspace) repository.
+// Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 //
 
 #ifndef TEMPLATES__ROS2_CONTROL__CONTROLLER__DUMMY_PACKAGE_NAMESPACE__DUMMY_CONTROLLER_HPP_

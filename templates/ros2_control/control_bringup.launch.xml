@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Source of this file are templates in https://github.com/b-robotized/ros_team_workspace repository.
+Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 
 Authors: Riyan Jose, Manuel Muth, Dr. Denis
 -->
@@ -28,9 +28,6 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
   <arg name="description_package"
        default="$DESCR_PKG_NAME$"
        description="Description package with robot URDF/xacro files. Usually the argument is not set, it enables use of a custom description."/>
-  <arg name="description_file"
-       default="$ROBOT_NAME$"
-       description="URDF/XACRO description file (without extension) with the robot."/>
   <arg name="prefix"
        default=""
        description="Prefix of the joint names, useful for multi-robot setup. If changed than also joint names in the controllers' configuration have to be updated."/>

@@ -56,38 +56,38 @@ alias setup_ros2_aliases=RosTeamWS_setup_ros2_aliases
 
 # BEGIN: Define aliases for standard scripts
 # Change those to your custom ones you would like to use.
-alias create-new-package=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/create-new-package.bash
+alias create-new-package="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/create-new-package.bash
 
-alias setup-repository=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup-repository.bash
+alias setup-repository="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-repository.bash
 
-alias setup-repository-ci=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup-repository-ci.bash
+alias setup-repository-ci="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-repository-ci.bash
 
-alias setup-formatting=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup-formatting.bash
+alias setup-formatting="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-formatting.bash
 
-alias setup-ros-workspace=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup-ros-workspace.bash
+alias setup-ros-workspace="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-ros-workspace.bash
 
 setup-ros-workspace () {
   source "$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-ros-workspace.bash
   create_workspace "$@"
 }
 
-alias setup-robot-bringup=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup-robot-bringup.bash
-
-alias setup-robot-description=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup-robot-description.bash
-
-alias setup-ikfast-plugin=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/ikfast_plugin/setup-ikfast-plugin.bash
+# Robot packages related setup scripts
+alias setup-robot-bringup="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-robot-bringup.bash
+alias setup-robot-description="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-robot-description.bash
+alias setup-robot-moveit="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-robot-moveit.bash
+alias setup-ikfast-plugin="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/ikfast_plugin/setup-ikfast-plugin.bash
 
 # ros2_control
-alias ros2_control_setup-hardware-interface-package=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/ros2_control/setup-hardware-interface-package.bash
-alias ros2_control_setup-controller-package=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/ros2_control/setup-controller-package.bash
+alias ros2_control_setup-hardware-interface-package="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/ros2_control/setup-hardware-interface-package.bash
+alias ros2_control_setup-controller-package="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/ros2_control/setup-controller-package.bash
 
 # setup auto-sourcing
-alias setup-auto-sourcing=$RosTeamWS_FRAMEWORK_SCRIPTS_PATH/setup_auto_sourcing.bash
+alias setup-auto-sourcing="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup_auto_sourcing.bash
 
 # VCS Aliases and helpers
 function rtw-ws-import () {
   # TODO: if not argument use WS default path for this after #169 is merged
-  vcs import --recursive --debug -w 1 --input "$*" $ROS_WS/src
+  vcs import --recursive --debug -w 1 --input "$*" "$ROS_WS"/src
 }
 
 # Temporary files cleaning
@@ -116,7 +116,7 @@ function generate_gif_from_video {
     print_and_exit "File name has to be defined!"
   fi
 
-  ffmpeg -i $1 -filter_complex "[0:v] fps=12,scale=w=960:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" $1.gif
+  ffmpeg -i "$1" -filter_complex "[0:v] fps=12,scale=w=960:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" "$1".gif
 }
 
 # END Define aliases for standard functions

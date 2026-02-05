@@ -1,4 +1,4 @@
-# Copyright (c) 20224 b»robotized group
+# Copyright (c) 2025, b»robotized
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,15 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 #
 # Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
+# Template authors: Nikola Banovic, Daniel Azanov, Dr. Denis
 #
 
-test_dummy_controller:
-  ros__parameters:
-
-    joints:
-      - joint1
-
-    interface_name: acceleration
+# The name of this file shouldn't be changed, or else the Setup Assistant won't detect it
+sensors:
+  - {}
