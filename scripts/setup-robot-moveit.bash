@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-usage="setup-robot-moveit CELL_NAME CONTROL_PKG_NAME CONTROL_LAUNCH_FILE"
+usage="setup-robot-moveit CELL_NAME CONTROL_PKG_NAME CONTROL_LAUNCH_FILE DESCRIPTION_PKG_NAME"
 
 # Load Framework defines
 script_own_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
@@ -34,6 +34,11 @@ fi
 CONTROL_LAUNCH_FILE=$3
 if [ -z "$CONTROL_LAUNCH_FILE" ]; then
   print_and_exit "ERROR: You should provide control launch file name! Nothing to do 😯" "$usage"
+fi
+
+DESCRIPTION_PKG_NAME=$4
+if [ -z "$DESCRIPTION_PKG_NAME" ]; then
+  print_and_exit "ERROR: You should provide description package name! Nothing to do 😯" "$usage"
 fi
 
 echo "Which launchfiles should be added? Choose from the following options:"
@@ -85,7 +90,7 @@ ROBOT_RVIZ="rviz/moveit.rviz"
 cp --update=none "$MOVEIT_TEMPLATES/moveit.rviz" $ROBOT_RVIZ
 
 # Copy config files
-MOVEIT_CONFIG_FOLDER="moveit_config"
+MOVEIT_CONFIG_FOLDER="config/moveit"
 mkdir -p $MOVEIT_CONFIG_FOLDER
 MOVEIT_JOINT_LIMITS="$MOVEIT_CONFIG_FOLDER/joint_limits.yaml"
 MOVEIT_KINEMATICS="$MOVEIT_CONFIG_FOLDER/kinematics.yaml"
@@ -97,8 +102,7 @@ MOVEIT_PLANNER_OMPL="$MOVEIT_CONFIG_FOLDER/ompl_planning.yaml"
 MOVEIT_PLANNER_PILZ="$MOVEIT_CONFIG_FOLDER/pilz_planning.yaml"
 MOVEIT_PLANNER_PILZ_CARTESIAN_LIMITS="$MOVEIT_CONFIG_FOLDER/pilz_cartesian_limits.yaml"
 MOVEIT_PLANNER_STOMP="$MOVEIT_CONFIG_FOLDER/stomp_planning.yaml"
-
-# MOVEIT_SENSORS_3d="$MOVEIT_CONFIG_FOLDER/sensors_3d.yaml"  # not used right now
+MOVEIT_SENSORS_3D="$MOVEIT_CONFIG_FOLDER/sensors_3d.yaml"
 
 cp --update=none "$MOVEIT_TEMPLATES/config/joint_limits.yaml" $MOVEIT_JOINT_LIMITS
 cp --update=none "$MOVEIT_TEMPLATES/config/kinematics.yaml" $MOVEIT_KINEMATICS
@@ -110,38 +114,54 @@ cp --update=none "$MOVEIT_TEMPLATES/config/ompl_planning.yaml" $MOVEIT_PLANNER_O
 cp --update=none "$MOVEIT_TEMPLATES/config/pilz_planning.yaml" $MOVEIT_PLANNER_PILZ
 cp --update=none "$MOVEIT_TEMPLATES/config/pilz_cartesian_limits.yaml" $MOVEIT_PLANNER_PILZ_CARTESIAN_LIMITS
 cp --update=none "$MOVEIT_TEMPLATES/config/stomp_planning.yaml" $MOVEIT_PLANNER_STOMP
-
-# cp --update=none "$MOVEIT_TEMPLATES/config/sensors_3d.yaml" $MOVEIT_SENSORS_3d
+cp --update=none "$MOVEIT_TEMPLATES/config/sensors_3d.yaml" $MOVEIT_SENSORS_3D
 
 # Copy rviz file
 mkdir -p rviz
 cp --update=none "$MOVEIT_TEMPLATES/rviz/moveit_config.rviz" "rviz/"
 
 # Copy SRDF/xacro files
-mkdir -p srdf
-CELL_SRDF="srdf/${CELL_NAME}.srdf.xacro"
-CELL_SRDF_MACRO="srdf/${CELL_NAME}_macro.srdf.xacro"
-cp --update=none "$MOVEIT_TEMPLATES/srdf/robot.srdf.xacro" $CELL_SRDF
-cp --update=none "$MOVEIT_TEMPLATES/srdf/robot_macro.srdf.xacro" $CELL_SRDF_MACRO
+echo -e "${TERMINAL_COLOR_USER_INPUT_DECISION}Do you want to generate SRDF template in this package? (yes/no) [no]${TERMINAL_COLOR_NC}"
+read generate_srdf
+generate_srdf=${generate_srdf:="no"}
+
+if [[ "$generate_srdf" == "yes" ]]; then
+  mkdir -p srdf
+  CELL_SRDF="srdf/${CELL_NAME}.srdf.xacro"
+  CELL_SRDF_MACRO="srdf/${CELL_NAME}_macro.srdf.xacro"
+  cp --update=none "$MOVEIT_TEMPLATES/srdf/robot.srdf.xacro" $CELL_SRDF
+  cp --update=none "$MOVEIT_TEMPLATES/srdf/robot_macro.srdf.xacro" $CELL_SRDF_MACRO
+
+  # sed files
+  sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $CELL_SRDF
+  sed -i "s/\\\$CELL_NAME\\\$/${CELL_NAME}/g" $CELL_SRDF
+  sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $CELL_SRDF_MACRO
+  sed -i "s/\\\$CELL_NAME\\\$/${CELL_NAME}/g" $CELL_SRDF_MACRO
+
+  DESCRIPTION_PKG_FOR_LAUNCH=$PKG_NAME
+else
+  DESCRIPTION_PKG_FOR_LAUNCH=$DESCRIPTION_PKG_NAME
+fi
 
 
 # Copy launch files
 mkdir -p launch
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   # Construct the file paths
-  MOVEIT_LAUNCH="launch/${CELL_NAME}.launch${file_type}"
+  MOVEIT_LAUNCH="launch/moveit.launch${file_type}"
 
   # Copy the templates to the destination with the specified file type
   cp --update=none "$MOVEIT_TEMPLATES/moveit.launch${file_type}" "${MOVEIT_LAUNCH}"
 
   # sed all needed files
-  FILES_TO_SED=($MOVEIT_LAUNCH $CELL_SRDF $CELL_SRDF_MACRO $MOVEIT_JOINT_LIMITS $MOVEIT_KINEMATICS $MOVEIT_CONTROLLERS $MOVEIT_MOVE_GROUP $MOVEIT_PLANNER_CHOMP $MOVEIT_PLANNER_OMPL $MOVEIT_PLANNER_PILZ $MOVEIT_PLANNER_PILZ_CARTESIAN_LIMITS $MOVEIT_PLANNER_STOMP)
+  FILES_TO_SED=($MOVEIT_LAUNCH $MOVEIT_JOINT_LIMITS $MOVEIT_KINEMATICS $MOVEIT_CONTROLLERS $MOVEIT_MOVE_GROUP $MOVEIT_PLANNER_CHOMP $MOVEIT_PLANNER_OMPL $MOVEIT_PLANNER_PILZ $MOVEIT_PLANNER_PILZ_CARTESIAN_LIMITS $MOVEIT_PLANNER_STOMP $MOVEIT_SENSORS_3D)
 
   for SED_FILE in "${FILES_TO_SED[@]}"; do
     sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
     sed -i "s/\\\$CELL_NAME\\\$/${CELL_NAME}/g" $SED_FILE
     sed -i "s/\\\$CONTROL_PKG_NAME\\\$/${CONTROL_PKG_NAME}/g" $SED_FILE
     sed -i "s/\\\$CONTROL_LAUNCH_FILE\\\$/${CONTROL_LAUNCH_FILE}/g" $SED_FILE
+    sed -i "s/\\\$DESCRIPTION_PKG_NAME\\\$/${DESCRIPTION_PKG_FOR_LAUNCH}/g" $SED_FILE
   done
 done
 
@@ -166,7 +186,17 @@ done
 
 # CMakeLists.txt: Add install paths of the files
 prepend_to_string="if(BUILD_TESTING)"
-sed -i "s/$prepend_to_string/install\(\\n  DIRECTORY config launch rviz srdf\\n  DESTINATION share\/\$\{PROJECT_NAME\}\\n\)\\n\\n$prepend_to_string/g" CMakeLists.txt
+# Use install(DIRECTORY config launch rviz srdf ...) if srdf exists, otherwise just config launch rviz
+if [[ "$generate_srdf" == "yes" ]]; then
+  INSTALL_DIRS="config launch rviz srdf"
+else
+  INSTALL_DIRS="config launch rviz"
+fi
+
+# Check if line already exists (simple check)
+if ! grep -q "install(DIRECTORY $INSTALL_DIRS" CMakeLists.txt; then
+  sed -i "s/$prepend_to_string/install\(\\n  DIRECTORY $INSTALL_DIRS\\n  DESTINATION share\/\$\{PROJECT_NAME\}\\n\)\\n\\n$prepend_to_string/g" CMakeLists.txt
+fi
 
 # extend README with general instructions
 if [ -f README.md ]; then

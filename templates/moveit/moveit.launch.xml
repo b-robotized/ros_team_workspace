@@ -1,11 +1,11 @@
 <!--
-Copyright (c) 2025, b»robotized
+Copyright (c) 2025, b»robotized Group
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,90 +13,95 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 
-Source of this file are templates in https://github.com/b-robotized/ros_team_workspace repository.
-
-Authors: Riyan Jose, Daniel Azanov, Dr. Denis
+Authors: Riyan Jose, Daniel Azanov, Dr. Denis, Nikola Banovic
 -->
 
 <launch>
-    <arg name="cell_name"
-         default="$CELL_NAME$"
-         description="Name of the robot or application for unique identification."/>
-    <arg name="prefix"
-         default=""
-         description="Prefix of the joint names, useful for multi-robot setup."/>
-    <arg name="configuration_package"
-         default="$PKG_NAME$"
-         description="Configuration package of the Motion Planning of EV BDL cell."/>
-    <arg name="semantic_description_file_path"
-         default="$(find-pkg-share $(var configuration_package))/srdf/$CELL_NAME$.srdf.xacro"
-         description="Semantic robot description file (SRDF/XACRO) of the robot or application."/>
-    <arg name="moveit_controllers_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/moveit_controllers.yaml"
-         description="YAML file with the controllers configuration for MoveIt."/>
-    <arg name="move_group_config_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/move_group_config.yaml"
-         description="YAML file with the move_group configuration."/>
-    <arg name="kinematics_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/kinematics.yaml"
-         description="YAML file with the kinematics configuration."/>
-    <arg name="ompl_planning_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/ompl_planning.yaml"
-         description="YAML file with the OMPL planning configuration."/>
-    <arg name="pilz_planning_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/pilz_planning.yaml"
-         description="YAML file with the Pilz planning configuration."/>
-    <arg name="stomp_planning_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/stomp_planning.yaml"
-         description="YAML file with the STOMP planning configuration."/>
-    <arg name="chomp_planning_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/chomp_planning.yaml"
-         description="YAML file with the CHOMP planning configuration."/>
-    <arg name="pilz_cartesian_limits_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/pilz_cartesian_limits.yaml"
-         description="YAML file with the Pilz cartesian limits configuration."/>
-    <arg name="joint_limits_file_path"
-         default="$(find-pkg-share $(var configuration_package))/moveit_config/joint_limits.yaml"
-         description="YAML file with the joint limits configuration."/>
-    <arg name="rviz_file_path"
-         default="$(find-pkg-share $(var configuration_package))/rviz/moveit_config.rviz"
-         description="Rviz2 configuration file of the visualization."/>
-    <arg name="simulation"
-         default="true"
-         description="Start robot with mock hardware mirroring command to its states."/>
+  <!-- Arguments -->
+  <arg name="configuration_package"
+       default="$PKG_NAME$"
+       description="The ROS package where we find the configuration files."/>
+  <arg name="description_package"
+       default="$DESCRIPTION_PKG_NAME$"
+       description="Description package with robot URDF/xacro files. Usually not set, it enables use of a custom description."/>
 
-    <!-- Start control layer -->
-    <include file="$(find-pkg-share $CONTROL_PKG_NAME$)/launch/$CONTROL_LAUNCH_FILE$.launch.xml">
-        <arg name="use_mock_hardware" value="$(var simulation)"/>
-        <arg name="launch_rviz" value="false"/>
-    </include>
+  <arg name="start_rviz"
+       default="true"
+       description="Launch RViz visualization?"/>
+  <arg name="robot_type"
+       default="$CELL_NAME$"
+       description="Type of the robot."/>
+  <arg name="prefix"
+       default=""
+       description="Prefix of the joint names, useful for multi-robot setup."/>
 
-    <!-- Load MoveIt Configuration -->
-    <let name="robot_description_semantic_content"
-         value="$(command '$(find-exec xacro) $(var semantic_description_file_path) \
-         cell_name:=$(var cell_name) ')"/>
+  <arg name="description_file"
+       default="$(var robot_type)"
+       description="URDF/XACRO description file with the robot."/>
+  <arg name="semantic_description_file"
+       default="$(var robot_type).srdf.xacro"
+       description="URDF/XACRO semantic description file with the robot."/>
+  <arg name="controllers_file"
+       default="$(var robot_type)_controllers"
+       description="YAML file with the controllers configuration."/>
 
-    <!-- MoveIt node -->
-    <node pkg="moveit_ros_move_group" exec="move_group" output="screen">
-        <param name="robot_description_semantic" value="$(var robot_description_semantic_content)"/>
-        <param from="$(var move_group_config_file_path)"/>
-        <param from="$(var ompl_planning_file_path)"/>
-        <param from="$(var pilz_planning_file_path)"/>
-        <param from="$(var stomp_planning_file_path)"/>
-        <param from="$(var chomp_planning_file_path)"/>
-        <param from="$(var pilz_cartesian_limits_file_path)"/>
-        <param from="$(var joint_limits_file_path)"/>
-        <param from="$(var moveit_controllers_file_path)"/>
-        <param from="$(var kinematics_file_path)"/>
-    </node>
+  <!-- moveit -->
+  <arg name="move_group_config_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/move_group.yaml"
+       description="YAML file with the move_group configuration."/>
+  <arg name="ompl_planning_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/ompl_planning.yaml"
+       description="YAML file with the OMPL planning configuration."/>
+  <arg name="pilz_planning_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/pilz_planning.yaml"
+       description="YAML file with the Pilz planning configuration."/>
+  <arg name="pilz_cartesian_limits_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/pilz_cartesian_limits.yaml"
+       description="YAML file with the Pilz cartesian limits configuration."/>
+  <arg name="joint_limits_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/joint_limits.yaml"
+       description="YAML file with the Pilz cartesian limits configuration."/>
+  <arg name="moveit_controllers_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/moveit_controllers.yaml"
+       description="YAML file with the Pilz cartesian limits configuration."/>
+  <arg name="kinematics_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/kinematics.yaml"
+       description="YAML file with the Pilz cartesian limits configuration."/>
+  <arg name="sensors_3d_file_path"
+       default="$(find-pkg-share $(var configuration_package))/config/moveit/sensors_3d.yaml"
+       description="YAML file with the Pilz cartesian limits configuration."/>
 
-    <!-- RViz2 -->
-    <node pkg="rviz2" exec="rviz2" name="rviz2" output="log" args="-d $(var rviz_file_path) --ros-args --log-level fatal">
-        <param name="robot_description_semantic" value="$(var robot_description_semantic_content)"/>
-        <param from="$(var kinematics_file_path)"/>
-        <param from="$(var ompl_planning_file_path)"/>
-        <param name="default_planning_pipeline" value="ompl"/>
-    </node>
+  <arg name="default_planning_pipeline"
+       default="ompl"
+       description="Default planning pipeline for MoveIt2.">
+   <choice value="ompl"/>
+   <choice value="pilz"/>
+  </arg>
+
+  <let name="robot_description_semantic_content"
+       value="$(command '$(find-exec xacro) $(find-pkg-share $(var description_package))/srdf/$(var semantic_description_file) prefix:=$(var prefix)')"/>
+
+  <node pkg="moveit_ros_move_group" exec="move_group" output="screen">
+    <env name="LC_ALL" value="en_US.UTF-8"/>
+    <param name="robot_description_semantic" value="$(var robot_description_semantic_content)"/>
+    <param from="$(var move_group_config_file_path)"/>
+    <param from="$(var ompl_planning_file_path)"/>
+    <param from="$(var pilz_planning_file_path)"/>
+    <param from="$(var pilz_cartesian_limits_file_path)"/>
+    <param from="$(var joint_limits_file_path)"/>
+    <param from="$(var moveit_controllers_file_path)"/>
+    <param from="$(var kinematics_file_path)"/>
+    <param from="$(var sensors_3d_file_path)"/>
+  </node>
+
+  <node if="$(var start_rviz)" pkg="rviz2" exec="rviz2" output="log" args="-d $(find-pkg-share $(var configuration_package))/rviz/moveit.rviz --ros-args --log-level WARN">
+    <env name="LC_ALL" value="en_US.UTF-8"/>
+    <param name="robot_description_semantic" value="$(var robot_description_semantic_content)"/>
+    <param name="default_planning_pipeline" value="$(var default_planning_pipeline)"/>
+    <param from="$(var sensors_3d_file_path)"/>
+    <param from="$(var kinematics_file_path)"/>
+  </node>
 
 </launch>

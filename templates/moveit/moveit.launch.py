@@ -1,18 +1,18 @@
 # Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt)
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# 
-# Source of this file are templates in https://github.com/StoglRobotics/ros_team_workspace repository.
+#
+# Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
@@ -20,6 +20,7 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch import LaunchDescription
 from launch.actions import OpaqueFunction
+
 
 def launch_setup(context, *args, **kwargs):
     description_package = LaunchConfiguration("description_package")
@@ -68,9 +69,15 @@ def launch_setup(context, *args, **kwargs):
     )
 
     robot_description = {"robot_description": robot_description_content.perform(context)}
-    robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content.perform(context)}
-    planning_config = PathJoinSubstitution([FindPackageShare(moveit_package), "config", "ompl_planning.yaml"])
-    move_group_config = PathJoinSubstitution([FindPackageShare(moveit_package), "config", "move_group.yaml"])
+    robot_description_semantic = {
+        "robot_description_semantic": robot_description_semantic_content.perform(context)
+    }
+    planning_config = PathJoinSubstitution(
+        [FindPackageShare(moveit_package), "config", "ompl_planning.yaml"]
+    )
+    move_group_config = PathJoinSubstitution(
+        [FindPackageShare(moveit_package), "config", "move_group.yaml"]
+    )
 
     # -------------------------------------------------------#
     #                 Move Group Node                        #
@@ -88,11 +95,9 @@ def launch_setup(context, *args, **kwargs):
             {"use_sim_time": use_sim_time},
         ],
     )
-    
+
     # RViz
-    rviz_config = PathJoinSubstitution(
-        [FindPackageShare(moveit_package), "rviz", "moveit.rviz"]
-    )
+    rviz_config = PathJoinSubstitution([FindPackageShare(moveit_package), "rviz", "moveit.rviz"])
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -108,9 +113,9 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
-            move_group_node,
-            rviz_node,
-        ]
+        move_group_node,
+        rviz_node,
+    ]
 
 
 def generate_launch_description():
@@ -190,6 +195,4 @@ def generate_launch_description():
         )
     )
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

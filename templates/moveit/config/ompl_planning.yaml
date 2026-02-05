@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Source of this file are templates in https://github.com/b-robotized/ros_team_workspace repository.
 #
-# Authors: Nikola Banovic, Daniel Azanov, Dr. Denis (template)
+# Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
+# Template authors: Nikola Banovic, Daniel Azanov, Dr. Denis
 #
 
 /**:
