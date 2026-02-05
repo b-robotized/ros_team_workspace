@@ -14,15 +14,21 @@ $PKG_NAME$/                           # Launch and config files for robot manipu
 ├── [setup.py]                                     # if ament_python is used
 ├── [setup.cfg]                                    # if ament_python is used
 ├── config/
-│   ├── move_group.yaml                            # Various configuration needed for move_group_node: controllers, kinematics, action execution...
-│   ├── <planner>_planning.yaml                    # Specific planner configuration. Default is OMPL
-└── launch/
-    ├── moveit.launch.py                           # MoveIt launch file.
-└── srdf/
-    ├── $CELL_NAME$_macro.srdf.xacro              # Semantic robot description macro
-    ├── $CELL_NAME$.srdf.xacro                    # Semantic robot description required for MoveIt.
+│   └── moveit/
+│       ├── move_group_config.yaml                 # Various configuration needed for move_group_node: controllers, kinematics, action execution...
+│       ├── moveit_controllers.yaml                # Controller manager configuration
+│       ├── joint_limits.yaml                      # Joint limits overriding URDF
+│       ├── kinematics.yaml                        # Kinematics solver configuration
+│       ├── sensors_3d.yaml                        # Perception configuration
+│       └── <planner>_planning.yaml                # Specific planner configuration (OMPL, Pilz, CHOMP, STOMP)
+├── launch/
+│   └── moveit.launch.xml                          # MoveIt launch file (or .py)
+├── srdf/
+│   ├── $CELL_NAME$_macro.srdf.xacro               # Semantic robot description macro (optional)
+│   └── $CELL_NAME$.srdf.xacro                     # Semantic robot description required for MoveIt (optional)
 └── rviz/
-    ├── moveit.launch.py                           # RViZ config with MoveIt MotionPlanning widget.
+    ├── moveit.rviz                                # RViZ config with MoveIt MotionPlanning widget
+    └── moveit_config.rviz                         # RViZ config for MoveIt setup assistant
 
 ```
 ## Compiling the package
@@ -38,7 +44,7 @@ To successfully compile and run this package, it is necessary to install `MoveIt
 
 2. Open another terminal and launch MoveIt
    ```
-   ros2 launch $CELL_NAME$_moveit moveit.launch.xml
+   ros2 launch $PKG_NAME$ moveit.launch.xml
    ```
 
 3. You should now be able to use `MotionPlanning` widget in `rviz2` to assign, plan and execute robot motion.
