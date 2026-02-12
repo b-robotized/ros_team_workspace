@@ -40,9 +40,9 @@ copyright = "{}, {}".format(time.strftime("%Y"), author)
 
 # Adjust those to change ros distribution
 # you might also need to whitelist branch and
-ros_distro = "humble"
-distro_title = "Humble"
-distro_title_full = "Humble Hawksbill"
+ros_distro = "jazzy"
+distro_title = "Jazzy"
+distro_title_full = "Jazzy Jalisco"
 repos_file_branch = "master"
 
 # The version info for the project you're documenting, acts as replacement for
