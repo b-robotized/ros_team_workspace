@@ -18,7 +18,7 @@ FreeCad provides some valuable add-ons. You can install them via the *Addon Mana
 - **Manipulator Workbench**
   Open *Add-on Manager* and select *Workbenches.* Then, search for the Manipulator Workbench and install it.
 
-.. image:: images/install_addons_4.png
+.. image:: images/robot_description_freecad_install_manipulator_workbench.png
    :alt: install_addons (4).png
 
 Viewing an object
@@ -26,7 +26,7 @@ Viewing an object
 
 If you get lost by "zooming" around the object or if the object is not directly visible after opening a file. You can easily fit the screen by clicking on the small cube under the "view" cube in the right upper corner of the object view and selecting *Fit all* (or using the shortcut, by pressing first ``V`` and immediately after ``F``).
 
-.. image:: images/slika.png
+.. image:: images/robot_description_freecad_fit_view.png
    :alt: Adjusting view to fit all
 
 Navigation
@@ -45,7 +45,7 @@ If you select the isometric view
 1. First, select start
 2. Press isometric view
 
-.. image:: images/freecad_isometric_view.png
+.. image:: images/robot_description_freecad_isometric_view.png
    :alt: freecad_isometric_view.png
 
 And the robot is not showing as expected, you can transform the model as following:
@@ -57,7 +57,7 @@ First set the navigation style to blender as this allows to rotate specific angl
 3. A coordinate system should pop up where you can rotate and translate.
 4. Accept by pressing on ok in the task tab (right next to model in step one)
 
-.. image:: images/transform_2.png
+.. image:: images/robot_description_freecad_transform_model.png
    :alt: transform (2).png
 
 Measurements
@@ -73,7 +73,7 @@ Can be used to measure distance between two parallel lines/planes or the like.
 1. Select the part workbench
 2. The toolbar should show some measure tape symbols. The most left one in the picture is for linear measurements. The next one for measuring angles.
 
-.. image:: images/linear_meassurments.png
+.. image:: images/robot_description_freecad_linear_measurement_tools.png
    :alt: linear measurement tool
 
 Lines-Line, Line-Plane, Plane-Plane:
@@ -86,7 +86,7 @@ Lines-Line, Line-Plane, Plane-Plane:
 6. The measurement will pop up, showing you the distances
 7. With the control box you can deselect/delete/clear measurements
 
-.. image:: images/linear-meassurment_3.png
+.. image:: images/robot_description_freecad_linear_measurement_example.png
    :alt: linear measurement
 
 Circles
@@ -107,7 +107,7 @@ Circles
 
    The selected one (2 blue lines and blue circle with dot) can be used to measure the distance between circle-circle or circle-line/plane
 
-.. image:: images/circular_measurments.png
+.. image:: images/robot_description_freecad_circular_measurement_tools.png
    :alt: circular_measurments.png
 
 Radius:
@@ -121,10 +121,10 @@ First select the Manipulator workbench.
 5. Repeat for second point
 6. The calculated middle point and radius should now be visible in the screen
 
-   .. image:: images/meassure_circle_drawio_3.png
+   .. image:: images/robot_description_freecad_measure_circle_radius.png
       :alt: How to measure a circular shape
 
 Circle-Line, Circle-Plane, Circle-Circle:
 
-.. image:: images/circlular_measurment.png
+.. image:: images/robot_description_freecad_measure_circle_distance.png
    :alt: circle circle measurement
