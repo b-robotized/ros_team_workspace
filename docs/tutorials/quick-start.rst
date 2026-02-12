@@ -51,7 +51,7 @@ Docker workspace from ``.repos`` file:
 
 .. note::
    For more advanced options such as proxy configuration, standalone workspaces,
-   IPC communication setup, and other features, check the :doc:`../rtwcli/index` page.
+   IPC communication setup, custom environment variables, and other features, check the :doc:`../rtwcli/index` page.
 
 Create new package in an existing workspace
 --------------------------------------------------------

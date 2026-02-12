@@ -62,6 +62,10 @@ repositories.
       * ``--enable-local-updates``: Enable system updates (``apt-get update``
         and ``rosdep update``) for local workspaces. By default, these updates
         are only run for Docker workspaces.
+      * ``--env-vars``: Additional environment variables to export in the
+        workspace (format: ``KEY=VALUE``). Multiple variables can be specified
+        separated by spaces. These variables are exported when the workspace is
+        sourced.
 
 * Minimal example:
 
@@ -257,3 +261,24 @@ Until rocker PR is merged you are encouraged to install your rocker fork with:
    pip3 uninstall rocker   # if you have installed it with 'sudo' use it here too
    git clone https://github.com/b-robotized-forks/rocker.git --branch <your-feature-branch>
    cd rocker && pip3 install -e . && cd -
+
+
+How to set custom environment variables
+"""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-env-vars-usage:
+
+You can set custom environment variables that will be automatically exported whenever
+you use the workspace (both local and Docker). This is useful for variables like
+``ROS_DOMAIN_ID``, ``ROS_LOCALHOST_ONLY``, or ``RMW_IMPLEMENTATION``.
+
+* Example:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_custom_ws \
+      --ros-distro jazzy \
+      --env-vars ROS_DOMAIN_ID=28 ROS_LOCALHOST_ONLY=1 ROS_STATIC_PEERS=10.28.28.28
+
+When you later run ``rtw workspace use my_custom_ws`` (or entering the Docker container),
+these variables will be set.
