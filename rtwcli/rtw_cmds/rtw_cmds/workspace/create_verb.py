@@ -133,6 +133,7 @@ class CreateVerbArgs:
     env_file: str = ""
     proxy_server: str = ""
     proxy_ca_cert: str = ""
+    env_vars: dict = field(default_factory=dict)
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -583,6 +584,12 @@ class CreateVerb(VerbExtension):
             help="Path to company CA certificate file for proxy (will be copied to container)",
             default=None,
         )
+        parser.add_argument(
+            "--env-vars",
+            nargs="*",
+            help="Additional environment variables to export in the workspace (format: KEY=VALUE)",
+            default=[],
+        )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
         if create_args.apt_packages:
@@ -962,6 +969,7 @@ RUN rm -rf /var/lib/apt/lists/*
                 distro=create_args.ros_distro,
                 ws_folder=create_args.ws_abs_path_in_docker,
                 base_ws=create_args.upstream_ws_name if create_args.has_upstream_ws else "",
+                env_vars=create_args.env_vars,
             ),
         )
 
@@ -1156,6 +1164,20 @@ RUN rm -rf /var/lib/apt/lists/*
         filtered_args = get_filtered_args(args, list(fields(CreateVerbArgs)))
         filtered_args["ws_abs_path"] = os.path.normpath(os.path.abspath(args.ws_folder))
         filtered_args["ws_name"] = ws_name
+
+        # Process env_vars
+        env_vars_dict = {}
+        if args.env_vars:
+            for env_var in args.env_vars:
+                if "=" not in env_var:
+                    logger.warning(
+                        f"Skipping invalid environment variable format: '{env_var}'. Expected format KEY=VALUE"
+                    )
+                    continue
+                key, value = env_var.split("=", 1)
+                env_vars_dict[key] = value
+        filtered_args["env_vars"] = env_vars_dict
+
         create_args = CreateVerbArgs(**filtered_args)
         logger.info("### CREATE ARGS ###")
         rich.print(create_args)
@@ -1292,6 +1314,7 @@ RUN rm -rf /var/lib/apt/lists/*
             base_ws=create_args.upstream_ws_name if create_args.has_upstream_ws else "",
             docker_container_name=create_args.container_name if create_args.docker else "",
             standalone=create_args.standalone,
+            env_vars=create_args.env_vars,
         )
         if not update_workspaces_config(WORKSPACES_PATH, local_main_ws):
             raise RuntimeError("Failed to update workspaces config with main workspace.")
