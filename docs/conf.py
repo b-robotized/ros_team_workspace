@@ -40,9 +40,9 @@ copyright = "{}, {}".format(time.strftime("%Y"), author)
 
 # Adjust those to change ros distribution
 # you might also need to whitelist branch and
-ros_distro = "humble"
-distro_title = "Humble"
-distro_title_full = "Humble Hawksbill"
+ros_distro = "jazzy"
+distro_title = "Jazzy"
+distro_title_full = "Jazzy Jalisco"
 repos_file_branch = "master"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -242,7 +242,7 @@ html_context = {
 smv_branch_whitelist = r"^(master|humble|galactic|foxy)$"
 smv_released_pattern = r"^refs/(heads|remotes/[^/]+)/(humble|galactic|foxy).*$"
 smv_remote_whitelist = r"^(origin)$"
-smv_latest_version = "humble"
+smv_latest_version = "jazzy"
 smv_eol_versions = ["galactic", "foxy"]
 
 distro_full_names = {
@@ -250,6 +250,7 @@ distro_full_names = {
     "galactic": "Galactic Geochelone",
     "humble": "Humble Hawksbill",
     "jazzy": "Jazzy Jalisco",
+    "kilted": "Kilted Kaiju",
     "rolling": "Rolling Ridley",
 }
 
@@ -366,7 +367,7 @@ def smv_rewrite_configs(app, config):
     # to rewrite the various configuration items with the current version.
     if app.config.smv_current_version != "":
         branch_distro = {
-            "master": "humble",
+            "master": "jazzy",
             # "master": "jazzy_rolling",
             # "jazzy": "jazzy",
             "humble": "humble",

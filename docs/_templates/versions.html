@@ -7,9 +7,8 @@
   </span>
   <div class="rst-other-versions">
     <dl>
-<!--       <dt>ROS Team Workspace - Galactic and Rolling</dt> -->
       {%- for item in versions.in_development|sort(reverse=True) %}
-      <dd><a href="{{ item.url }}">{{ item.name|title }} (latest)</a></dd>
+      <dd><a href="{{ item.url }}">{{ item.name|title }} (Jazzy, Kilted, Rolling)</a></dd>
       {%- endfor %}
     </dl>
     <dl>
