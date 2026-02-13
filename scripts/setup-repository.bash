@@ -80,14 +80,14 @@ case "$choice" in
 "1")
   mkdir -p .github/workflows
 
-  cp -n "${PACKAGE_TEMPLATES}/pkg_name.repos" "${PKG_NAME}.${ros_distro}.upstream.repos"
-  cp -n "${PACKAGE_TEMPLATES}/pkg_name.repos" "${PKG_NAME}.${ros_distro}.repos"
-  cp -n "${PACKAGE_TEMPLATES}/README.md.github" README.md
+  cp --update=none "${PACKAGE_TEMPLATES}/pkg_name.repos" "${PKG_NAME}.${ros_distro}.upstream.repos"
+  cp --update=none "${PACKAGE_TEMPLATES}/pkg_name.repos" "${PKG_NAME}.${ros_distro}.repos"
+  cp --update=none "${PACKAGE_TEMPLATES}/README.md.github" README.md
   repository="github"
   ;;
 "2")
-  cp -n $PACKAGE_TEMPLATES/.gitlab-ci.yml .
-  cp -n $PACKAGE_TEMPLATES/.ci.repos .
+  cp --update=none $PACKAGE_TEMPLATES/.gitlab-ci.yml .
+  cp --update=none $PACKAGE_TEMPLATES/.ci.repos .
   repository="gitlab"
   ;;
 *)
@@ -169,9 +169,9 @@ case "$documentation" in
 "y")
   DOCS_FOLDER='docs'
   mkdir $DOCS_FOLDER
-  cp -n $PACKAGE_TEMPLATES/CI-github_docs-sphinx-build-check.yml .github/workflows/docs-sphinx-build-check.yml
+  cp --update=none $PACKAGE_TEMPLATES/CI-github_docs-sphinx-build-check.yml .github/workflows/docs-sphinx-build-check.yml
   sed -i 's/\$DOCS_FOLDER\$/'${DOCS_FOLDER}'/g' .github/workflows/docs-sphinx-build-check.yml
-  cp -n $PACKAGE_TEMPLATES/CI-github_docs-sphinx-make-page.yml .github/workflows/docs-sphinx-make-page.yml
+  cp --update=none $PACKAGE_TEMPLATES/CI-github_docs-sphinx-make-page.yml .github/workflows/docs-sphinx-make-page.yml
   sed -i 's/\$DOCS_FOLDER\$/'${DOCS_FOLDER}'/g' .github/workflows/docs-sphinx-make-page.yml
 
   cd $DOCS_FOLDER

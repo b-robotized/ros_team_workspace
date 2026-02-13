@@ -80,20 +80,20 @@ mkdir -p "$F_NAME"
 ROBOT_URDF_XACRO="urdf/${ROBOT_NAME}.urdf.xacro"
 ROBOT_MACRO="urdf/${ROBOT_NAME}/${ROBOT_NAME}_macro.xacro"
 ROBOT_MACRO_ROS2_CONTROL="urdf/${ROBOT_NAME}/${ROBOT_NAME}_macro.ros2_control.xacro"
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot.urdf.xacro" "$ROBOT_URDF_XACRO"
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.xacro" "$ROBOT_MACRO"
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.ros2_control.xacro" "$ROBOT_MACRO_ROS2_CONTROL"
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot.urdf.xacro" "$ROBOT_URDF_XACRO"
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.xacro" "$ROBOT_MACRO"
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.ros2_control.xacro" "$ROBOT_MACRO_ROS2_CONTROL"
 mkdir -p urdf/common
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/inertials.xacro" urdf/common/inertials.xacro
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/materials.xacro
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/inertials.xacro" urdf/common/inertials.xacro
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/materials.xacro
 
 # Copy launch files for testing the description
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   mkdir -p launch
   ROBOT_DESCRIPTION_LAUNCH="launch/load_description.launch.xml"
-  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/load_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
+  cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
   VIEW_ROBOT_LAUNCH="launch/view_${ROBOT_NAME}.launch${file_type}"
-  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" "$VIEW_ROBOT_LAUNCH"
+  cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" "$VIEW_ROBOT_LAUNCH"
 
   # sed all needed files
   FILES_TO_SED=($ROBOT_URDF_XACRO $ROBOT_MACRO $ROBOT_MACRO_ROS2_CONTROL $VIEW_ROBOT_LAUNCH $ROBOT_DESCRIPTION_LAUNCH)
@@ -111,12 +111,12 @@ touch config/.gitkeep
 # Copy rviz files
 mkdir -p rviz
 ROBOT_RVIZ="rviz/${ROBOT_NAME}.rviz"
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot.rviz" "$ROBOT_RVIZ"
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot.rviz" "$ROBOT_RVIZ"
 
 # copy test files
 mkdir -p test
 ROBOT_TEST_FILE="test/${ROBOT_NAME}_test_urdf_xacro.py"
-cp -n "${ROBOT_DESCRIPTION_TEMPLATES}/test_urdf_xacro.py" "$ROBOT_TEST_FILE"
+cp --update=none "${ROBOT_DESCRIPTION_TEMPLATES}/test_urdf_xacro.py" "$ROBOT_TEST_FILE"
 
 # sed all needed files
 FILES_TO_SED=($ROBOT_URDF_XACRO $ROBOT_MACRO $ROBOT_MACRO_ROS2_CONTROL $VIEW_ROBOT_LAUNCH_XML $ROBOT_TEST_FILE)

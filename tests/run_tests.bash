@@ -13,7 +13,7 @@ git config --global user.email "test@example.com"
 git config --global user.name "Test User"
 
 # Install rtwcli
-echo "Installing rtwcli..."
+echo -e "${TERMINAL_COLOR_BLUE}Installing rtwcli...${TERMINAL_COLOR_NC}"
 
 # Setup auto-sourcing to enable aliases mechanism in setup.bash if needed
 source "$RTW_ROOT"/setup.bash
@@ -30,7 +30,7 @@ cd -  # go back to the folder where you cloned the RTW
 export PATH=$PATH:$HOME/.local/bin
 
 # Create a workspace with RTW CLI
-echo "Creating workspace with rtwcli..."
+echo -e "${TERMINAL_COLOR_BLUE}Creating workspace with rtwcli...${TERMINAL_COLOR_NC}"
 rtw workspace create --ws-name test_ws --ws-folder ~/ws --ros-distro "$ROS_DISTRO"
 
 # Use the workspace to setup environment
@@ -40,7 +40,7 @@ rtw ws test_ws
 source "/tmp/ros_team_workspace/workspace_$$.bash"
 
 echo "----------------------------------------------------------------"
-echo "Creating description package..."
+echo -e "${TERMINAL_COLOR_BLUE}Creating description package...${TERMINAL_COLOR_NC}"
 rosds
 # Input:
 # \n : Is this your workspace? (Yes)
@@ -56,7 +56,7 @@ rosds
 echo -e "\n1\n1\nTest User\ntest@example.com\n1\nApache-2.0\n1\n\nno\n" | create-new-package my_robot_description "Description package"
 
 echo "----------------------------------------------------------------"
-echo "Setting up robot description..."
+echo -e "${TERMINAL_COLOR_BLUE}Setting up robot description...${TERMINAL_COLOR_NC}"
 cd my_robot_description
 # Input:
 # 1  : xml launch files
@@ -64,14 +64,14 @@ cd my_robot_description
 echo -e "1\n\n" | setup-robot-description my_robot 1
 
 echo "----------------------------------------------------------------"
-echo "Creating control package..."
+echo -e "${TERMINAL_COLOR_BLUE}Creating control package...${TERMINAL_COLOR_NC}"
 
 # Same input as above
 rosds
 echo -e "\n1\n1\nTest User\ntest@example.com\n1\nApache-2.0\n1\n\nno\n" | create-new-package my_robot_control "Control package"
 
 echo "----------------------------------------------------------------"
-echo "Setting up robot bringup..."
+echo -e "${TERMINAL_COLOR_BLUE}Setting up robot bringup...${TERMINAL_COLOR_NC}"
 cd my_robot_control
 # Input:
 # 1  : xml launch files
@@ -79,13 +79,13 @@ cd my_robot_control
 echo -e "1\n\n" | setup-robot-bringup my_robot my_robot_description
 
 echo "----------------------------------------------------------------"
-echo "Building workspace..."
+echo -e "${TERMINAL_COLOR_BLUE}Building workspace...${TERMINAL_COLOR_NC}"
 rosdep_prep
 rosdepi
 cb
 
 echo "----------------------------------------------------------------"
-echo "Testing launch files..."
+echo -e "${TERMINAL_COLOR_BLUE}Testing launch files...${TERMINAL_COLOR_NC}"
 # Refresh environment after build
 rtw ws test_ws
 source "/tmp/ros_team_workspace/workspace_$$.bash"
@@ -98,13 +98,13 @@ cleanup() {
 trap cleanup EXIT
 
 # Test description launch
-echo "Launching my_robot_description load_description.launch.xml..."
+echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_description load_description.launch.xml...${TERMINAL_COLOR_NC}"
 ros2 launch my_robot_description load_description.launch.xml &
 PID_DESC=$!
-echo "Waiting for launch file to start..."
+echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
 sleep 10
 
-echo "Checking for /robot_description topic..."
+echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
 if ros2 topic list | grep -q "/robot_description"; then
     echo -e "${TERMINAL_COLOR_GREEN}Topic /robot_description found.${TERMINAL_COLOR_NC}"
 else
@@ -112,7 +112,7 @@ else
     exit 1
 fi
 
-echo "Checking for data on /robot_description..."
+echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
 if ros2 topic echo /robot_description --once --timeout 5 > /dev/null; then
     echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
 else
@@ -124,28 +124,45 @@ kill $PID_DESC
 PID_DESC=""
 sleep 5
 
-# Test bringup launch (start_offline)
-echo "Launching my_robot_control start_offline.launch.xml..."
+# Test bringup launch
+echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_control start_offline.launch.xml...${TERMINAL_COLOR_NC}"
 ros2 launch my_robot_control start_offline.launch.xml &
 PID_CTRL=$!
-echo "Waiting for launch file to start..."
+echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
 sleep 20
 
-echo "Checking controllers..."
+# First check the robot description again.
+echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
+if ros2 topic list | grep -q "/robot_description"; then
+    echo -e "${TERMINAL_COLOR_GREEN}Topic /robot_description found.${TERMINAL_COLOR_NC}"
+else
+    echo -e "${TERMINAL_COLOR_RED}Error: Topic /robot_description not found.${TERMINAL_COLOR_NC}"
+    exit 1
+fi
+
+echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
+if ros2 topic echo /robot_description --once --timeout 5 > /dev/null; then
+    echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
+else
+    echo -e "${TERMINAL_COLOR_RED}Error: No data received on /robot_description.${TERMINAL_COLOR_NC}"
+    exit 1
+fi
+
+echo -e "${TERMINAL_COLOR_YELLOW}Checking controllers...${TERMINAL_COLOR_NC}"
 CONTROLLER_LIST=$(ros2 control list_controllers)
 echo "$CONTROLLER_LIST"
 
 ACTIVE_COUNT=$(echo "$CONTROLLER_LIST" | grep "active" | wc -l)
-echo "Found $ACTIVE_COUNT active controllers."
+echo -e "${TERMINAL_COLOR_BLUE}Found $ACTIVE_COUNT active controllers.${TERMINAL_COLOR_NC}"
 
 if [ "$ACTIVE_COUNT" -ge 2 ]; then
-    echo "Success: At least 2 controllers are active."
+    echo -e "${TERMINAL_COLOR_GREEN}Success: At least 2 controllers are active.${TERMINAL_COLOR_NC}"
 else
-    echo "Error: Expected at least 2 active controllers, found $ACTIVE_COUNT."
+    echo -e "${TERMINAL_COLOR_RED}Error: Expected at least 2 active controllers, found $ACTIVE_COUNT.${TERMINAL_COLOR_NC}"
     exit 1
 fi
 
 kill $PID_CTRL
 PID_CTRL=""
 
-echo "All tests passed!"
+echo -e "${TERMINAL_COLOR_GREEN}All tests passed!${TERMINAL_COLOR_NC}"

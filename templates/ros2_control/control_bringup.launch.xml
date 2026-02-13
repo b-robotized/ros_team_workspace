@@ -50,8 +50,6 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
        default="controller_manager"
        description="Name of the controller manager node."/>
 
-  <let name="controllers_file_path" value="$(find-pkg-share $(var runtime_config_package))/config/$(var controllers_file).yaml"/>
-
   <include file="$(find-pkg-share $(var description_package))/launch/load_description.launch.xml">
     <arg name="description_package" value="$(var description_package)"/>
     <arg name="description_file" value="$(var description_file)"/>
@@ -64,6 +62,8 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
   <node pkg="controller_manager" exec="ros2_control_node" name="$(var controller_manager_name)" output="both">
     <param name="update_rate" value="100"/>
   </node>
+
+  <let name="controllers_file_path" value="$(find-pkg-share $(var runtime_config_package))/config/$(var controllers_file).yaml"/>
 
   <!--joint_state_broadcaster spawner-->
   <node pkg="controller_manager" exec="spawner" args="joint_state_broadcaster -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
