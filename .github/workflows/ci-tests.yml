@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y git nano pigz pv wget
+          apt-get install -y git nano pigz pv python3-pip wget
 
       - name: Run tests
         run: |
