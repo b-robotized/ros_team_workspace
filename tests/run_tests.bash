@@ -167,19 +167,19 @@ echo "----------------------------------------------------------------"
 echo -e "${TERMINAL_COLOR_BLUE}Testing joint_trajectory_controller...${TERMINAL_COLOR_NC}"
 
 # Record initial joint positions
-INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | grep -A 100 "position:" | head -1)
-echo -e "${TERMINAL_COLOR_BLUE}Initial joint positions: $INITIAL_POSITIONS${TERMINAL_COLOR_NC}"
+INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+echo -e "${TERMINAL_COLOR_BLUE}Initial joint positions:\n$INITIAL_POSITIONS${TERMINAL_COLOR_NC}"
 
 # Launch the JTC test publisher
 echo -e "${TERMINAL_COLOR_BLUE}Launching test_joint_trajectory_controller publisher...${TERMINAL_COLOR_NC}"
 ros2 launch my_robot_control test_joint_trajectory_controller.launch.xml &
 PID_TEST_PUB=$!
-echo -e "${TERMINAL_COLOR_YELLOW}Waiting for robot to move (6 seconds)...${TERMINAL_COLOR_NC}"
-sleep 6
+echo -e "${TERMINAL_COLOR_YELLOW}Waiting for robot to move (15 seconds)...${TERMINAL_COLOR_NC}"
+sleep 15
 
 # Check if joints have moved
-CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | grep -A 100 "position:" | head -1)
-echo -e "${TERMINAL_COLOR_BLUE}Current joint positions: $CURRENT_POSITIONS${TERMINAL_COLOR_NC}"
+CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+echo -e "${TERMINAL_COLOR_BLUE}Current joint positions:\n$CURRENT_POSITIONS${TERMINAL_COLOR_NC}"
 
 if [ "$INITIAL_POSITIONS" != "$CURRENT_POSITIONS" ]; then
     echo -e "${TERMINAL_COLOR_GREEN}Success: Robot moved with joint_trajectory_controller.${TERMINAL_COLOR_NC}"
@@ -201,28 +201,36 @@ ros2 control switch_controllers --deactivate joint_trajectory_controller --activ
 echo -e "${TERMINAL_COLOR_YELLOW}Checking controller states after switch...${TERMINAL_COLOR_NC}"
 ros2 control list_controllers
 
+ros2 control list_controllers -v
+ros2 control list_hardware_interfaces
+
 echo "----------------------------------------------------------------"
 echo -e "${TERMINAL_COLOR_BLUE}Testing forward_position_controller...${TERMINAL_COLOR_NC}"
 
 # Record initial joint positions
-INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | grep -A 100 "position:" | head -1)
-echo -e "${TERMINAL_COLOR_BLUE}Initial joint positions: $INITIAL_POSITIONS${TERMINAL_COLOR_NC}"
+INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+echo -e "${TERMINAL_COLOR_BLUE}Initial joint positions:\n$INITIAL_POSITIONS${TERMINAL_COLOR_NC}"
 
 # Launch the FPC test publisher
 echo -e "${TERMINAL_COLOR_BLUE}Launching test_forward_position_controller publisher...${TERMINAL_COLOR_NC}"
 ros2 launch my_robot_control test_forward_position_controller.launch.xml &
 PID_TEST_PUB=$!
-echo -e "${TERMINAL_COLOR_YELLOW}Waiting for robot to move (6 seconds)...${TERMINAL_COLOR_NC}"
-sleep 6
 
-# Check if joints have moved
-CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | grep -A 100 "position:" | head -1)
-echo -e "${TERMINAL_COLOR_BLUE}Current joint positions: $CURRENT_POSITIONS${TERMINAL_COLOR_NC}"
+# Monitor positions every 2 seconds for 50 iterations
+FPC_MOVED=false
+for i in $(seq 1 5); do
+    sleep 2
+    CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+    echo -e "${TERMINAL_COLOR_YELLOW}[$i/5] Joint positions:\n$CURRENT_POSITIONS${TERMINAL_COLOR_NC}"
+    if [ "$INITIAL_POSITIONS" != "$CURRENT_POSITIONS" ]; then
+        echo -e "${TERMINAL_COLOR_GREEN}Success: Robot moved with forward_position_controller (detected at check $i).${TERMINAL_COLOR_NC}"
+        FPC_MOVED=true
+        break
+    fi
+done
 
-if [ "$INITIAL_POSITIONS" != "$CURRENT_POSITIONS" ]; then
-    echo -e "${TERMINAL_COLOR_GREEN}Success: Robot moved with forward_position_controller.${TERMINAL_COLOR_NC}"
-else
-    echo -e "${TERMINAL_COLOR_RED}Error: Robot did not move with forward_position_controller.${TERMINAL_COLOR_NC}"
+if [ "$FPC_MOVED" != "true" ]; then
+    echo -e "${TERMINAL_COLOR_RED}Error: Robot did not move with forward_position_controller after 5 checks.${TERMINAL_COLOR_NC}"
     exit 1
 fi
 

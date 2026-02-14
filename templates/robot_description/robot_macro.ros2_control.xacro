@@ -25,8 +25,8 @@
       </hardware>
       <joint name="${prefix}joint1">
         <command_interface name="position">     <!-- Add/Remove interfaces as needed -->
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">${-2*pi}</param>
+          <param name="max">${2*pi}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
@@ -36,8 +36,8 @@
       </joint>
       <joint name="${prefix}joint2">
         <command_interface name="position">     <!-- Add/Remove interfaces as needed -->
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">${-2*pi}</param>
+          <param name="max">${2*pi}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
@@ -47,8 +47,8 @@
       </joint>
       <joint name="${prefix}joint3">
         <command_interface name="position">     <!-- Add/Remove interfaces as needed -->
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">${-2*pi}</param>
+          <param name="max">${2*pi}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
@@ -58,8 +58,8 @@
       </joint>
       <joint name="${prefix}joint4">
         <command_interface name="position">     <!-- Add/Remove interfaces as needed -->
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">${-2*pi}</param>
+          <param name="max">${2*pi}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
@@ -69,8 +69,8 @@
       </joint>
       <joint name="${prefix}joint5">
         <command_interface name="position">     <!-- Add/Remove interfaces as needed -->
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">${-2*pi}</param>
+          <param name="max">${2*pi}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
@@ -80,8 +80,8 @@
       </joint>
       <joint name="${prefix}joint6">
         <command_interface name="position">     <!-- Add/Remove interfaces as needed -->
-          <param name="min">-1</param>
-          <param name="max">1</param>
+          <param name="min">${-2*pi}</param>
+          <param name="max">${2*pi}</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">0.0</param>
