@@ -20,9 +20,9 @@ usage="setup-robot-description ROBOT_NAME LAUNCH_FILE_TYPE"
 
 # Load Framework defines
 script_own_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
-source $script_own_dir/../setup.bash
+source "$script_own_dir"/../setup.bash
 
-check_and_set_ros_distro_and_version ${ROS_DISTRO}
+check_and_set_ros_distro_and_version "${ROS_DISTRO}"
 
 ROBOT_NAME=$1
 if [ -z "$ROBOT_NAME" ]; then
@@ -65,42 +65,42 @@ read
 
 # Create folders for meshes
 F_NAME="meshes/${ROBOT_NAME}/collision"
-mkdir -p $F_NAME
-touch $F_NAME/.gitkeep
+mkdir -p "$F_NAME"
+touch "$F_NAME"/.gitkeep
 
 F_NAME="meshes/${ROBOT_NAME}/visual"
-mkdir -p $F_NAME
-touch $F_NAME/.gitkeep
+mkdir -p "$F_NAME"
+touch "$F_NAME"/.gitkeep
 
 # Create folder for URDF/xacro files
 F_NAME="urdf/${ROBOT_NAME}"
-mkdir -p $F_NAME
+mkdir -p "$F_NAME"
 
 # Copy URDF/xacro files
 ROBOT_URDF_XACRO="urdf/${ROBOT_NAME}.urdf.xacro"
 ROBOT_MACRO="urdf/${ROBOT_NAME}/${ROBOT_NAME}_macro.xacro"
 ROBOT_MACRO_ROS2_CONTROL="urdf/${ROBOT_NAME}/${ROBOT_NAME}_macro.ros2_control.xacro"
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot.urdf.xacro" $ROBOT_URDF_XACRO
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.xacro" $ROBOT_MACRO
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.ros2_control.xacro" $ROBOT_MACRO_ROS2_CONTROL
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot.urdf.xacro" "$ROBOT_URDF_XACRO"
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.xacro" "$ROBOT_MACRO"
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot_macro.ros2_control.xacro" "$ROBOT_MACRO_ROS2_CONTROL"
 mkdir -p urdf/common
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/inertials.xacro" urdf/common/inertials.xacro
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/materials.xacro
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/inertials.xacro" urdf/common/inertials.xacro
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/materials.xacro
 
 # Copy launch files for testing the description
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   mkdir -p launch
   ROBOT_DESCRIPTION_LAUNCH="launch/load_description.launch.xml"
-  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/load_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
+  cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/load_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
   VIEW_ROBOT_LAUNCH="launch/view_${ROBOT_NAME}.launch${file_type}"
-  cp -n "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" $VIEW_ROBOT_LAUNCH
+  cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" "$VIEW_ROBOT_LAUNCH"
 
   # sed all needed files
   FILES_TO_SED=($ROBOT_URDF_XACRO $ROBOT_MACRO $ROBOT_MACRO_ROS2_CONTROL $VIEW_ROBOT_LAUNCH $ROBOT_DESCRIPTION_LAUNCH)
 
   for SED_FILE in "${FILES_TO_SED[@]}"; do
-    sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
-    sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" $SED_FILE
+    sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" "$SED_FILE"
+    sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" "$SED_FILE"
   done
 done
 
@@ -111,18 +111,18 @@ touch config/.gitkeep
 # Copy rviz files
 mkdir -p rviz
 ROBOT_RVIZ="rviz/${ROBOT_NAME}.rviz"
-cp -n "$ROBOT_DESCRIPTION_TEMPLATES/robot.rviz" $ROBOT_RVIZ
+cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot.rviz" "$ROBOT_RVIZ"
 
 # copy test files
 mkdir -p test
 ROBOT_TEST_FILE="test/${ROBOT_NAME}_test_urdf_xacro.py"
-cp -n "${ROBOT_DESCRIPTION_TEMPLATES}/test_urdf_xacro.py" $ROBOT_TEST_FILE
+cp --update=none "${ROBOT_DESCRIPTION_TEMPLATES}/test_urdf_xacro.py" "$ROBOT_TEST_FILE"
 
 # sed all needed files
 FILES_TO_SED=($ROBOT_URDF_XACRO $ROBOT_MACRO $ROBOT_MACRO_ROS2_CONTROL $VIEW_ROBOT_LAUNCH_XML $ROBOT_TEST_FILE)
 for SED_FILE in "${FILES_TO_SED[@]}"; do
-  sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
-  sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" $SED_FILE
+  sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" "$SED_FILE"
+  sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" "$SED_FILE"
 done
 
 # Add all the exec depend packages
@@ -193,12 +193,12 @@ if [ ! -f README.md ]; then
   echo "${PKG_NAME}\n\n" > README.md
 fi
 
-cat $ROBOT_DESCRIPTION_TEMPLATES/append_to_README.md >> README.md
+cat "$ROBOT_DESCRIPTION_TEMPLATES"/append_to_README.md >> README.md
 sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" README.md
 sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" README.md
 
 # Compile and add new package the to the path
-compile_and_source_package $PKG_NAME
+compile_and_source_package "$PKG_NAME"
 
 echo ""
 echo -e "${TERMINAL_COLOR_USER_NOTICE}FINISHED: You can test the configuration by executing 'ros2 launch $PKG_NAME view_${ROBOT_NAME}.launch${LAUNCH_FILE_TYPES[*]}'${TERMINAL_COLOR_NC}"

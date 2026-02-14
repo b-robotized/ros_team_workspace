@@ -25,7 +25,8 @@ Authors: Riyan Jose, Dr. Denis
         exec="publisher_forward_position_controller"
         name="publisher_forward_position_controller"
         output="screen">
-    <param from="$(find-pkg-share '$PKG_NAME$')/config/test_goal_publishers_config.yaml"/>
+    <param from="$(find-pkg-share $PKG_NAME$)/config/test_goal_publishers_config.yaml"/>
+    <remap from="/position_commands" to="/forward_position_controller/commands"/>
   </node>
 
 </launch>

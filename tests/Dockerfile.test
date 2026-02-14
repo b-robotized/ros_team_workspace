@@ -1,0 +1,25 @@
+FROM ghcr.io/ros-controls/ros:jazzy-ubuntu
+
+# Install dependencies
+# pigz, pv are used in _RosTeamWs_Defines.bash
+# git, nano, wget are general utilities
+RUN apt-get update && apt-get install -y \
+    git \
+    nano \
+    pigz \
+    pv \
+    python3-pip \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy RTW repository
+COPY . /ros_team_workspace
+
+# Set working directory
+WORKDIR /ros_team_workspace
+
+# Make scripts executable
+RUN chmod +x tests/run_tests.bash scripts/*.bash
+
+# Run tests
+CMD ["./tests/run_tests.bash"]

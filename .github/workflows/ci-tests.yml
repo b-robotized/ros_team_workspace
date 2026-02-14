@@ -1,0 +1,29 @@
+name: CI Tests
+on:
+  workflow_dispatch:
+    inputs:
+      ros_distro:
+        description: 'ROS Distro'
+        required: true
+        default: 'jazzy'
+  pull_request:
+  push:
+    branches: [ master, main ]
+
+jobs:
+  docker_tests:
+    name: Run RTW Tests (Docker)
+    runs-on: ubuntu-latest
+    container: ghcr.io/ros-controls/ros:${{ inputs.ros_distro || 'jazzy' }}-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git nano pigz pv python3-pip wget
+
+      - name: Run tests
+        run: |
+          chmod +x tests/run_tests.bash
+          ./tests/run_tests.bash

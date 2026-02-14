@@ -32,7 +32,7 @@ Author: Dr. Denis
        default="true"
        description="Choose if to start mock hardware or real hardware."/>
   <arg name="robot_ip"
-       default="192.168.0.100"
+       default="192.168.28.28"
        description="IP address of the robot controller."/>
 
   <let name="robot_description_content" value="$(command '$(find-exec xacro) $(find-pkg-share $(var description_package))/urdf/$(var description_file).urdf.xacro prefix:=$(var prefix) use_mock:=$(var use_mock) robot_ip:=$(var robot_ip)')"/>
