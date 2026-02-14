@@ -81,7 +81,7 @@ mkdir -p launch
 # Copy config files
 ROBOT_CONTROLLERS_YAML="config/${ROBOT_NAME}_controllers.yaml"
 ROBOT_FPC_PUB_YAML="config/test_goal_publishers_config.yaml"
-cp --update=none "$ROS2_CONTROL_TEMPLATES"/robot_controllers.yaml "$ROBOT_CONTROLLERS_YAML"
+cp --update=none "$ROS2_CONTROL_TEMPLATES"/controllers.yaml "$ROBOT_CONTROLLERS_YAML"
 cp --update=none "$ROS2_CONTROL_TEMPLATES"/test_goal_publishers_config.yaml $ROBOT_FPC_PUB_YAML
 
 # Copy launch files

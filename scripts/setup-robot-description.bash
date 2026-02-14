@@ -91,7 +91,7 @@ cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/materials.xacro" urdf/common/mate
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   mkdir -p launch
   ROBOT_DESCRIPTION_LAUNCH="launch/load_description.launch.xml"
-  cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/robot_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
+  cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/load_description.launch.xml" $ROBOT_DESCRIPTION_LAUNCH
   VIEW_ROBOT_LAUNCH="launch/view_${ROBOT_NAME}.launch${file_type}"
   cp --update=none "$ROBOT_DESCRIPTION_TEMPLATES/view_robot.launch${file_type}" "$VIEW_ROBOT_LAUNCH"
 

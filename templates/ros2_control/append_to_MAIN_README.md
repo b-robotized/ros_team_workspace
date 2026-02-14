@@ -5,7 +5,7 @@
 
 To test the mock hardware with standard controllers we first start the bringup with the mock hardware enabled:
 ```
-ros2 launch dte_ea_bringup dte_ea_1000.launch.xml use_mock_hardware:=true
+ros2 launch dte_ea_bringup dte_ea_1000.launch.xml use_mock:=true
 ```
 In a second terminal we then publish goals for the jtc:
 ```

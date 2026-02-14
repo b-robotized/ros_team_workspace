@@ -19,15 +19,18 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
 -->
 
 <launch>
-  <arg name="runtime_config_package"
-       default="$RUNTIME_CONFIG_PKG_NAME$"
-       description="Package with the controller's configuration in 'config' folder. Usually the argument is not set, it enables use of a custom setup."/>
-  <arg name="controllers_file"
-       default="$ROBOT_NAME$_controllers"
-       description="YAML file (without extension) with the controllers configuration."/>
   <arg name="description_package"
        default="$DESCR_PKG_NAME$"
-       description="Description package with robot URDF/xacro files. Usually the argument is not set, it enables use of a custom description."/>
+       description="Description package with robot URDF/xacro files. Usually not set, it enables use of a custom description."/>
+  <arg name="description_file"
+       default="$ROBOT_NAME$"
+       description="URDF/XACRO description file (without extension) with the robot."/>
+  <arg name="configuration_package"
+       default="$RUNTIME_CONFIG_PKG_NAME$"
+       description="The ROS package where we find the configuration files."/>
+  <arg name="controllers_file"
+       default="$ROBOT_NAME$_controllers.yaml"
+       description="YAML file with the controllers configuration."/>
   <arg name="prefix"
        default=""
        description="Prefix of the joint names, useful for multi-robot setup. If changed than also joint names in the controllers' configuration have to be updated."/>
@@ -37,24 +40,24 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
   <arg name="start_rviz"
        default="true"
        description="Launch RViz visualization?"/>
-  <arg name="robot_ip"
-       default="192.168.0.100"
-       description="IP address of the robot controller."/>
-  <arg name="robot_controller"
-       default="joint_trajectory_controller"
-       description="Robot controller to start. Choices are: [forward_position_controller, joint_trajectory_controller]."/>
-  <arg name="inactive_robot_controller"
-       default="forward_position_controller"
-       description="Robot controller to start inactive. Choices are: [forward_position_controller, joint_trajectory_controller]."/>
-<<<<<<<< HEAD:templates/ros2_control/control_bringup.launch.xml
   <arg name="controller_manager_name"
        default="controller_manager"
        description="Name of the controller manager node."/>
-========
-  <arg name="start_rviz"
-       default="true"
-       description="Launch RViz visualization?"/>
->>>>>>>> 250c8d0c (Added new structure of the control launch files.):templates/ros2_control/bringup_control.launch.xml
+  <arg name="robot_ip"
+       default="192.168.28.28"
+       description="IP address of the robot controller."/>
+  <arg name="robot_controller"
+       default="joint_trajectory_controller"
+       description="Robot controller to start.">
+       <choice value="joint_trajectory_controller"/>
+       <choice value="forward_position_controller"/>
+  </arg>
+  <arg name="inactive_robot_controller"
+       default="forward_position_controller"
+       description="Robot controller to start inactive.">
+       <choice value="forward_position_controller"/>
+       <choice value="joint_trajectory_controller"/>
+  </arg>
 
   <include file="$(find-pkg-share $(var description_package))/launch/load_description.launch.xml">
     <arg name="description_package" value="$(var description_package)"/>
@@ -64,29 +67,24 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
     <arg name="robot_ip" value="$(var robot_ip)"/>
   </include>
 
-  <!--control_node-->
-  <node pkg="controller_manager" exec="ros2_control_node" name="$(var controller_manager_name)" output="both">
+  <!-- Doesn't work until fix releass, open from March 2026 -->
+  <!-- <node pkg="controller_manager" exec="ros2_control_node" name="$(var controller_manager_name)" output="both"> -->
+  <node pkg="controller_manager" exec="ros2_control_node" output="both">
     <param name="update_rate" value="100"/>
   </node>
 
-  <let name="controllers_file_path" value="$(find-pkg-share $(var runtime_config_package))/config/$(var controllers_file).yaml"/>
+  <let name="controllers_file_path" value="$(find-pkg-share $(var configuration_package))/config/$(var controllers_file)"/>
 
-  <!--joint_state_broadcaster spawner-->
-  <node pkg="controller_manager" exec="spawner" args="joint_state_broadcaster -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
+  <node pkg="controller_manager" exec="spawner" name="jsb_spawner" output="screen"
+        args="joint_state_broadcaster -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
 
-  <!--robot_controller spawner-->
-  <node pkg="controller_manager" exec="spawner" args="$(var robot_controller) -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
+  <node pkg="controller_manager" exec="spawner" name="robot_controller_spawner" output="screen"
+        args="$(var robot_controller) -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
 
-<<<<<<<< HEAD:templates/ros2_control/control_bringup.launch.xml
-  <!--robot_controller spawner-->
-  <node pkg="controller_manager" exec="spawner" args="$(var inactive_robot_controller) --inactive -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
+  <node pkg="controller_manager" exec="spawner" name="inactive_robot_controller_spawner" output="screen"
+        args="$(var inactive_robot_controller) --inactive -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
 
-  <node if="$(var start_rviz)" pkg="rviz2" exec="rviz2" name="rviz2" output="log" args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz"/>
-========
-  <!--inactive_robot_controller spawner-->
-  <node pkg="controller_manager" exec="spawner" args="$(var inactive_robot_controller) --inactive"/>
->>>>>>>> 250c8d0c (Added new structure of the control launch files.):templates/ros2_control/bringup_control.launch.xml
-
-  <node if="$(var start_rviz)" pkg="rviz2" exec="rviz2" name="rviz2" output="log" args="-d $(find-pkg-share $(var runtime_config_package))/rviz/$ROBOT_NAME$.rviz"/>
+  <node if="$(var start_rviz)" pkg="rviz2" exec="rviz2" name="rviz2" output="log"
+        args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz"/>
 
 </launch>

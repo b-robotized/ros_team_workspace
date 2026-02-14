@@ -70,7 +70,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "use_mock_hardware",
+            "use_mock",
             default_value="true",
             description="Start robot with mock hardware mirroring command to its states.",
         )
@@ -80,7 +80,7 @@ def generate_launch_description():
             "mock_sensor_commands",
             default_value="false",
             description="Enable mock command interfaces for sensors used for simple simulations. \
-            Used only if 'use_mock_hardware' parameter is true.",
+            Used only if 'use_mock' parameter is true.",
         )
     )
     declared_arguments.append(
@@ -98,7 +98,7 @@ def generate_launch_description():
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
-    use_mock_hardware = LaunchConfiguration("use_mock_hardware")
+    use_mock = LaunchConfiguration("use_mock")
     mock_sensor_commands = LaunchConfiguration("mock_sensor_commands")
     robot_controller = LaunchConfiguration("robot_controller")
 
@@ -114,8 +114,8 @@ def generate_launch_description():
             "prefix:=",
             prefix,
             " ",
-            "use_mock_hardware:=",
-            use_mock_hardware,
+            "use_mock:=",
+            use_mock,
             " ",
             "mock_sensor_commands:=",
             mock_sensor_commands,

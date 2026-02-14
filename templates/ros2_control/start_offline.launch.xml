@@ -23,6 +23,6 @@ Author: Dr. Denis
 
   <include file="$(find-pkg-share $(var launch_package))/launch/bringup_control.launch.xml">
     <arg name="use_mock" value="true"/>
-    <arg name="start_rviz" value="true"/>
+    <arg name="start_rviz" value="false"/>
   </include>
 </launch>
