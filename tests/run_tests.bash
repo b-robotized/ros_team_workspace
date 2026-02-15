@@ -90,6 +90,43 @@ echo -e "${TERMINAL_COLOR_BLUE}Testing launch files...${TERMINAL_COLOR_NC}"
 rtw ws test_ws
 source "/tmp/ros_team_workspace/workspace_$$.bash"
 
+# Function to wait for /robot_description topic to be available and have data
+# Sleeps for an initial period, then polls up to max_retries times every poll_interval seconds
+wait_for_robot_description() {
+  local initial_wait=${1:-20}
+  local max_retries=${2:-10}
+  local poll_interval=${3:-2}
+
+  echo -e "${TERMINAL_COLOR_YELLOW}Waiting ${initial_wait}s for nodes to start...${TERMINAL_COLOR_NC}"
+  sleep "$initial_wait"
+
+  # Check if topic exists
+  local topic_found=false
+  for i in $(seq 1 "$max_retries"); do
+    echo -e "${TERMINAL_COLOR_YELLOW}[$i/$max_retries] Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
+    if ros2 topic list | grep -q "/robot_description"; then
+      echo -e "${TERMINAL_COLOR_GREEN}Topic /robot_description found.${TERMINAL_COLOR_NC}"
+      topic_found=true
+      break
+    fi
+    sleep "$poll_interval"
+  done
+
+  if [ "$topic_found" != "true" ]; then
+    echo -e "${TERMINAL_COLOR_RED}Error: Topic /robot_description not found after $max_retries retries.${TERMINAL_COLOR_NC}"
+    exit 1
+  fi
+
+  # Check if data is available on the topic
+  echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
+  if ros2 topic echo /robot_description --once --timeout 10 > /dev/null; then
+    echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
+  else
+    echo -e "${TERMINAL_COLOR_RED}Error: No data received on /robot_description.${TERMINAL_COLOR_NC}"
+    exit 1
+  fi
+}
+
 # Function to kill background process on exit or error
 cleanup() {
   if [ -n "$PID_DESC" ]; then kill "$PID_DESC" 2>/dev/null || true; fi
@@ -102,27 +139,7 @@ trap cleanup EXIT
 echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_description load_description.launch.xml...${TERMINAL_COLOR_NC}"
 ros2 launch my_robot_description load_description.launch.xml &
 PID_DESC=$!
-echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
-sleep 30
-
-ros2 node list
-ros2 topic list
-
-echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
-if ros2 topic list | grep -q "/robot_description"; then
-    echo -e "${TERMINAL_COLOR_GREEN}Topic /robot_description found.${TERMINAL_COLOR_NC}"
-else
-    echo -e "${TERMINAL_COLOR_RED}Error: Topic /robot_description not found.${TERMINAL_COLOR_NC}"
-    exit 1
-fi
-
-echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
-if ros2 topic echo /robot_description --once --timeout 10 > /dev/null; then
-    echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
-else
-    echo -e "${TERMINAL_COLOR_RED}Error: No data received on /robot_description.${TERMINAL_COLOR_NC}"
-    exit 1
-fi
+wait_for_robot_description 20 10 2
 
 kill $PID_DESC
 PID_DESC=""
@@ -132,25 +149,7 @@ sleep 5
 echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_control start_offline.launch.xml...${TERMINAL_COLOR_NC}"
 ros2 launch my_robot_control start_offline.launch.xml &
 PID_CTRL=$!
-echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
-sleep 30
-
-# First check the robot description again.
-echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
-if ros2 topic list | grep -q "/robot_description"; then
-    echo -e "${TERMINAL_COLOR_GREEN}Topic /robot_description found.${TERMINAL_COLOR_NC}"
-else
-    echo -e "${TERMINAL_COLOR_RED}Error: Topic /robot_description not found.${TERMINAL_COLOR_NC}"
-    exit 1
-fi
-
-echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
-if ros2 topic echo /robot_description --once --timeout 10 > /dev/null; then
-    echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
-else
-    echo -e "${TERMINAL_COLOR_RED}Error: No data received on /robot_description.${TERMINAL_COLOR_NC}"
-    exit 1
-fi
+wait_for_robot_description 20 10 2
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking controllers...${TERMINAL_COLOR_NC}"
 CONTROLLER_LIST=$(ros2 control list_controllers)
@@ -203,9 +202,6 @@ ros2 control switch_controllers --deactivate joint_trajectory_controller --activ
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking controller states after switch...${TERMINAL_COLOR_NC}"
 ros2 control list_controllers
-
-ros2 control list_controllers -v
-ros2 control list_hardware_interfaces
 
 echo "----------------------------------------------------------------"
 echo -e "${TERMINAL_COLOR_BLUE}Testing forward_position_controller...${TERMINAL_COLOR_NC}"
