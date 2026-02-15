@@ -23,6 +23,7 @@ The CLI currently supports the following commands:
 
 * ``rtw workspace``: Various workspace related sub-commands
    * ``create``: Create a new ROS workspace (local or dockerized)
+   * ``edit``: Edit an existing ROS workspace configuration
    * ``use``: Select and source an existing ROS workspace
    * ``port``: Port existing RTW workspace(s)
 
@@ -262,6 +263,40 @@ Until rocker PR is merged you are encouraged to install your rocker fork with:
    git clone https://github.com/b-robotized-forks/rocker.git --branch <your-feature-branch>
    cd rocker && pip3 install -e . && cd -
 
+Modifying an existing workspace
+"""""""""""""""""""""""""""""""
+.. _rtwcli-workspace-edit:
+
+You can update the configuration of an existing workspace (currently only
+environment variables are supported) using the ``edit`` command.
+
+* Usage:
+   * ``rtw workspace edit [workspace_name] [options]``
+   * Options:
+      * ``--env-vars KEY=VALUE [KEY=VALUE ...]``: Add or update environment variables.
+      * ``--remove-env-vars KEY [KEY ...]``: Remove environment variables.
+
+* Examples:
+
+  Update environment variables for a specific workspace:
+
+  .. code-block:: bash
+
+     rtw workspace edit my_ws --env-vars ROS_DOMAIN_ID=28 ROS_LOCALHOST_ONLY=0
+
+  Remove a variable:
+
+  .. code-block:: bash
+
+     rtw workspace edit my_ws --remove-env-vars ROS_STATIC_PEERS
+
+  Interactive mode (if no workspace name or options are provided):
+
+  .. code-block:: bash
+
+     rtw workspace edit
+
+  This will prompt you to select a workspace and then choose an action (Add/Update or Remove variables).
 
 How to set custom environment variables
 """""""""""""""""""""""""""""""""""""""
