@@ -103,7 +103,10 @@ echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_description load_description.l
 ros2 launch my_robot_description load_description.launch.xml &
 PID_DESC=$!
 echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
-sleep 15
+sleep 30
+
+ros2 node list
+ros2 topic list
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
 if ros2 topic list | grep -q "/robot_description"; then
@@ -131,9 +134,6 @@ ros2 launch my_robot_control start_offline.launch.xml &
 PID_CTRL=$!
 echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
 sleep 30
-
-ros2 node list
-ros2 topic list
 
 # First check the robot description again.
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
