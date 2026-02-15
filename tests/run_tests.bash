@@ -132,6 +132,9 @@ PID_CTRL=$!
 echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
 sleep 30
 
+ros2 node list
+ros2 topic list
+
 # First check the robot description again.
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
 if ros2 topic list | grep -q "/robot_description"; then
