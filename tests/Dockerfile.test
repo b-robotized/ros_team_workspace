@@ -19,7 +19,7 @@ COPY . /ros_team_workspace
 WORKDIR /ros_team_workspace
 
 # Make scripts executable
-RUN chmod +x tests/run_tests.bash scripts/*.bash
+RUN chmod +x tests/run_tests.bash tests/run_rtw_cli_tests.bash scripts/*.bash
 
 # Run tests
 CMD ["./tests/run_tests.bash"]
