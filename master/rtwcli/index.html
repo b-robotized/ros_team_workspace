@@ -60,6 +60,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-to-setup-ros2-rtw-for-inter-communication">How to setup ROS2 RTW for inter communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-use-proxy-for-docker-workspaces">How to use proxy for Docker workspaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install-rocker-fork-with-the-new-features">How to install rocker fork with the new features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modifying-an-existing-workspace">Modifying an existing workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-set-custom-environment-variables">How to set custom environment variables</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
@@ -110,6 +112,7 @@ intuitive way to interact with RTW.</p>
 <li><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">workspace</span></code>: Various workspace related sub-commands</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">create</span></code>: Create a new ROS workspace (local or dockerized)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">edit</span></code>: Edit an existing ROS workspace configuration</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">use</span></code>: Select and source an existing ROS workspace</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: Port existing RTW workspace(s)</p></li>
 </ul>
@@ -157,6 +160,10 @@ containing the <code class="docutils literal notranslate"><span class="pre">.rep
 <li><p><code class="docutils literal notranslate"><span class="pre">--enable-local-updates</span></code>: Enable system updates (<code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">update</span></code>
 and <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">update</span></code>) for local workspaces. By default, these updates
 are only run for Docker workspaces.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--env-vars</span></code>: Additional environment variables to export in the
+workspace (format: <code class="docutils literal notranslate"><span class="pre">KEY=VALUE</span></code>). Multiple variables can be specified
+separated by spaces. These variables are exported when the workspace is
+sourced.</p></li>
 </ul>
 </dd>
 </dl>
@@ -369,6 +376,60 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/b-rob
 <span class="nb">cd</span><span class="w"> </span>rocker<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>-
 </pre></div>
 </div>
+</section>
+<section id="modifying-an-existing-workspace">
+<h2>Modifying an existing workspace<a class="headerlink" href="#modifying-an-existing-workspace" title="Permalink to this heading"></a></h2>
+<p id="rtwcli-workspace-edit">You can update the configuration of an existing workspace (currently only
+environment variables are supported) using the <code class="docutils literal notranslate"><span class="pre">edit</span></code> command.</p>
+<ul>
+<li><dl class="simple">
+<dt>Usage:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">workspace</span> <span class="pre">edit</span> <span class="pre">[workspace_name]</span> <span class="pre">[options]</span></code></p></li>
+<li><dl class="simple">
+<dt>Options:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--env-vars</span> <span class="pre">KEY=VALUE</span> <span class="pre">[KEY=VALUE</span> <span class="pre">...]</span></code>: Add or update environment variables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--remove-env-vars</span> <span class="pre">KEY</span> <span class="pre">[KEY</span> <span class="pre">...]</span></code>: Remove environment variables.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Examples:</p>
+<p>Update environment variables for a specific workspace:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>edit<span class="w"> </span>my_ws<span class="w"> </span>--env-vars<span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">28</span><span class="w"> </span><span class="nv">ROS_LOCALHOST_ONLY</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+<p>Remove a variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>edit<span class="w"> </span>my_ws<span class="w"> </span>--remove-env-vars<span class="w"> </span>ROS_STATIC_PEERS
+</pre></div>
+</div>
+<p>Interactive mode (if no workspace name or options are provided):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>edit
+</pre></div>
+</div>
+<p>This will prompt you to select a workspace and then choose an action (Add/Update or Remove variables).</p>
+</li>
+</ul>
+</section>
+<section id="how-to-set-custom-environment-variables">
+<h2>How to set custom environment variables<a class="headerlink" href="#how-to-set-custom-environment-variables" title="Permalink to this heading"></a></h2>
+<p id="rtwcli-env-vars-usage">You can set custom environment variables that will be automatically exported whenever
+you use the workspace (both local and Docker). This is useful for variables like
+<code class="docutils literal notranslate"><span class="pre">ROS_DOMAIN_ID</span></code>, <code class="docutils literal notranslate"><span class="pre">ROS_LOCALHOST_ONLY</span></code>, or <code class="docutils literal notranslate"><span class="pre">RMW_IMPLEMENTATION</span></code>.</p>
+<ul class="simple">
+<li><p>Example:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_custom_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--env-vars<span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">28</span><span class="w"> </span><span class="nv">ROS_LOCALHOST_ONLY</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">ROS_STATIC_PEERS</span><span class="o">=</span><span class="m">10</span>.28.28.28
+</pre></div>
+</div>
+<p>When you later run <code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">workspace</span> <span class="pre">use</span> <span class="pre">my_custom_ws</span></code> (or entering the Docker container),
+these variables will be set.</p>
 </section>
 </section>
 
