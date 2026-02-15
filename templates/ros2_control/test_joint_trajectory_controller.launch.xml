@@ -25,7 +25,7 @@ Authors: Riyan Jose, Dr. Denis
         exec="publisher_joint_trajectory_controller"
         name="publisher_joint_trajectory_controller"
         output="screen">
-    <param from="$(find-pkg-share '$PKG_NAME$')/config/test_goal_publishers_config.yaml"/>
+    <param from="$(find-pkg-share $PKG_NAME$)/config/test_goal_publishers_config.yaml"/>
   </node>
 
 </launch>

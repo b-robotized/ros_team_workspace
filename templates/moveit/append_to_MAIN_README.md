@@ -5,7 +5,7 @@
 
 To move the robot using Moveit2, we first bring up the robot with the mock hardware enabled:
 ```
-ros2 launch <robot_bringup_package> $CELL_NAME$.launch.xml use_mock_hardware:=true
+ros2 launch <robot_bringup_package> $CELL_NAME$.launch.xml use_mock:=true
 ```
 
 After that, in another terminal we launch MoveIt2:

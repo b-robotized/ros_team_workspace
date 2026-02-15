@@ -25,9 +25,9 @@ script_own_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 source $script_own_dir/../setup.bash
 
 # Setting up formatting
-cp -n ${PACKAGE_TEMPLATES}/.clang-format .
-cp -n ${PACKAGE_TEMPLATES}/.pre-commit-config.yaml .
-cp -n ${PACKAGE_TEMPLATES}/.codespell-ignore-words.txt .
+cp --update=none ${PACKAGE_TEMPLATES}/.clang-format .
+cp --update=none ${PACKAGE_TEMPLATES}/.pre-commit-config.yaml .
+cp --update=none ${PACKAGE_TEMPLATES}/.codespell-ignore-words.txt .
 pre-commit install
 pre-commit autoupdate
 

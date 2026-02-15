@@ -18,7 +18,7 @@ usage="setup-robot-bringup ROBOT_NAME DESCRIPTION_PKG_NAME"
 
 # Load Framework defines
 script_own_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
-source $script_own_dir/../setup.bash
+source "$script_own_dir"/../setup.bash
 check_and_set_ros_distro_and_version "${ROS_DISTRO}"
 
 ROBOT_NAME=$1
@@ -69,8 +69,8 @@ read
 RM_FOLDERS=("include" "src")
 
 for FOLDER in "${RM_FOLDERS[@]}"; do
-  if [[ -d $FOLDER && ! "$(ls -A $FOLDER)" ]]; then
-    rm -r $FOLDER
+  if [[ -d $FOLDER && ! "$(ls -A "$FOLDER")" ]]; then
+    rm -r "$FOLDER"
   fi
 done
 
@@ -81,39 +81,39 @@ mkdir -p launch
 # Copy config files
 ROBOT_CONTROLLERS_YAML="config/${ROBOT_NAME}_controllers.yaml"
 ROBOT_FPC_PUB_YAML="config/test_goal_publishers_config.yaml"
-cp -n $ROS2_CONTROL_TEMPLATES/controllers.yaml $ROBOT_CONTROLLERS_YAML
-cp -n $ROS2_CONTROL_TEMPLATES/test_goal_publishers_config.yaml $ROBOT_FPC_PUB_YAML
+cp --update=none "$ROS2_CONTROL_TEMPLATES"/controllers.yaml "$ROBOT_CONTROLLERS_YAML"
+cp --update=none "$ROS2_CONTROL_TEMPLATES"/test_goal_publishers_config.yaml $ROBOT_FPC_PUB_YAML
 
 # Copy launch files
 for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   # Construct the file paths
-  CONTROL_BRINGUP_LAUNCH="launch/bringup_control.launch${file_type}"
+  BRINGUP_CONTROL_LAUNCH="launch/bringup_control.launch${file_type}"
   START_OFFLINE_LAUNCH="launch/start_offline.launch${file_type}"
   TEST_FWD_POS_CTRL_LAUNCH="launch/test_forward_position_controller.launch${file_type}"
   TEST_JTC_LAUNCH="launch/test_joint_trajectory_controller.launch${file_type}"
 
   # Copy the templates to the destination with the specified file type
-  cp -n "$ROS2_CONTROL_TEMPLATES/control_bringup.launch${file_type}" "${CONTROL_BRINGUP_LAUNCH}"
-  cp -n "$ROS2_CONTROL_TEMPLATES/start_offline.launch${file_type}" "${START_OFFLINE_LAUNCH}"
-  cp -n "$ROS2_CONTROL_TEMPLATES/test_forward_position_controller.launch${file_type}" "${TEST_FWD_POS_CTRL_LAUNCH}"
-  cp -n "$ROS2_CONTROL_TEMPLATES/test_joint_trajectory_controller.launch${file_type}" "${TEST_JTC_LAUNCH}"
+  cp --update=none "$ROS2_CONTROL_TEMPLATES/bringup_control.launch${file_type}" "${BRINGUP_CONTROL_LAUNCH}"
+  cp --update=none "$ROS2_CONTROL_TEMPLATES/start_offline.launch${file_type}" "${START_OFFLINE_LAUNCH}"
+  cp --update=none "$ROS2_CONTROL_TEMPLATES/test_forward_position_controller.launch${file_type}" "${TEST_FWD_POS_CTRL_LAUNCH}"
+  cp --update=none "$ROS2_CONTROL_TEMPLATES/test_joint_trajectory_controller.launch${file_type}" "${TEST_JTC_LAUNCH}"
 
   # sed all needed files
-  FILES_TO_SED=($CONTROL_BRINGUP_LAUNCH $START_OFFLINE_LAUNCH $TEST_FWD_POS_CTRL_LAUNCH $TEST_JTC_LAUNCH)
+  FILES_TO_SED=($BRINGUP_CONTROL_LAUNCH $START_OFFLINE_LAUNCH $TEST_FWD_POS_CTRL_LAUNCH $TEST_JTC_LAUNCH)
 
   for SED_FILE in "${FILES_TO_SED[@]}"; do
-    sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
-    sed -i "s/\\\$RUNTIME_CONFIG_PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
-    sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" $SED_FILE
-    sed -i "s/\\\$DESCR_PKG_NAME\\\$/${DESCR_PKG_NAME}/g" $SED_FILE
+    sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" "$SED_FILE"
+    sed -i "s/\\\$RUNTIME_CONFIG_PKG_NAME\\\$/${PKG_NAME}/g" "$SED_FILE"
+    sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" "$SED_FILE"
+    sed -i "s/\\\$DESCR_PKG_NAME\\\$/${DESCR_PKG_NAME}/g" "$SED_FILE"
   done
 done
 
 # package.xml: Add dependencies if they not exist
-DEP_PKGS=("xacro" "rviz2" "ros2_controllers_test_nodes" "robot_state_publisher" "joint_trajectory_controller" "joint_state_broadcaster" "forward_command_controller" "controller_manager" "$DESCR_PKG_NAME")
+DEP_PKGS=("xacro" "rviz2" "ros2_controllers_test_nodes" "robot_state_publisher" "joint_trajectory_controller" "joint_state_broadcaster" "forward_command_controller" "controller_manager" "ros2controlcli" "$DESCR_PKG_NAME")
 
 for DEP_PKG in "${DEP_PKGS[@]}"; do
-  if $(grep -q $DEP_PKG package.xml); then
+  if $(grep -q "$DEP_PKG" package.xml); then
     echo "'$DEP_PKG' is already listed in package.xml"
   else
     append_to_string="<buildtool_depend>ament_cmake<\/buildtool_depend>"
@@ -127,16 +127,16 @@ sed -i "s/$prepend_to_string/install\(\\n  DIRECTORY config launch\\n  DESTINATI
 
 # extend README with general instructions
 if [ -f README.md ]; then
-  cat $ROS2_CONTROL_TEMPLATES/append_to_README.md >>README.md
+  cat "$ROS2_CONTROL_TEMPLATES"/append_to_README.md >>README.md
   sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" README.md
   sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" README.md
-  sed -i "s/\\\$DESCR_PKG_NAME\\\$/${DESCR_PKG_NAME}/g" $SED_FILE
+  sed -i "s/\\\$DESCR_PKG_NAME\\\$/${DESCR_PKG_NAME}/g" "$SED_FILE"
 fi
 
 # TODO: Add license checks
 
 # Compile and add new package the to the path
-compile_and_source_package $PKG_NAME
+compile_and_source_package "$PKG_NAME"
 
 echo ""
-echo -e "${TERMINAL_COLOR_USER_NOTICE}FINISHED: You can test the configuration by executing 'ros2 launch $PKG_NAME start_offline.launch${LAUNCH_FILE_TYPES[*]}'${TERMINAL_COLOR_NC}"
+echo -e "${TERMINAL_COLOR_USER_NOTICE}FINISHED: You can test the configuration by executing 'ros2 launch $PKG_NAME start_offline.launch${LAUNCH_FILE_TYPES[*]}' or 'ros2 launch $PKG_NAME bringup_control.launch${LAUNCH_FILE_TYPES[*]}'${TERMINAL_COLOR_NC}"

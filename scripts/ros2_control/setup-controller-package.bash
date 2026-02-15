@@ -121,30 +121,30 @@ TEST_PARAMS_YAML="test/${FILE_NAME}_params.yaml"
 TEST_PRECEEDING_PARAMS_YAML="test/${FILE_NAME}_preceeding_params.yaml"
 
 if [[ "$CONTROLLER_TYPE" == "chainable" ]]; then
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/dummy_chainable_controller.hpp $CTRL_HPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_chainable_controller.cpp $CTRL_CPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller.yaml $CTRL_PARAMS_YAML
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/validate_dummy_controller_parameters.hpp $CTRL_VALIDATE_PARAMS_HPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_chainable_controller.cpp $TEST_CPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_chainable_controller_preceeding.cpp $TEST_PRECEEDING_CPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_chainable_controller.hpp $TEST_HPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_params.yaml $TEST_PARAMS_YAML
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_preceeding_params.yaml $TEST_PRECEEDING_PARAMS_YAML
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/dummy_chainable_controller.hpp $CTRL_HPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_chainable_controller.cpp $CTRL_CPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller.yaml $CTRL_PARAMS_YAML
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/validate_dummy_controller_parameters.hpp $CTRL_VALIDATE_PARAMS_HPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_chainable_controller.cpp $TEST_CPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_chainable_controller_preceeding.cpp $TEST_PRECEEDING_CPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_chainable_controller.hpp $TEST_HPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_params.yaml $TEST_PARAMS_YAML
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_preceeding_params.yaml $TEST_PRECEEDING_PARAMS_YAML
   cat $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_chainable_controller_pluginlib.xml >> $PLUGIN_XML
 else
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/dummy_controller.hpp $CTRL_HPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller.cpp $CTRL_CPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller.yaml $CTRL_PARAMS_YAML
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/validate_dummy_controller_parameters.hpp $CTRL_VALIDATE_PARAMS_HPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_controller.cpp $TEST_CPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_controller_preceeding.cpp $TEST_PRECEEDING_CPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_controller.hpp $TEST_HPP
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_params.yaml $TEST_PARAMS_YAML
-  cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_preceeding_params.yaml $TEST_PRECEEDING_PARAMS_YAML
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/dummy_controller.hpp $CTRL_HPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller.cpp $CTRL_CPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller.yaml $CTRL_PARAMS_YAML
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_package_namespace/validate_dummy_controller_parameters.hpp $CTRL_VALIDATE_PARAMS_HPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_controller.cpp $TEST_CPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_controller_preceeding.cpp $TEST_PRECEEDING_CPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_dummy_controller.hpp $TEST_HPP
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_params.yaml $TEST_PARAMS_YAML
+  cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_preceeding_params.yaml $TEST_PRECEEDING_PARAMS_YAML
   cat $ROS2_CONTROL_CONTROLLER_TEMPLATES/dummy_controller_pluginlib.xml >> $PLUGIN_XML
 fi
 
-cp -n $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_load_dummy_controller.cpp $LOAD_TEST_CPP
+cp --update=none $ROS2_CONTROL_CONTROLLER_TEMPLATES/test_load_dummy_controller.cpp $LOAD_TEST_CPP
 
 echo -e "${TERMINAL_COLOR_USER_NOTICE}Template files copied.${TERMINAL_COLOR_NC}"
 

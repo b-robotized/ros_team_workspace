@@ -93,7 +93,7 @@ mkdir -p .github/workflows
 
 # Coping and SEDing general CI files
 for CI_FILE in "${CI_GENERAL_FILES[@]}"; do
-  cp -n ${PACKAGE_TEMPLATES}/CI-github_${CI_FILE}.yml .github/workflows/${CI_FILE}.yml
+  cp --update=none ${PACKAGE_TEMPLATES}/CI-github_${CI_FILE}.yml .github/workflows/${CI_FILE}.yml
   sed -i 's/\$ros_distro\$/'${default_ros_distro}'/g' .github/workflows/${CI_FILE}.yml
   sed -i 's/\$branch\$/'${default_branch}'/g' .github/workflows/${CI_FILE}.yml
   sed -i 's/\$NAME\$/'${repo_name}'/g' .github/workflows/${CI_FILE}.yml
@@ -123,7 +123,7 @@ touch $TMP_FILE_2
 while true; do
   for CI_FILE in "${CI_DISTRIBUTION_FILES[@]}"; do
     output_file_name="${some_ros_distro}-${CI_FILE}"
-    cp -n ${PACKAGE_TEMPLATES}/CI-github_${CI_FILE}.yml .github/workflows/${output_file_name}.yml
+    cp --update=none ${PACKAGE_TEMPLATES}/CI-github_${CI_FILE}.yml .github/workflows/${output_file_name}.yml
     sed -i 's/\$ros_distro\$/'${some_ros_distro}'/g' .github/workflows/${output_file_name}.yml
     sed -i 's/\$Ros_distro\$/'${some_ros_distro^}'/g' .github/workflows/${output_file_name}.yml
     sed -i 's/\$branch\$/'${some_branch}'/g' .github/workflows/${output_file_name}.yml
@@ -140,10 +140,10 @@ while true; do
       done
     fi
   done
-  cp -n ${PACKAGE_TEMPLATES}/pkg_name.repos ${repo_name}-not-released.${some_ros_distro}.repos
-  cp -n ${PACKAGE_TEMPLATES}/pkg_name.repos ${repo_name}.${some_ros_distro}.repos
+  cp --update=none ${PACKAGE_TEMPLATES}/pkg_name.repos ${repo_name}-not-released.${some_ros_distro}.repos
+  cp --update=none ${PACKAGE_TEMPLATES}/pkg_name.repos ${repo_name}.${some_ros_distro}.repos
 
-  cp -n ${PACKAGE_TEMPLATES}/README.md.github README.md
+  cp --update=none ${PACKAGE_TEMPLATES}/README.md.github README.md
 
   if ! grep -q "## Build status" README.md; then
     cat ${PACKAGE_TEMPLATES}/_append_to_README_build_status.md >> README.md
