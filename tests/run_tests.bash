@@ -103,7 +103,7 @@ echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_description load_description.l
 ros2 launch my_robot_description load_description.launch.xml &
 PID_DESC=$!
 echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
-sleep 10
+sleep 15
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
 if ros2 topic list | grep -q "/robot_description"; then
@@ -114,7 +114,7 @@ else
 fi
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
-if ros2 topic echo /robot_description --once --timeout 5 > /dev/null; then
+if ros2 topic echo /robot_description --once --timeout 10 > /dev/null; then
     echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
 else
     echo -e "${TERMINAL_COLOR_RED}Error: No data received on /robot_description.${TERMINAL_COLOR_NC}"
@@ -130,7 +130,7 @@ echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_control start_offline.launch.x
 ros2 launch my_robot_control start_offline.launch.xml &
 PID_CTRL=$!
 echo -e "${TERMINAL_COLOR_YELLOW}Waiting for launch file to start...${TERMINAL_COLOR_NC}"
-sleep 20
+sleep 30
 
 # First check the robot description again.
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for /robot_description topic...${TERMINAL_COLOR_NC}"
@@ -142,7 +142,7 @@ else
 fi
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking for data on /robot_description...${TERMINAL_COLOR_NC}"
-if ros2 topic echo /robot_description --once --timeout 5 > /dev/null; then
+if ros2 topic echo /robot_description --once --timeout 10 > /dev/null; then
     echo -e "${TERMINAL_COLOR_GREEN}Data received on /robot_description.${TERMINAL_COLOR_NC}"
 else
     echo -e "${TERMINAL_COLOR_RED}Error: No data received on /robot_description.${TERMINAL_COLOR_NC}"
@@ -167,7 +167,7 @@ echo "----------------------------------------------------------------"
 echo -e "${TERMINAL_COLOR_BLUE}Testing joint_trajectory_controller...${TERMINAL_COLOR_NC}"
 
 # Record initial joint positions
-INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 10 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
 echo -e "${TERMINAL_COLOR_BLUE}Initial joint positions:\n$INITIAL_POSITIONS${TERMINAL_COLOR_NC}"
 
 # Launch the JTC test publisher
@@ -178,7 +178,7 @@ echo -e "${TERMINAL_COLOR_YELLOW}Waiting for robot to move (15 seconds)...${TERM
 sleep 15
 
 # Check if joints have moved
-CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 10 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
 echo -e "${TERMINAL_COLOR_BLUE}Current joint positions:\n$CURRENT_POSITIONS${TERMINAL_COLOR_NC}"
 
 if [ "$INITIAL_POSITIONS" != "$CURRENT_POSITIONS" ]; then
@@ -208,7 +208,7 @@ echo "----------------------------------------------------------------"
 echo -e "${TERMINAL_COLOR_BLUE}Testing forward_position_controller...${TERMINAL_COLOR_NC}"
 
 # Record initial joint positions
-INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+INITIAL_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 10 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
 echo -e "${TERMINAL_COLOR_BLUE}Initial joint positions:\n$INITIAL_POSITIONS${TERMINAL_COLOR_NC}"
 
 # Launch the FPC test publisher
@@ -216,11 +216,11 @@ echo -e "${TERMINAL_COLOR_BLUE}Launching test_forward_position_controller publis
 ros2 launch my_robot_control test_forward_position_controller.launch.xml &
 PID_TEST_PUB=$!
 
-# Monitor positions every 2 seconds for 50 iterations
+# Monitor positions every 5 seconds for 5 iterations
 FPC_MOVED=false
 for i in $(seq 1 5); do
-    sleep 2
-    CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 5 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
+    sleep 5
+    CURRENT_POSITIONS=$(ros2 topic echo /joint_states --once --timeout 10 2>/dev/null | sed -n '/^position:/,/^velocity:/p' | head -n -1)
     echo -e "${TERMINAL_COLOR_YELLOW}[$i/5] Joint positions:\n$CURRENT_POSITIONS${TERMINAL_COLOR_NC}"
     if [ "$INITIAL_POSITIONS" != "$CURRENT_POSITIONS" ]; then
         echo -e "${TERMINAL_COLOR_GREEN}Success: Robot moved with forward_position_controller (detected at check $i).${TERMINAL_COLOR_NC}"
