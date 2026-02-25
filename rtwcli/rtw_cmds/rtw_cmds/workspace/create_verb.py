@@ -1166,7 +1166,10 @@ RUN rm -rf /var/lib/apt/lists/*
         filtered_args["ws_name"] = ws_name
 
         # Process env_vars
-        env_vars_dict = {}
+        env_vars_dict = {
+            "ROS_DOMAIN_ID": "0",
+            "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+        }
         if args.env_vars:
             for env_var in args.env_vars:
                 if "=" not in env_var:
