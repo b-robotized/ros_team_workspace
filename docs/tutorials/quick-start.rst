@@ -133,3 +133,8 @@ For more details, check :ref:`use-case description <uc-setup-ros2-controller>`.
    cd <src folder of your ROS workspace>/<my_cool_robot_controller_package_name>
 
    ros2_control_setup-controller-package <my_controller_file_name>
+
+Add testcases using ``launch_testing``
+---------------------------------------
+
+# TODO

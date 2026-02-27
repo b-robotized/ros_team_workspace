@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Copyright 2021 Denis Stogl (Stogl Robotics Consulting)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+usage="setup-launch-testing ROBOT_NAME DESCRIPTION_PKG_NAME"
+
+# Load Framework defines
+script_own_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+source $script_own_dir/../setup.bash
+check_and_set_ros_distro_and_version "${ROS_DISTRO}"
+
+ROBOT_NAME=$1
+if [ -z "$ROBOT_NAME" ]; then
+  print_and_exit "ERROR: You should provide robot name! Nothing to do 😯" "$usage"
+fi
+
+DESCR_PKG_NAME=$2
+if [ -z "$DESCR_PKG_NAME" ]; then
+  print_and_exit "ERROR: You should provide description package name! Nothing to do 😯" "$usage"
+fi
+
+if [ ! -f "package.xml" ]; then
+  print_and_exit "ERROR: 'package.xml' not found. You should execute this script at the top level of your package folder. Nothing to do 😯" "$usage"
+fi
+PKG_NAME="$(grep -Po '(?<=<name>).*?(?=</name>)' package.xml | sed -e 's/[[:space:]]//g')"
+
+if [ ! -f "CMakeLists.txt" ]; then
+  print_and_exit "ERROR: 'CMakeLists.txt' not found. You should execute this script at the top level of your package folder. Nothing to do 😯" "$usage"
+fi
+
+echo ""
+echo -e "${TERMINAL_COLOR_USER_NOTICE}ATTENTION: Setting up launch_testing configuration for package '$PKG_NAME' in folder '$(pwd)'. ${TERMINAL_COLOR_NC}"
+echo -e "${TERMINAL_COLOR_USER_CONFIRMATION}If correct press <ENTER>, otherwise <CTRL>+C and start the script again from the package folder.${TERMINAL_COLOR_NC}"
+read
+
+# Create folders
+mkdir -p test           # TODO: delete all contents of the dir if already exists
+
+# Copy config files
+LAUNCH_TESTING_FILE="test/${ROBOT_NAME}_controllers.launch.py"
+ROBOT_FPC_PUB_YAML="config/test_goal_publishers_config.yaml"
+cp -n $ROS2_CONTROL_TEMPLATES/robot_controllers.yaml $ROBOT_CONTROLLERS_YAML
+cp -n $ROS2_CONTROL_TEMPLATES/test_goal_publishers_config.yaml $ROBOT_FPC_PUB_YAML
+
+# sed all needed files
+FILES_TO_SED=($ROBOT_LAUNCH $TEST_FWD_POS_CTRL_LAUNCH $TEST_JTC_LAUNCH)
+
+for SED_FILE in "${FILES_TO_SED[@]}"; do
+sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
+done
+
+#TODO also replace PkgName
+
+# package.xml: Add dependencies if they not exist
+DEP_PKGS=("ament_cmake_ros" "launch" "launch_ros" "launch_testing" "launch_testing_ament_cmake" "rclpy")
+
+for DEP_PKG in "${DEP_PKGS[@]}"; do
+  if $(grep -q $DEP_PKG package.xml); then
+    echo "'$DEP_PKG' is already listed in package.xml"
+  else
+# TODO: append before export
+    prepend_to_string="<export>"
+    sed -i "s/$append_to_string/$append_to_string\\n\\n  <test_depend>${DEP_PKG}<\/test_depend>/g" package.xml
+  fi
+done
+
+# CMakeLists.txt: Add install paths of the files
+prepend_to_string="if(BUILD_TESTING)"
+sed -i "s/$prepend_to_string/install\(\\n  DIRECTORY config launch\\n  DESTINATION share\/\$\{PROJECT_NAME\}\\n\)\\n\\n$prepend_to_string/g" CMakeLists.txt
+
+# extend README with general instructions
+if [ -f README.md ]; then
+  cat $ROS2_CONTROL_TEMPLATES/append_to_README.md >>README.md
+  sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" README.md
+  sed -i "s/\\\$ROBOT_NAME\\\$/${ROBOT_NAME}/g" README.md
+  sed -i "s/\\\$DESCR_PKG_NAME\\\$/${DESCR_PKG_NAME}/g" $SED_FILE
+fi
+
+# TODO: Add license checks
+
+# Compile and add new package the to the path
+compile_and_source_package $PKG_NAME
+
+# Test package
+
+echo ""
+echo -e "${TERMINAL_COLOR_USER_NOTICE}FINISHED: You can test the configuration by executing 'ros2 launch $PKG_NAME ${ROBOT_NAME}.launch${LAUNCH_FILE_TYPES[*]}'${TERMINAL_COLOR_NC}"
