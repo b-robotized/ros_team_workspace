@@ -127,6 +127,9 @@ ros2 <command>
   * AND the user hasn't already passed the ``--no-daemon`` flag manually in the command.
 
 
+.. tip::
+     You can set workspace-specific environment variables like ``RMW_IMPLEMENTATION`` or ``RTW_NO_DAEMON`` directly in your workspace's configuration. For more details, refer to the :ref:`Managing Multiple Workspaces <tutorial-managing-multiple-workspaces>` tutorial.
+
 Defining Your Own Aliases
 ===========================
 
