@@ -166,7 +166,6 @@ function RosTeamWS_setup_ros1_aliases {
 function RosTeamWS_setup_ros2_exports {
 
   export RTI_LICENSE_FILE=/opt/rti.com/rti_connext_dds-5.3.1/rti_license.dat
-
 }
 
 function RosTeamWS_setup_ros2_aliases {
@@ -214,6 +213,50 @@ function RosTeamWS_setup_ros2_aliases {
   complete -F _rosd_completions_multi ca
   complete -F _rosd_completions_single caup
   complete -F _rosd_completions_multi crm
+  
+  # Automatic --no-daemon to ros2 cli commands
+  function ros2() {
+    local base_cmd="ros2"
+    local should_append=false
+
+    if [[ "$RMW_IMPLEMENTATION" == "rmw_zenoh_cpp" ]]; then
+      should_append=true
+    fi
+
+    if [[ "$RTW_NO_DAEMON" == "1" ]]; then
+      should_append=true
+    fi
+
+    # If the command already has --no-daemon, skip
+    if [[ "$*" == *"--no-daemon"* ]]; then
+      command $base_cmd "$@"
+      return
+    fi
+
+    # if we don't append, run normal ros2
+    if ! $should_append; then
+      command $base_cmd "$@"
+      return
+    fi
+
+    # commands that actually support the --no-daemon flag
+    local daemon_cmds=("topic" "node" "service" "param" "interface" "lifecycle")
+    local is_daemon_cmd=false
+
+    for cmd in "${daemon_cmds[@]}"; do
+      if [[ "$1" == "$cmd" ]]; then
+        is_daemon_cmd=true
+        break
+      fi
+    done
+
+    if $is_daemon_cmd; then
+      command $base_cmd "$@" --no-daemon
+    else
+      command $base_cmd "$@"
+    fi
+  }
+
 }
 
 function rtw_ros_cd {
