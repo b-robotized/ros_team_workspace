@@ -912,6 +912,24 @@ RUN rm -rf /var/lib/apt/lists/*
         for ws_cmd in ws_cmds:
             logger.info(f"Running ws command: {ws_cmd}")
             ws_cmd_str = " ".join(ws_cmd)
+
+            if create_args.docker and create_args.proxy_server:
+                proxy_vars = {
+                    "http_proxy": create_args.proxy_server,
+                    "https_proxy": create_args.proxy_server,
+                    "HTTP_PROXY": create_args.proxy_server,
+                    "HTTPS_PROXY": create_args.proxy_server,
+                    "PIP_PROXY": create_args.proxy_server,
+                    "no_proxy": "localhost,127.0.0.1",
+                    "NO_PROXY": "localhost,127.0.0.1",
+                }
+                if create_args.proxy_ca_cert:
+                    proxy_vars["REQUESTS_CA_BUNDLE"] = "/etc/ssl/certs/ca-certificates.crt"
+                    proxy_vars["PIP_CERT"] = "/etc/ssl/certs/ca-certificates.crt"
+
+                exports = " && ".join([f"export {k}={v}" for k, v in proxy_vars.items()])
+                ws_cmd_str = f"{exports} && {ws_cmd_str}"
+
             error_msg = f"Failed to execute ws command '{ws_cmd_str}'"
             if create_args.docker:
                 if not docker_exec_bash_cmd(intermediate_container.id, ws_cmd_str):
