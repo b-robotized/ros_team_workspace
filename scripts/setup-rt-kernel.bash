@@ -298,7 +298,7 @@ cd "linux-$KERNEL_VERSION"
 if [[ -n "$SELECTED_PATCH" ]]; then
     echo ""
     echo "=== Applying RT patch ==="
-    PATCH_FILE=$(ls ../patch-""""${SELECTED_VERSI"O"N"}"*.patch 2>/dev/null | head -1 || ls ../patch-*.patch 2>/dev/null | head -1)
+    PATCH_FILE=$(ls ../patch-${SELECTED_VERSION}*.patch 2>/dev/null | head -1 || ls ../patch-*.patch 2>/dev/null | head -1)
     if [[ -n "$PATCH_FILE" ]]; then
         cat "$PATCH_FILE" | patch -p1
     fi
