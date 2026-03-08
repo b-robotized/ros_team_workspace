@@ -112,6 +112,23 @@ crm [<package1_name>, <package2_name>]
   Remove ``build``, ``log`` and ``install`` folders for the workspace or corresponding sub-folders for specific packages.
   *Auto-completion for all build ROS 2 packages is available.*
 
+ROS 2 Daemon Management
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+RTW includes a wrapper for the standard ``ros2`` CLI commands that automatically manages the ROS 2 daemon based on your active workspace configuration.
+
+ros2 <command>
+  Automatically appends the ``--no-daemon`` flag to relevant ROS 2 CLI commands (``topic``, ``node``, ``service``, ``param``, ``interface``, ``lifecycle``) to prevent daemon-related discovery when, for example, using ``zenoh`` as the middleware implementation.
+
+  **Trigger Conditions:**
+
+  * The environment variable ``RMW_IMPLEMENTATION`` is set to ``rmw_zenoh_cpp``.
+  * OR the environment variable ``RTW_NO_DAEMON`` is set to ``1``.
+  * AND the user hasn't already passed the ``--no-daemon`` flag manually in the command.
+
+
+.. tip::
+     You can set workspace-specific environment variables like ``RMW_IMPLEMENTATION`` or ``RTW_NO_DAEMON`` directly in your workspace's configuration. For more details, refer to the :ref:`Managing Multiple Workspaces <tutorial-managing-multiple-workspaces>` tutorial.
 
 Defining Your Own Aliases
 ===========================
