@@ -298,7 +298,7 @@ cd "linux-$KERNEL_VERSION"
 if [[ -n "$SELECTED_PATCH" ]]; then
     echo ""
     echo "=== Applying RT patch ==="
-    PATCH_FILE=$(ls ../patch-${SELECTED_VERSION}*.patch 2>/dev/null | head -1 || ls ../patch-*.patch 2>/dev/null | head -1)
+    PATCH_FILE=$(ls ../patch-""""${SELECTED_VERSI"O"N"}"*.patch 2>/dev/null | head -1 || ls ../patch-*.patch 2>/dev/null | head -1)
     if [[ -n "$PATCH_FILE" ]]; then
         cat "$PATCH_FILE" | patch -p1
     fi
@@ -403,13 +403,13 @@ fi
 
 echo ""
 echo "Checking GRUB menu..."
-if grep -q "$INSTALLED_VERSION" /boot/grub/grub.cfg 2>/dev/null; then
+if sudo grep -q "$INSTALLED_VERSION" /boot/grub/grub.cfg 2>/dev/null; then
     echo "  GRUB entry found: OK"
-    grep "$INSTALLED_VERSION" /boot/grub/grub.cfg | head -3
+    sudo grep "$INSTALLED_VERSION" /boot/grub/grub.cfg | head -3
 else
     echo "  Warning: GRUB entry not found"
     echo "  Current GRUB entries:"
-    grep "menuentry" /boot/grub/grub.cfg | head -10
+    sudo grep "menuentry" /boot/grub/grub.cfg | head -10
 fi
 
 echo ""
