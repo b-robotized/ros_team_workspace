@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RTW Aliases &mdash; ROS Team Workspace Documentation: Jazzy Feb 2026 documentation</title>
+  <title>RTW Aliases &mdash; ROS Team Workspace Documentation: Jazzy Mar 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
@@ -74,6 +74,7 @@
 <li class="toctree-l5"><a class="reference internal" href="#executing-package-tests">Executing Package Tests</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#executing-multiple-commands">Executing Multiple Commands</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#cleaning-workspace">Cleaning Workspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ros-2-daemon-management">ROS 2 Daemon Management</a></li>
 </ul>
 </li>
 </ul>
@@ -210,6 +211,24 @@ Alias for command: <code class="docutils literal notranslate"><span class="pre">
 <em>Auto-completion for all build ROS 2 packages is available.</em></p>
 </dd>
 </dl>
+</section>
+<section id="ros-2-daemon-management">
+<h4>ROS 2 Daemon Management<a class="headerlink" href="#ros-2-daemon-management" title="Permalink to this heading"></a></h4>
+<p>RTW includes a wrapper for the standard <code class="docutils literal notranslate"><span class="pre">ros2</span></code> CLI commands that automatically manages the ROS 2 daemon based on your active workspace configuration.</p>
+<dl>
+<dt>ros2 &lt;command&gt;</dt><dd><p>Automatically appends the <code class="docutils literal notranslate"><span class="pre">--no-daemon</span></code> flag to relevant ROS 2 CLI commands (<code class="docutils literal notranslate"><span class="pre">topic</span></code>, <code class="docutils literal notranslate"><span class="pre">node</span></code>, <code class="docutils literal notranslate"><span class="pre">service</span></code>, <code class="docutils literal notranslate"><span class="pre">param</span></code>, <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">lifecycle</span></code>) to prevent daemon-related discovery when, for example, using <code class="docutils literal notranslate"><span class="pre">zenoh</span></code> as the middleware implementation.</p>
+<p><strong>Trigger Conditions:</strong></p>
+<ul class="simple">
+<li><p>The environment variable <code class="docutils literal notranslate"><span class="pre">RMW_IMPLEMENTATION</span></code> is set to <code class="docutils literal notranslate"><span class="pre">rmw_zenoh_cpp</span></code>.</p></li>
+<li><p>OR the environment variable <code class="docutils literal notranslate"><span class="pre">RTW_NO_DAEMON</span></code> is set to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p>AND the user hasn’t already passed the <code class="docutils literal notranslate"><span class="pre">--no-daemon</span></code> flag manually in the command.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can set workspace-specific environment variables like <code class="docutils literal notranslate"><span class="pre">RMW_IMPLEMENTATION</span></code> or <code class="docutils literal notranslate"><span class="pre">RTW_NO_DAEMON</span></code> directly in your workspace’s configuration. For more details, refer to the <a class="reference internal" href="../../tutorials/managing_multiple_workspaces.html#tutorial-managing-multiple-workspaces"><span class="std std-ref">Managing Multiple Workspaces</span></a> tutorial.</p>
+</div>
 </section>
 </section>
 </section>
