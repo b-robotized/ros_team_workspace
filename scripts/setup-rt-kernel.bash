@@ -440,13 +440,34 @@ fi
 
 echo ""
 echo "Checking GRUB menu..."
+
+# Try multiple version patterns to find the GRUB entry
+GRUB_FOUND=false
+KERNEL_BASE_VERSION=$(echo "$KERNEL_VERSION" | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+RT_VERSION_PATTERN="${KERNEL_BASE_VERSION}-rt${RT_PATCH_VERSION}"
+
+# First try exact match
 if sudo grep -q "$INSTALLED_VERSION" /boot/grub/grub.cfg 2>/dev/null; then
+    GRUB_FOUND=true
+    FOUND_VERSION="$INSTALLED_VERSION"
+# Then try base kernel + rt pattern (e.g., 6.17.5-rt7)
+elif sudo grep -q "$RT_VERSION_PATTERN" /boot/grub/grub.cfg 2>/dev/null; then
+    GRUB_FOUND=true
+    FOUND_VERSION="$RT_VERSION_PATTERN"
+# Finally try just checking for rt patch number
+elif sudo grep -q "rt${RT_PATCH_VERSION}" /boot/grub/grub.cfg 2>/dev/null; then
+    GRUB_FOUND=true
+    FOUND_VERSION=$(sudo grep "menuentry.*rt${RT_PATCH_VERSION}" /boot/grub/grub.cfg | head -1 | sed -E "s/.*Linux ([0-9]+\.[0-9]+\.[0-9]+-rt[0-9]+).*/\1/")
+fi
+
+if [[ "$GRUB_FOUND" == "true" ]]; then
     echo "  GRUB entry found: OK"
-    sudo grep "$INSTALLED_VERSION" /boot/grub/grub.cfg | head -3
+    echo "  Kernel version in GRUB: $FOUND_VERSION"
+    sudo grep "menuentry.*$FOUND_VERSION" /boot/grub/grub.cfg | head -3
 else
-    echo "  Warning: GRUB entry not found"
+    echo "  Warning: GRUB entry not found for $INSTALLED_VERSION or $RT_VERSION_PATTERN"
     echo "  Current GRUB entries:"
-    sudo grep "menuentry" /boot/grub/grub.cfg | head -10
+    sudo grep "menuentry.*Linux" /boot/grub/grub.cfg | head -10
 fi
 
 echo ""
