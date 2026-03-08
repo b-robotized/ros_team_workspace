@@ -213,7 +213,7 @@ function RosTeamWS_setup_ros2_aliases {
   complete -F _rosd_completions_multi ca
   complete -F _rosd_completions_single caup
   complete -F _rosd_completions_multi crm
-  
+
   # Automatic --no-daemon to ros2 cli commands
   function ros2() {
     local base_cmd="ros2"
