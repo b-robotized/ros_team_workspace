@@ -84,6 +84,9 @@ alias ros2_control_setup-controller-package="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/
 # setup auto-sourcing
 alias setup-auto-sourcing="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup_auto_sourcing.bash
 
+# setup rt kernel
+alias setup-rt-kernel="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-rt-kernel.bash
+
 # VCS Aliases and helpers
 function rtw-ws-import () {
   # TODO: if not argument use WS default path for this after #169 is merged
