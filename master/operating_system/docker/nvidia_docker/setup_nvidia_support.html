@@ -5,28 +5,28 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nvidia support for docker &mdash; ROS Team Workspace Documentation: Jazzy Mar 2026 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
 
   
-    <link rel="shortcut icon" href="../../_static/favicon-bg.png"/>
-    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/docker/nvidia_docker/setup_nvidia_support.html" />
+    <link rel="shortcut icon" href="../../../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/operating_system/docker/nvidia_docker/setup_nvidia_support.html" />
   <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/clipboard.min.js"></script>
-        <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Supported ros versions and operating systems" href="../supported_versions/supported_versions.html" />
     <link rel="prev" title="Use Cases with docker support" href="../docker_use_cases/docker_use_cases.html" /> 
 </head>
@@ -39,12 +39,12 @@
 
           
           
-          <a href="../../index.html">
+          <a href="../../../index.html">
             
-              <img src="../../_static/jazzy.svg" class="logo" alt="Logo"/>
+              <img src="../../../_static/jazzy.svg" class="logo" alt="Logo"/>
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -52,37 +52,41 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../rtwcli/index.html">RTW CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../guidelines/index.html">Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../use-cases/index.html">Use Cases</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Docker</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../general_information_docker/general_information_docker.html">General information on docker</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../docker_use_cases/docker_use_cases.html">Use Cases with docker support</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Nvidia support for docker</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#nvidia-drivers">Nvidia drivers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#docker-installation">Docker installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases/index.html">Use Cases (ROS)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Operating System</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Docker</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../general_information_docker/general_information_docker.html">General information on docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../docker_use_cases/docker_use_cases.html">Use Cases with docker support</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Nvidia support for docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#nvidia-drivers">Nvidia drivers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#docker-installation">Docker installation</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-setup-a-container-with-nvidia-support">How to setup a container with nvidia support</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#install-nvidia-docker">Install nvidia-docker</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-the-dockerfile">Change the Dockerfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-setup-a-container-with-nvidia-support">How to setup a container with nvidia support</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#install-nvidia-docker">Install nvidia-docker</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#change-the-dockerfile">Change the Dockerfile</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#troubleshoting">Troubleshoting</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#be-sure-that-graphics-card-driver-is-installed-properly">Be sure that graphics card driver is installed properly</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#graphics-card-should-be-used-in-the-performance-mode">Graphics card should be used in the <code class="docutils literal notranslate"><span class="pre">Performance</span></code> mode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nvidia-smi-command-inside-docker-container"><code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command inside docker container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshoting">Troubleshoting</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#be-sure-that-graphics-card-driver-is-installed-properly">Be sure that graphics card driver is installed properly</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#graphics-card-should-be-used-in-the-performance-mode">Graphics card should be used in the <code class="docutils literal notranslate"><span class="pre">Performance</span></code> mode</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#nvidia-smi-command-inside-docker-container"><code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command inside docker container</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../supported_versions/supported_versions.html">Supported ros versions and operating systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../supported_versions/supported_versions.html">Supported ros versions and operating systems</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../faq/index.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup_rt_kernel.html">Setup Real-Time Kernel</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
 </ul>
 
         </div>
@@ -91,18 +95,19 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">ROS Team Workspace Documentation: Jazzy</a>
+          <a href="../../../index.html">ROS Team Workspace Documentation: Jazzy</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Operating System</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Docker</a></li>
       <li class="breadcrumb-item active">Nvidia support for docker</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/docker/nvidia_docker/setup_nvidia_support.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/operating_system/docker/nvidia_docker/setup_nvidia_support.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -217,7 +222,7 @@ For Ubuntu this can be done as follows:</p>
 <section id="change-the-dockerfile">
 <h3>Change the Dockerfile<a class="headerlink" href="#change-the-dockerfile" title="Permalink to this heading"></a></h3>
 <dl>
-<dt>(1.) If you haven’t done so already:</dt><dd><p>Create a new docker workspace with the <a class="reference internal" href="../../use-cases/operating_system/create_setup_workspace.html#uc-setup-docker-workspace"><span class="std std-ref">setup-ros-workspace-docker</span></a> command.</p>
+<dt>(1.) If you haven’t done so already:</dt><dd><p>Create a new docker workspace with the <a class="reference internal" href="../../../use-cases/operating_system/create_setup_workspace.html#uc-setup-docker-workspace"><span class="std std-ref">setup-ros-workspace-docker</span></a> command.</p>
 <p><strong>NOTE</strong>: If you set up a nvidia-docker container, you are finished at this point.</p>
 </dd>
 </dl>
@@ -342,10 +347,10 @@ You can see on your host if a docker application is using graphic card and how m
     </dl>
     <dl>
 <!--       <dt>ROS Team Workspace - Foxy</dt> -->
-        <dd><a href="../../../humble/docker/nvidia_docker/setup_nvidia_support.html">Humble</a></dd>
-        <dd><a href="../../../galactic/docker/nvidia_docker/setup_nvidia_support.html">Galactic (EOL)</a></dd>
+        <dd><a href="../../../../humble/index.html">Humble</a></dd>
+        <dd><a href="../../../../galactic/index.html">Galactic (EOL)</a></dd>
         
-        <dd><a href="../../../foxy/index.html">Foxy (EOL)</a></dd>
+        <dd><a href="../../../../foxy/index.html">Foxy (EOL)</a></dd>
         
    </dl>
   </div>

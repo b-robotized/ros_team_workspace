@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Real-Time Kernel &mdash; ROS Team Workspace Documentation: Jazzy Mar 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/operating_system/setup_rt_kernel.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQ" href="../faq/index.html" />
+    <link rel="prev" title="Supported ros versions and operating systems" href="docker/supported_versions/supported_versions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/jazzy.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases (ROS)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Operating System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="docker/index.html">Docker</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setup Real-Time Kernel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-the-script-does">What the script does</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-installation">Post-Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Jazzy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Operating System</a></li>
+      <li class="breadcrumb-item active">Setup Real-Time Kernel</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/operating_system/setup_rt_kernel.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setup-real-time-kernel">
+<span id="uc-setup-rt-kernel"></span><h1>Setup Real-Time Kernel<a class="headerlink" href="#setup-real-time-kernel" title="Permalink to this heading"></a></h1>
+<p>This script automates the process of downloading, patching, compiling, and installing a Linux kernel with the PREEMPT_RT patch. This is essential for achieving real-time performance for robot control.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<p>Execute the script using the alias:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setup-rt-kernel
+</pre></div>
+</div>
+</section>
+<section id="what-the-script-does">
+<h2>What the script does<a class="headerlink" href="#what-the-script-does" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Version Detection</strong>:
+*   Checks your current running kernel version.
+*   Fetches available RT kernel versions from <code class="xref any docutils literal notranslate"><span class="pre">kernel.org</span></code>.
+*   Checks for matching <code class="xref any docutils literal notranslate"><span class="pre">linux-headers</span></code> packages in your Ubuntu repositories (important for DKMS modules like NVIDIA).</p></li>
+<li><p><strong>Selection</strong>:
+*   Presents a list of compatible RT kernel versions.
+*   Highlights versions that have matching headers available (recommended).</p></li>
+<li><p><strong>Download and Verification</strong>:
+*   Downloads the kernel source tarball and the RT patch.
+*   Downloads GPG signatures and verifies the authenticity of the downloaded files.</p></li>
+<li><p><strong>Configuration and Compilation</strong>:
+*   Extracts the source and applies the RT patch.
+*   Configures the kernel using the current system’s configuration as a base (<code class="xref any docutils literal notranslate"><span class="pre">make</span> <span class="pre">defconfig</span></code>).
+*   Enables <code class="xref any docutils literal notranslate"><span class="pre">CONFIG_PREEMPT_RT</span></code> and disables conflicting keys.
+*   Compiles the kernel (this step can take a significant amount of time, depending on your CPU).</p></li>
+<li><p><strong>Installation</strong>:
+*   Installs the kernel headers and image (<code class="xref any docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">make</span> <span class="pre">modules_install</span></code>).
+*   Updates the GRUB bootloader.</p></li>
+<li><p><strong>NVIDIA Driver Check</strong>:
+*   Detects if an NVIDIA GPU is present.
+*   Checks if the NVIDIA driver is installed.
+*   Attempts to build/install the NVIDIA kernel modules for the new RT kernel using DKMS.</p></li>
+</ol>
+</section>
+<section id="post-installation">
+<h2>Post-Installation<a class="headerlink" href="#post-installation" title="Permalink to this heading"></a></h2>
+<p>After the script finishes successfully:</p>
+<ol class="arabic">
+<li><p><strong>Reboot</strong> your machine.</p></li>
+<li><p>In the GRUB menu (hold Shift or Esc during boot if it doesn’t appear), select “Advanced options for Ubuntu”.</p></li>
+<li><p>Select the new kernel version (it will have <code class="docutils literal notranslate"><span class="pre">rt</span></code> in the name).</p></li>
+<li><p>Verify the kernel is running with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uname<span class="w"> </span>-r
+</pre></div>
+</div>
+<p>It should output something like <code class="xref any docutils literal notranslate"><span class="pre">X.Y.Z-rtXX</span></code>.</p>
+</li>
+<li><p>Verify PREEMPT_RT is active:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s2">&quot;CONFIG_PREEMPT_RT&quot;</span><span class="w"> </span>/boot/config-<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>
+</pre></div>
+</div>
+<p>It should return <code class="xref any docutils literal notranslate"><span class="pre">CONFIG_PREEMPT_RT=y</span></code>.</p>
+</li>
+</ol>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Compilation Time</strong>: Compiling a Linux kernel takes time (from 15 minutes to over an hour depending on your hardware). Ensure you have a stable power supply (laptop plugged in).</p></li>
+<li><p><strong>Disk Space</strong>: Ensure you have at least 20-30 GB of free disk space for the build artifacts.</p></li>
+<li><p><strong>Secure Boot</strong>: If Secure Boot is enabled in your BIOS, the unsigned custom kernel might not boot. You may need to disable Secure Boot or sign the kernel manually.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<p>For more detailed information on Real-Time kernels in the context of robotics, check out these useful manuals:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.universal-robots.com/Universal_Robots_ROS2_Documentation/doc/ur_client_library/doc/real_time.html">Universal Robots ROS2 Documentation: Real-time kernel setup</a></p></li>
+<li><p><a class="reference external" href="https://frankarobotics.github.io/docs/libfranka/docs/real_time_kernel.html?highlight=realtime">Franka Robotics Documentation: Real-Time Kernel</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="docker/supported_versions/supported_versions.html" class="btn btn-neutral float-left" title="Supported ros versions and operating systems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dd><a href="setup_rt_kernel.html">Master (Jazzy, Kilted, Rolling)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../humble/index.html">Humble</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
