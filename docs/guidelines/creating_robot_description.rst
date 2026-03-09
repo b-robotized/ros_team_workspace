@@ -43,10 +43,10 @@ The robot model should be split into parts already. Below is an example of such 
 
    Make sure to remove unnecessary parts and group them to have one part per link.
 
-.. image:: images/1.png
+.. image:: images/robot_description_step_file_example.png
    :alt: How a typical .stp file might look at first
 
-.. image:: images/2.png
+.. image:: images/robot_description_grouped_parts_example.png
    :alt: 2.png
 
 Exporting ``.dae`` files from FreeCAD
@@ -93,7 +93,7 @@ Manuel for the process of Simplifying Visual Meshes
    ``Filters --> Remeshing, Simplification and Reconstruction --> Simplification: Quadratic Edge Collapse Decimation``
 2. Apply and export as ``.dae``
 
-   .. image:: images/5.png
+   .. image:: images/robot_description_meshlab_simplified.png
       :alt: simplified visual mesh
 
 Generate collision meshes
@@ -113,7 +113,7 @@ For collision meshes, a low vertex count is crucial for the speed of planning al
 3. If possible, without significant loss of details, reduce the mesh size further. ``Filters --> Remeshing, Simplification and Reconstruction --> Simplification: Quadratic Edge Collapse Decimation``
 4. Apply and export as ``.stl``
 
-   .. image:: images/4.png
+   .. image:: images/robot_description_meshlab_convex_hull.png
       :alt: Generated convex hull for the visual mesh
 
 **All done!** You now have both visual and collision meshes  ``.stl``  for your robot.
@@ -129,25 +129,25 @@ After exporting from FreeCAD and decimating the mesh in Meshlab, color informati
    .. note::
       Sometimes, ``.dae`` mesh is already split to basic components. In the cases of more complex shapes, we can further separate mesh by components for finer control over colors of those components.
 
-   .. image:: images/3.png
+   .. image:: images/robot_description_freecad_mesh_workbench.png
       :alt: 3.png
 
 3. Select desired components and merge them by color. Here you can also delete some decimation artifacts if you see they don't impact the visual.
 
-   .. image:: images/6.png
+   .. image:: images/robot_description_freecad_merge_components.png
       :alt: 6.png
 
 4. Convert the grouped mesh components to parts using ``PART WORKBENCH``
 
-   .. image:: images/9.png
+   .. image:: images/robot_description_freecad_part_workbench.png
       :alt: 9.png
 
    1. Set the part colors
 
-      .. image:: images/8.png
+      .. image:: images/robot_description_freecad_set_colors.png
          :alt: 8.png
 
-      .. image:: images/7.png
+      .. image:: images/robot_description_freecad_colored_part.png
          :alt: 7.png
 
       All done! You can now export your parts as ``.dae`` once more and use them in your package.
