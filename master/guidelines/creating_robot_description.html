@@ -145,8 +145,8 @@
 <p><code class="docutils literal notranslate"><span class="pre">.stp</span></code> files can be really messy. They can have many parts that are unnecessary for prurposes of visualization, and the parts may not be grouped by sections we intend to use.</p>
 <p>Make sure to remove unnecessary parts and group them to have one part per link.</p>
 </div>
-<img alt="How a typical .stp file might look at first" src="../_images/1.png" />
-<img alt="2.png" src="../_images/2.png" />
+<img alt="How a typical .stp file might look at first" src="../_images/robot_description_step_file_example.png" />
+<img alt="2.png" src="../_images/robot_description_grouped_parts_example.png" />
 </section>
 <section id="exporting-dae-files-from-freecad">
 <h3>Exporting <code class="docutils literal notranslate"><span class="pre">.dae</span></code> files from FreeCAD<a class="headerlink" href="#exporting-dae-files-from-freecad" title="Permalink to this heading"></a></h3>
@@ -192,7 +192,7 @@
 <li><p>Open the file in MeshLab and reduce its size
 <code class="docutils literal notranslate"><span class="pre">Filters</span> <span class="pre">--&gt;</span> <span class="pre">Remeshing,</span> <span class="pre">Simplification</span> <span class="pre">and</span> <span class="pre">Reconstruction</span> <span class="pre">--&gt;</span> <span class="pre">Simplification:</span> <span class="pre">Quadratic</span> <span class="pre">Edge</span> <span class="pre">Collapse</span> <span class="pre">Decimation</span></code></p></li>
 <li><p>Apply and export as <code class="docutils literal notranslate"><span class="pre">.dae</span></code></p>
-<img alt="simplified visual mesh" src="../_images/5.png" />
+<img alt="simplified visual mesh" src="../_images/robot_description_meshlab_simplified.png" />
 </li>
 </ol>
 </section>
@@ -214,7 +214,7 @@
 <li><p>Export the collision mesh as <code class="docutils literal notranslate"><span class="pre">.stl</span></code></p></li>
 <li><p>If possible, without significant loss of details, reduce the mesh size further. <code class="docutils literal notranslate"><span class="pre">Filters</span> <span class="pre">--&gt;</span> <span class="pre">Remeshing,</span> <span class="pre">Simplification</span> <span class="pre">and</span> <span class="pre">Reconstruction</span> <span class="pre">--&gt;</span> <span class="pre">Simplification:</span> <span class="pre">Quadratic</span> <span class="pre">Edge</span> <span class="pre">Collapse</span> <span class="pre">Decimation</span></code></p></li>
 <li><p>Apply and export as <code class="docutils literal notranslate"><span class="pre">.stl</span></code></p>
-<img alt="Generated convex hull for the visual mesh" src="../_images/4.png" />
+<img alt="Generated convex hull for the visual mesh" src="../_images/robot_description_meshlab_convex_hull.png" />
 </li>
 </ol>
 <p><strong>All done!</strong> You now have both visual and collision meshes  <code class="docutils literal notranslate"><span class="pre">.stl</span></code>  for your robot.</p>
@@ -229,17 +229,17 @@
 <p class="admonition-title">Note</p>
 <p>Sometimes, <code class="docutils literal notranslate"><span class="pre">.dae</span></code> mesh is already split to basic components. In the cases of more complex shapes, we can further separate mesh by components for finer control over colors of those components.</p>
 </div>
-<img alt="3.png" src="../_images/3.png" />
+<img alt="3.png" src="../_images/robot_description_freecad_mesh_workbench.png" />
 </li>
 <li><p>Select desired components and merge them by color. Here you can also delete some decimation artifacts if you see they don’t impact the visual.</p>
-<img alt="6.png" src="../_images/6.png" />
+<img alt="6.png" src="../_images/robot_description_freecad_merge_components.png" />
 </li>
 <li><p>Convert the grouped mesh components to parts using <code class="docutils literal notranslate"><span class="pre">PART</span> <span class="pre">WORKBENCH</span></code></p>
-<img alt="9.png" src="../_images/9.png" />
+<img alt="9.png" src="../_images/robot_description_freecad_part_workbench.png" />
 <ol class="arabic">
 <li><p>Set the part colors</p>
-<img alt="8.png" src="../_images/8.png" />
-<img alt="7.png" src="../_images/7.png" />
+<img alt="8.png" src="../_images/robot_description_freecad_set_colors.png" />
+<img alt="7.png" src="../_images/robot_description_freecad_colored_part.png" />
 <p>All done! You can now export your parts as <code class="docutils literal notranslate"><span class="pre">.dae</span></code> once more and use them in your package.</p>
 </li>
 </ol>
