@@ -335,7 +335,7 @@ cd "linux-$KERNEL_VERSION"
 if [[ -n "$SELECTED_PATCH" ]]; then
     echo ""
     echo "=== Applying RT patch ==="
-    PATCH_FILE=$(ls ../patch-${SELECTED_VERSION}*.patch 2>/dev/null | head -1 || ls ../patch-*.patch 2>/dev/null | head -1)
+    PATCH_FILE=$(ls ../patch-"${SELECTED_VERSION}"*.patch 2>/dev/null | head -1 || ls ../patch-*.patch 2>/dev/null | head -1)
     if [[ -n "$PATCH_FILE" ]]; then
         cat "$PATCH_FILE" | patch -p1
     fi
@@ -498,43 +498,24 @@ echo "=== Installing NVIDIA drivers ==="
 if [[ -n "$NVIDIA_GPU" ]]; then
     if [[ "$NVIDIA_WAS_INSTALLED" == "true" && -n "$NVIDIA_DRIVER_VERSION" ]]; then
         echo "Reinstalling NVIDIA driver (version $NVIDIA_DRIVER_VERSION)..."
-
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt update
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt install -y "nvidia-driver-$NVIDIA_DRIVER_VERSION" || \
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt install -y nvidia-driver
+        sudo apt update
+        sudo IGNORE_PREEMPT_RT_PRESENCE=1 apt install -y "nvidia-driver-$NVIDIA_DRIVER_VERSION"
+        sudo IGNORE_PREEMPT_RT_PRESENCE=1 dpkg-reconfigure "nvidia-dkms-$NVIDIA_DRIVER_VERSION"
 
         echo ""
-        echo "Installing NVIDIA DKMS module for RT kernel..."
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt install -y "nvidia-dkms-$NVIDIA_DRIVER_VERSION" 2>/dev/null || \
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt install -y nvidia-dkms
+        echo "Verifying NVIDIA module for RT kernel..."
+        NVIDIA_MODULE_PATH="/lib/modules/$INSTALLED_VERSION/updates/dkms/nvidia.ko"
 
-    else
-        echo "Installing NVIDIA driver for the first time..."
-
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt update
-        IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt install -y nvidia-driver
-
-        NVIDIA_NEW_VERSION=$(dpkg -l | grep -E "^ii.*nvidia-driver" | grep -v "^ii.*nvidia-settings" | head -1 || true)
-        NVIDIA_DRIVER_VERSION=$(echo "$NVIDIA_NEW_VERSION" | grep -oP '\d+' | head -1 || true)
-
-        if [[ -n "$NVIDIA_DRIVER_VERSION" ]]; then
-            echo ""
-            echo "Installing NVIDIA DKMS module for RT kernel..."
-            IGNORE_PREEMPT_RT_PRESENCE=1 sudo apt install -y nvidia-dkms
+        if [[ -f "$NVIDIA_MODULE_PATH" ]]; then
+            echo "NVIDIA module built for RT kernel: OK"
+            ls -lh "$NVIDIA_MODULE_PATH"
+        else
+            echo "Warning: NVIDIA module not found at $NVIDIA_MODULE_PATH"
+            echo "The module may be built on next reboot, or you may need to run:"
+            echo "  sudo IGNORE_PREEMPT_RT_PRESENCE=1 dpkg-reconfigure nvidia-dkms-$NVIDIA_DRIVER_VERSION"
         fi
-    fi
-
-    echo ""
-    echo "Verifying NVIDIA module for RT kernel..."
-    NVIDIA_MODULE_PATH="/lib/modules/$INSTALLED_VERSION/updates/dkms/nvidia.ko"
-
-    if [[ -f "$NVIDIA_MODULE_PATH" ]]; then
-        echo "NVIDIA module built for RT kernel: OK"
-        ls -lh "$NVIDIA_MODULE_PATH"
     else
-        echo "Warning: NVIDIA module not found at $NVIDIA_MODULE_PATH"
-        echo "The module may be built on next reboot, or you may need to run:"
-        echo "  sudo IGNORE_PREEMPT_RT_PRESENCE=1 dpkg-reconfigure nvidia-dkms-$NVIDIA_DRIVER_VERSION"
+        echo "NVIDIA GPU detected, but driver was not installed, therefore skipping."
     fi
 else
     echo "No NVIDIA GPU detected, skipping NVIDIA driver installation"
