@@ -54,5 +54,5 @@ The opinions and proposals stated here are merely related to the authors' experi
    rtwcli/index.rst
    guidelines/index.rst
    use-cases/index.rst
-   docker/index.rst
+   operating_system/index.rst
    faq/index.rst
