@@ -39,7 +39,6 @@ class ListVerb(VerbExtension):
         table.add_column("Distro")
         table.add_column("Folder")
         table.add_column("Docker", justify="center")
-        table.add_column("Standalone", justify="center")
 
         for ws in workspaces_config.workspaces.values():
             table.add_row(
@@ -47,7 +46,6 @@ class ListVerb(VerbExtension):
                 ws.distro,
                 ws.ws_folder or "-",
                 "yes" if ws.ws_docker_support else "no",
-                "yes" if ws.standalone else "no",
             )
 
         rich.print(table)
