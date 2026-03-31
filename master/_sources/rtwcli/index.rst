@@ -24,6 +24,7 @@ The CLI currently supports the following commands:
 * ``rtw workspace``: Various workspace related sub-commands
    * ``create``: Create a new ROS workspace (local or dockerized)
    * ``edit``: Edit an existing ROS workspace configuration
+   * ``list``: List all known ROS workspaces
    * ``use``: Select and source an existing ROS workspace
    * ``port``: Port existing RTW workspace(s)
 
