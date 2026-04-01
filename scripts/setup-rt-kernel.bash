@@ -58,6 +58,11 @@ if [[ ${#AVAILABLE_VERSIONS[@]} -eq 0 ]]; then
     exit 1
 fi
 
+echo "Installing dependencies for building kernel..."
+echo ""
+sudo apt-get -y install build-essential bc ca-certificates gnupg2 libssl-dev wget gawk flex bison libelf-dev dwarves
+ 
+
 echo "Checking for RT patch and headers availability..."
 echo ""
 
