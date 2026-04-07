@@ -87,6 +87,9 @@ alias setup-auto-sourcing="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup_auto_sourcin
 # setup rt kernel
 alias setup-rt-kernel="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-rt-kernel.bash
 
+# Setup RMW
+alias start-local-zenoh="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/start-local-zenoh.bash
+
 # VCS Aliases and helpers
 function rtw-ws-import () {
   # TODO: if not argument use WS default path for this after #169 is merged
