@@ -2,13 +2,16 @@
 Zenoh Setup and Usage
 ============================
 
-TODO: short intro to zenoh (1-3 sentences)
+Zenoh is a data-centric communication layer which ROS 2 can use for node discovery and message transport.
+It is used as an alternative to the default DDS-based middleware.
 
 First make sure that Zenoh RMW is installed using:
 
 .. code-block:: bash
 
-   sudo apt install ros-rolling-rmw-zenoh
+   sudo apt install ros-<ros-distro>-rmw-zenoh-cpp
+
+Replace ``<ros-distro>`` with your ROS distro, for example ``jazzy`` or ``rolling``.
 
 Then, to use Zenoh as the RMW implementation, set the following environment variable:
 
