@@ -134,6 +134,7 @@ class CreateVerbArgs:
     proxy_server: str = ""
     proxy_ca_cert: str = ""
     env_vars: dict = field(default_factory=dict)
+    devices: List[str] = field(default_factory=list)
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -413,6 +414,14 @@ class CreateVerb(VerbExtension):
             action="store_true",
             help="Enable IPC for the docker workspace.",
             default=False,
+        )
+        parser.add_argument(
+            "--device",
+            action="append",
+            dest="devices",
+            metavar="DEVICE",
+            help="Device to pass into the container (e.g. /dev/ttyUSB0). Can be repeated.",
+            default=None,
         )
         parser.add_argument(
             "--docker-disable-upgrade",
@@ -1279,6 +1288,7 @@ RUN rm -rf /var/lib/apt/lists/*
                 ws_volumes=rocker_ws_volumes,
                 user_override_name=create_args.user_override_name,
                 env_file=create_args.env_file,
+                devices=create_args.devices,
             )
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):
@@ -1315,6 +1325,7 @@ RUN rm -rf /var/lib/apt/lists/*
             docker_container_name=create_args.container_name if create_args.docker else "",
             standalone=create_args.standalone,
             env_vars=create_args.env_vars,
+            docker_devices=create_args.devices or [],
         )
         if not update_workspaces_config(WORKSPACES_PATH, local_main_ws):
             raise RuntimeError("Failed to update workspaces config with main workspace.")

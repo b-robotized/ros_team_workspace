@@ -44,6 +44,7 @@ class ImportVerbArgs:
     hostname: str = ""
     user_override_name: str = ""
     ws_abs_path: str = ""
+    devices: list = None
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -94,6 +95,14 @@ class ImportVerb(VerbExtension):
             action="store_true",
             help="Enable IPC for the docker workspace.",
             default=False,
+        )
+        parser.add_argument(
+            "--device",
+            action="append",
+            dest="devices",
+            metavar="DEVICE",
+            help="Device to pass into the container (e.g. /dev/ttyUSB0). Can be repeated.",
+            default=None,
         )
         parser.add_argument(
             "--final-image-name",
@@ -148,6 +157,7 @@ class ImportVerb(VerbExtension):
             ssh_abs_path_in_docker=import_args.ssh_abs_path_in_docker,
             final_image_name=import_args.final_image_name,
             user_override_name=import_args.user_override_name,
+            devices=import_args.devices,
         )
 
         if not execute_rocker_cmd(rocker_flags, import_args.standalone_docker_image):
@@ -168,6 +178,7 @@ class ImportVerb(VerbExtension):
             docker_tag=import_args.final_image_name,
             docker_container_name=import_args.container_name,
             standalone=import_args.standalone,
+            docker_devices=import_args.devices or [],
         )
         if not update_workspaces_config(WORKSPACES_PATH, local_main_ws):
             raise RuntimeError("Failed to update workspaces config with main workspace.")

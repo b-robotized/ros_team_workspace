@@ -68,6 +68,8 @@ repositories.
         workspace (format: ``KEY=VALUE``). Multiple variables can be specified
         separated by spaces. These variables are exported when the workspace is
         sourced.
+      * ``--device <path>``: Pass a host device into the Docker container
+        (e.g. ``/dev/ttyUSB0``). Can be repeated to pass multiple devices.
 
 * Minimal example:
 
@@ -197,6 +199,44 @@ workspaces.
    (humble_ws)$ ros2 run demo_nodes_cpp talker
 
    (rolling_ws)$ ros2 run demo_nodes_cpp listener
+
+
+How to pass host devices to Docker workspaces
+""""""""""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-device-usage:
+
+The CLI provides a ``--device`` flag to pass host devices (e.g. USB, serial
+ports, custom hardware) directly into the Docker container.
+The flag can be repeated to pass multiple devices.
+
+* Example — single USB serial device:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_robot_ws \
+      --ros-distro jazzy \
+      --docker \
+      --device /dev/ttyUSB0
+
+* Example — multiple devices:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_robot_ws \
+      --ros-distro jazzy \
+      --docker \
+      --device /dev/ttyUSB0 \
+      --device /dev/ttyACM0
+
+The device paths are stored in the workspace configuration and applied every
+time the container is (re-)created.
+
+.. note::
+   If you encounter ``Permission denied`` when accessing a device inside the
+   container, make sure the user is a member of the appropriate host group
+   (e.g. ``dialout`` for serial ports: ``sudo usermod -aG dialout $USER``).
 
 
 How to use proxy for Docker workspaces

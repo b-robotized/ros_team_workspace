@@ -31,6 +31,7 @@ def generate_rocker_flags(
     ws_volumes: Union[List[str], None] = None,
     user_override_name: Union[str, None] = None,
     env_file: Union[str, None] = None,
+    devices: Union[List[str], None] = None,
 ) -> List[str]:
     # rocker flags have order, see rocker --help
     rocker_flags = ["--nocache", "--nocleanup", "--git"]
@@ -74,6 +75,10 @@ def generate_rocker_flags(
     rocker_flags.append(f"{ssh_abs_path}:{ssh_abs_path_in_docker}:ro")
     if ws_volumes:
         rocker_flags.extend(ws_volumes)
+
+    if devices:
+        for device in devices:
+            rocker_flags.extend(["--device", device])
 
     rocker_flags.append("--rtw-tmpfs")
     rocker_flags.append("--rtw-update")
