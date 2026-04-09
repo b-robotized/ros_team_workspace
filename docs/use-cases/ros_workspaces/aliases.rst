@@ -112,6 +112,8 @@ crm [<package1_name>, <package2_name>]
   Remove ``build``, ``log`` and ``install`` folders for the workspace or corresponding sub-folders for specific packages.
   *Auto-completion for all build ROS 2 packages is available.*
 
+.. _uc-aliases-ros2-daemon:
+
 ROS 2 Daemon Management
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
