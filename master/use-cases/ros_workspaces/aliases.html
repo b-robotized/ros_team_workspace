@@ -213,7 +213,7 @@ Alias for command: <code class="docutils literal notranslate"><span class="pre">
 </dl>
 </section>
 <section id="ros-2-daemon-management">
-<h4>ROS 2 Daemon Management<a class="headerlink" href="#ros-2-daemon-management" title="Permalink to this heading"></a></h4>
+<span id="uc-aliases-ros2-daemon"></span><h4>ROS 2 Daemon Management<a class="headerlink" href="#ros-2-daemon-management" title="Permalink to this heading"></a></h4>
 <p>RTW includes a wrapper for the standard <code class="docutils literal notranslate"><span class="pre">ros2</span></code> CLI commands that automatically manages the ROS 2 daemon based on your active workspace configuration.</p>
 <dl>
 <dt>ros2 &lt;command&gt;</dt><dd><p>Automatically appends the <code class="docutils literal notranslate"><span class="pre">--no-daemon</span></code> flag to relevant ROS 2 CLI commands (<code class="docutils literal notranslate"><span class="pre">topic</span></code>, <code class="docutils literal notranslate"><span class="pre">node</span></code>, <code class="docutils literal notranslate"><span class="pre">service</span></code>, <code class="docutils literal notranslate"><span class="pre">param</span></code>, <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">lifecycle</span></code>) to prevent daemon-related discovery when, for example, using <code class="docutils literal notranslate"><span class="pre">zenoh</span></code> as the middleware implementation.</p>

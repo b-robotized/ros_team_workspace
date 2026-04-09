@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guidelines &mdash; ROS Team Workspace Documentation: Jazzy Apr 2026 documentation</title>
+  <title>Zenoh Setup and Usage &mdash; ROS Team Workspace Documentation: Jazzy Apr 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -12,7 +12,7 @@
 
   
     <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
-    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/guidelines/index.html" />
+    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/guidelines/zenoh_setup_and_usage.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -27,8 +27,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Creating Robot Description" href="creating_robot_description.html" />
-    <link rel="prev" title="RTW CLI" href="../rtwcli/index.html" /> 
+    <link rel="next" title="Use Cases (ROS)" href="../use-cases/index.html" />
+    <link rel="prev" title="ROS-Robot Package structure" href="robot_package_structure.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,12 +54,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Guidelines</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guidelines</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="creating_robot_description.html">Creating Robot Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development.html">Development Guidelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="git_workflow.html">Working as a team with Git</a></li>
 <li class="toctree-l2"><a class="reference internal" href="robot_package_structure.html">ROS-Robot Package structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="zenoh_setup_and_usage.html">Zenoh Setup and Usage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Zenoh Setup and Usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases (ROS)</a></li>
@@ -81,9 +81,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Guidelines</li>
+          <li class="breadcrumb-item"><a href="index.html">Guidelines</a></li>
+      <li class="breadcrumb-item active">Zenoh Setup and Usage</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/guidelines/index.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/guidelines/zenoh_setup_and_usage.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -91,26 +92,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="guidelines">
-<h1>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this heading"></a></h1>
-<p>RTW proposes development and architecture guidelines to boost efficiency and activate synergy effects inside a development team and between the teams.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="creating_robot_description.html">Creating Robot Description</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="git_workflow.html">Working as a team with Git</a></li>
-<li class="toctree-l1"><a class="reference internal" href="robot_package_structure.html">ROS-Robot Package structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zenoh_setup_and_usage.html">Zenoh Setup and Usage</a></li>
-</ul>
+  <section id="zenoh-setup-and-usage">
+<h1>Zenoh Setup and Usage<a class="headerlink" href="#zenoh-setup-and-usage" title="Permalink to this heading"></a></h1>
+<p>Zenoh is a data-centric communication layer which ROS 2 can use for node discovery and message transport.
+It is used as an alternative to the default DDS-based middleware.</p>
+<p>First make sure that Zenoh RMW is installed using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;ros-distro&gt;-rmw-zenoh-cpp
+</pre></div>
 </div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;ros-distro&gt;</span></code> with your ROS distro, for example <code class="docutils literal notranslate"><span class="pre">jazzy</span></code> or <code class="docutils literal notranslate"><span class="pre">rolling</span></code>.</p>
+<p>Then, to use Zenoh as the RMW implementation, set the following environment variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can uncomment the above line in your <code class="docutils literal notranslate"><span class="pre">~/.ros_team_ws_rc</span></code> file to make it permanent.</p>
+</div>
+<p>In one terminal, start the Zenoh router using <a class="reference external" href="https://github.com/b-robotized/ros_team_workspace/blob/master/scripts/environment/start-local-zenoh.bash">script</a> with the alias:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>start-local-zenoh
+</pre></div>
+</div>
+<p>When using Zenoh, take care that the <code class="docutils literal notranslate"><span class="pre">ros2</span></code> commands are executed differently. More about this check the <a class="reference internal" href="../use-cases/ros_workspaces/aliases.html#uc-aliases-ros2-daemon"><span class="std std-ref">ROS 2 Daemon Management</span></a> documentation.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../rtwcli/index.html" class="btn btn-neutral float-left" title="RTW CLI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="creating_robot_description.html" class="btn btn-neutral float-right" title="Creating Robot Description" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="robot_package_structure.html" class="btn btn-neutral float-left" title="ROS-Robot Package structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../use-cases/index.html" class="btn btn-neutral float-right" title="Use Cases (ROS)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -138,14 +149,14 @@
   </span>
   <div class="rst-other-versions">
     <dl>
-      <dd><a href="index.html">Master (Jazzy, Kilted, Rolling)</a></dd>
+      <dd><a href="zenoh_setup_and_usage.html">Master (Jazzy, Kilted, Rolling)</a></dd>
     </dl>
     <dl>
 <!--       <dt>ROS Team Workspace - Foxy</dt> -->
-        <dd><a href="../../humble/guidelines/index.html">Humble</a></dd>
-        <dd><a href="../../galactic/guidelines/index.html">Galactic (EOL)</a></dd>
+        <dd><a href="../../humble/index.html">Humble</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
         
-        <dd><a href="../../foxy/guidelines/index.html">Foxy (EOL)</a></dd>
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
         
    </dl>
   </div>
