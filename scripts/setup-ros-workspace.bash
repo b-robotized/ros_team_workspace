@@ -181,7 +181,7 @@ setup_new_workspace () {
   current_pwd=$(pwd)
   cd "${new_workspace_location}" || { print_and_exit "Could not change dir to workspace folder. Something went wrong."; }
 
-  if [ "$use_docker" = false ]; then # only build if not in docker, to avoide wrong dependencies
+  if [ "$use_docker" = false ]; then # only build if not in docker, to avoid wrong dependencies
     if [[ $ros_version == 1 ]]; then
       wstool init src
       catkin config -DCMAKE_BUILD_TYPE=RelwithDebInfo
