@@ -112,6 +112,7 @@ class CreateVerbArgs:
     container_name: str
     rtw_docker_repo_url: str
     rtw_docker_branch: str
+    no_cache: bool
     rtw_docker_clone_abs_path: str
     ssh_abs_path: str
     intermediate_dockerfile_name: str
@@ -434,6 +435,12 @@ class CreateVerb(VerbExtension):
                 f"default format is used: {DEFAULT_WS_REPOS_FILE_FORMAT}"
             ),
             default=None,
+        )
+        parser.add_argument(
+            "--no-cache",
+            action="store_true",
+            help="Do not use cache when building the docker image.",
+            default=False,
         )
         parser.add_argument(
             "--upstream-ws-repos-file-name",
@@ -794,6 +801,7 @@ RUN rm -rf /var/lib/apt/lists/*
             tag=create_args.final_image_name,
             dockerfile_path=docker_build_context,
             file=create_args.intermediate_dockerfile_abs_path,
+            no_cache=create_args.no_cache,
         ):
             # clean up certificate file from build context even on failure
             if cert_dest_path and os.path.exists(cert_dest_path):
