@@ -855,7 +855,6 @@ RUN rm -rf /var/lib/apt/lists/*
             rosdep_cmds = [["sudo", "apt-get", "update"], ["rosdep", "update"]]
         else:
             rosdep_cmds = []
-        os_codename = subprocess.check_output(["lsb_release", "-c", "-s"], text=True).strip()
         rosdep_install_cmd_base = [
             "rosdep",
             "install",
@@ -863,7 +862,6 @@ RUN rm -rf /var/lib/apt/lists/*
             "-r",
             "-y",
             f"--rosdistro={create_args.ros_distro}",
-            f"--os=ubuntu:{os_codename}",
             "--from-paths",
         ]
         if has_upstream_ws_packages:
@@ -1077,7 +1075,7 @@ RUN rm -rf /var/lib/apt/lists/*
             if create_args.docker:
                 import docker
 
-                client = docker.from_env()
+                client = docker.from_env(timeout=12000) # 20 min timeout on response timeout
                 uid = os.getuid()
                 gid = os.getgid()
 
