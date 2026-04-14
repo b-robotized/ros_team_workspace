@@ -148,6 +148,7 @@ class ImportVerb(VerbExtension):
             ssh_abs_path_in_docker=import_args.ssh_abs_path_in_docker,
             final_image_name=import_args.final_image_name,
             user_override_name=import_args.user_override_name,
+            devices=import_args.devices,
         )
 
         if not execute_rocker_cmd(rocker_flags, import_args.standalone_docker_image):
@@ -168,6 +169,7 @@ class ImportVerb(VerbExtension):
             docker_tag=import_args.final_image_name,
             docker_container_name=import_args.container_name,
             standalone=import_args.standalone,
+            docker_devices=import_args.devices or [],
         )
         if not update_workspaces_config(WORKSPACES_PATH, local_main_ws):
             raise RuntimeError("Failed to update workspaces config with main workspace.")

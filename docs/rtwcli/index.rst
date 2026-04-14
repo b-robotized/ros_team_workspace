@@ -251,6 +251,105 @@ can access the internet through the proxy during the Docker image build process.
    company CA certificate using ``--proxy-ca-cert`` to avoid SSL verification
    errors during package installation.
 
+How to configure advanced Docker options
+""""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-advanced-docker-usage:
+
+When creating Docker workspaces with ``rtw workspace create --docker``, you can
+use additional options to control the Docker build, pass hardware devices into
+the container, and synchronize host group permissions.
+
+Docker build control
+~~~~~~~~~~~~~~~~~~~~
+
+* ``--no-cache``: Build the Docker image without using the Docker build cache.
+
+  Use this if you want to rebuild the image from scratch, for example after
+  package repositories changed or when debugging dependency issues.
+
+Hardware and device access
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``--devices [DEV ...]``: Pass one or more device nodes from the host into the
+  container.
+
+  Example:
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_robot_ws \
+        --ros-distro jazzy \
+        --docker \
+        --devices /dev/ttyUSB0 /dev/video0
+
+  This is useful for hardware such as serial adapters or cameras.
+
+  .. important::
+     Devices passed with ``--devices`` must be available before the container
+     starts. If such a device is unplugged and plugged in again, the container
+     will usually need to be restarted.
+
+* ``--enable-input``: Enable access to the Linux input subsystem for devices
+  such as joysticks, keyboards, and mice.
+
+  This is useful when input devices may be disconnected and reconnected while
+  the container is running. The option mounts ``/dev/input``, adds the required
+  cgroup rules, and synchronizes the host ``input`` group into the container.
+
+Kernel scheduling and performance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``--enable-realtime``: Enable real-time scheduling support inside the
+  container.
+
+  This is useful for workloads that require deterministic timing, such as
+  low-latency ROS 2 control loops. The option adjusts the required resource
+  limits, adds the ``SYS_NICE`` capability, and synchronizes the host
+  ``realtime`` group into the container.
+
+  .. note::
+     Your host system must already be configured for real-time scheduling and
+     provide the ``realtime`` group. `See documentation on controls.ros.org <https://control.ros.org/rolling/doc/ros2_control/controller_manager/doc/userdoc.html#determinism>`_ for more info.
+
+Supplementary group permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``--groups [GROUP ...]``: Synchronize supplementary groups from the host into
+  the container.
+
+  Example:
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_robot_ws \
+        --ros-distro jazzy \
+        --docker \
+        --devices /dev/ttyUSB0 \
+        --groups dialout
+
+  This is useful when a device requires group-based access, for example when a
+  serial device is owned by the ``dialout`` group.
+
+  If a requested group does not exist on the host machine, the build will fail
+  instead of creating an invalid container configuration.
+
+* Combined example:
+
+  If you need a fresh build for a robot requiring a webcam, a dynamically pluggable Xbox controller, and a serial microcontroller:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_robot_ws \
+      --ros-distro jazzy \
+      --docker \
+      --no-cache \
+      --devices /dev/video0 /dev/ttyACM0 \
+      --enable-input \
+      --groups video dialout
+
 
 How to install rocker fork with the new features
 """"""""""""""""""""""""""""""""""""""""""""""""""

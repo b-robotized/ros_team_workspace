@@ -15,6 +15,7 @@
 
 import argparse
 from dataclasses import dataclass, field, fields
+import grp
 import os
 import shutil
 import subprocess
@@ -135,6 +136,10 @@ class CreateVerbArgs:
     proxy_server: str = ""
     proxy_ca_cert: str = ""
     env_vars: dict = field(default_factory=dict)
+    devices: List[str] = field(default_factory=list)
+    use_groups: List[str] = field(default_factory=list)
+    enable_input: bool = False
+    enable_realtime: bool = False
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -410,6 +415,29 @@ class CreateVerb(VerbExtension):
             default=False,
         )
         parser.add_argument(
+            "--enable-input",
+            action="store_true",
+            help="Enable dynamic hot-plugging for joysticks and input devices (binds whole /dev/input).",
+        )
+        parser.add_argument(
+            "--enable-realtime",
+            action="store_true",
+            help="Enable realtime kernel scheduling capabilities (rtprio, memlock, sys_nice).",
+        )
+        parser.add_argument(
+            "--devices",
+            nargs="*",
+            help="Statically mount specific devices (e.g., /dev/ttyUSB0). Must be plugged in at container startup.",
+            default=[],
+        )
+        parser.add_argument(
+            "--groups",
+            dest="use_groups",
+            nargs="*",
+            help="Additional host groups to pass to the container (e.g., input, realtime, dialout, video).",
+            default=[],
+        )
+        parser.add_argument(
             "--enable-ipc",
             action="store_true",
             help="Enable IPC for the docker workspace.",
@@ -635,6 +663,29 @@ class CreateVerb(VerbExtension):
         else:
             python_packages_cmd = "# no python packages to install"
 
+        # --- SYNC HOST GROUPS TO CONTAINER ---
+        groups_to_sync = create_args.use_groups.copy() if create_args.use_groups else []
+        if getattr(create_args, "enable_input", False):
+            groups_to_sync.append('input')
+        if getattr(create_args, "enable_realtime", False):
+            groups_to_sync.append('realtime')
+
+        group_sync_cmds = []
+        for group_name in set(groups_to_sync):
+            try:
+                gid = grp.getgrnam(group_name).gr_gid
+                # If the group exists, force its GID to match the host. If missing, create it.
+                cmd = (
+                    f"RUN if getent group {group_name} > /dev/null 2>&1; then "
+                    f"groupmod -g {gid} {group_name} || true; else "
+                    f"groupadd -g {gid} {group_name}; fi"
+                )
+                group_sync_cmds.append(cmd)
+            except KeyError:
+                raise RuntimeError(f"Requested group '{group_name}' does not exist on the host system.")
+                
+        group_sync_cmd_str = "\n".join(group_sync_cmds)
+
         rtw_clone_cmd = " ".join(
             [
                 "RUN",
@@ -761,6 +812,7 @@ FROM {create_args.base_image_name}
 {update_key_cmds}
 RUN apt-get update {"&& apt-get upgrade -y" if not create_args.docker_disable_upgrade else ""}
 {apt_packages_cmd}
+{group_sync_cmd_str}
 {pip_config_cmd}
 {git_config_cmd}
 {python_packages_cmd}
@@ -1285,6 +1337,10 @@ RUN rm -rf /var/lib/apt/lists/*
                 ws_volumes=rocker_ws_volumes,
                 user_override_name=create_args.user_override_name,
                 env_file=create_args.env_file,
+                devices=create_args.devices,
+                use_groups=create_args.use_groups,
+                enable_input=create_args.enable_input,
+                enable_realtime=create_args.enable_realtime,
             )
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):

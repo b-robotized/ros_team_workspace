@@ -45,6 +45,7 @@ class Workspace:
     base_ws: Optional[str] = None
     standalone: bool = False
     env_vars: Dict[str, str] = dataclasses.field(default_factory=dict)
+    docker_devices: List[str] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
         if self.ws_folder == "":
