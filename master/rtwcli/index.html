@@ -59,6 +59,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-a-new-workspace">Setting up a new workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-setup-ros2-rtw-for-inter-communication">How to setup ROS2 RTW for inter communication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-use-proxy-for-docker-workspaces">How to use proxy for Docker workspaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-configure-advanced-docker-options">How to configure advanced Docker options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker-build-control">Docker build control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apt-package-installation">APT package installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-and-device-access">Hardware and device access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel-scheduling-and-performance">Kernel scheduling and performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supplementary-group-permissions">Supplementary group permissions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install-rocker-fork-with-the-new-features">How to install rocker fork with the new features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#modifying-an-existing-workspace">Modifying an existing workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-set-custom-environment-variables">How to set custom environment variables</a></li>
@@ -368,6 +376,135 @@ during the build process and automatically removed after the build completes.</p
 company CA certificate using <code class="docutils literal notranslate"><span class="pre">--proxy-ca-cert</span></code> to avoid SSL verification
 errors during package installation.</p>
 </div>
+</section>
+<section id="how-to-configure-advanced-docker-options">
+<h2>How to configure advanced Docker options<a class="headerlink" href="#how-to-configure-advanced-docker-options" title="Permalink to this heading"></a></h2>
+<p id="rtwcli-advanced-docker-usage">When creating Docker workspaces with <code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">workspace</span> <span class="pre">create</span> <span class="pre">--docker</span></code>, you can
+use additional options to control the Docker build, pass hardware devices into
+the container, and synchronize host group permissions.</p>
+<section id="docker-build-control">
+<h3>Docker build control<a class="headerlink" href="#docker-build-control" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--no-cache</span></code>: Build the Docker image without using the Docker build cache.</p>
+<p>Use this if you want to rebuild the image from scratch, for example after
+package repositories changed or when debugging dependency issues.</p>
+</li>
+</ul>
+</section>
+<section id="apt-package-installation">
+<h3>APT package installation<a class="headerlink" href="#apt-package-installation" title="Permalink to this heading"></a></h3>
+<p>A predefined set of base packages (<code class="docutils literal notranslate"><span class="pre">BASE_APT_PACKAGES</span></code>) is always installed
+into the Docker image during the build. These include common tools such as
+<code class="docutils literal notranslate"><span class="pre">git</span></code>, <code class="docutils literal notranslate"><span class="pre">vim</span></code>, <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, <code class="docutils literal notranslate"><span class="pre">python3-colcon-common-extensions</span></code>, and others
+required for a functional ROS development environment.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--no-base-apt-packages</span></code>: Skip the installation of <code class="docutils literal notranslate"><span class="pre">BASE_APT_PACKAGES</span></code>.</p>
+<p>Use this for minimal images or when the base image already provides these
+tools.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_minimal_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--no-base-apt-packages
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--additional_apt_packages</span> <span class="pre">[PKG</span> <span class="pre">...]</span></code>: Install extra apt packages on top of
+<code class="docutils literal notranslate"><span class="pre">BASE_APT_PACKAGES</span></code> (or instead of them if <code class="docutils literal notranslate"><span class="pre">--no-base-apt-packages</span></code> is
+set). These are installed in a separate <code class="docutils literal notranslate"><span class="pre">RUN</span></code> layer after the base packages.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_robot_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--additional_apt_packages<span class="w"> </span>ros-jazzy-rviz2<span class="w"> </span>htop<span class="w"> </span>can-utils
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="hardware-and-device-access">
+<h3>Hardware and device access<a class="headerlink" href="#hardware-and-device-access" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--devices</span> <span class="pre">[DEV</span> <span class="pre">...]</span></code>: Pass one or more device paths from the host into the
+container.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_robot_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--devices<span class="w"> </span>/dev/ttyUSB0<span class="w"> </span>/dev/video0
+</pre></div>
+</div>
+<p>This is useful for hardware such as serial adapters or cameras.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Devices passed with <code class="docutils literal notranslate"><span class="pre">--devices</span></code> must be available before the container
+starts. If such a device is unplugged and plugged in again, the container
+will usually need to be restarted.</p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--enable-input</span></code>: Enable access to the Linux input subsystem for devices
+such as joysticks, keyboards, and mice.</p>
+<p>This is useful when input devices may be disconnected and reconnected while
+the container is running. The option mounts <code class="docutils literal notranslate"><span class="pre">/dev/input</span></code>, adds the required
+cgroup rules, and synchronizes the host <code class="docutils literal notranslate"><span class="pre">input</span></code> group into the container.</p>
+</li>
+</ul>
+</section>
+<section id="kernel-scheduling-and-performance">
+<h3>Kernel scheduling and performance<a class="headerlink" href="#kernel-scheduling-and-performance" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--enable-realtime</span></code>: Enable real-time scheduling support inside the
+container.</p>
+<p>This is useful for workloads that require deterministic timing, such as
+low-latency ROS 2 control loops. The option adjusts the required resource
+limits, adds the <code class="docutils literal notranslate"><span class="pre">SYS_NICE</span></code> capability, and synchronizes the host
+<code class="docutils literal notranslate"><span class="pre">realtime</span></code> group into the container.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Your host system must already be configured for real-time scheduling and
+provide the <code class="docutils literal notranslate"><span class="pre">realtime</span></code> group.</p>
+</div>
+<p>For a complete step-by-step guide on setting up a PREEMPT_RT Debian system
+and ROS workspace, see: <a class="reference external" href="realtime_pc_setup.rst">PREEMPT_RT PC setup</a></p>
+</li>
+</ul>
+</section>
+<section id="supplementary-group-permissions">
+<h3>Supplementary group permissions<a class="headerlink" href="#supplementary-group-permissions" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--groups</span> <span class="pre">[GROUP</span> <span class="pre">...]</span></code>: Synchronize supplementary groups from the host into
+the container.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_robot_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--devices<span class="w"> </span>/dev/ttyUSB0<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--groups<span class="w"> </span>dialout
+</pre></div>
+</div>
+<p>This is useful when a device requires group-based access, for example when a
+serial device is owned by the <code class="docutils literal notranslate"><span class="pre">dialout</span></code> group.</p>
+<p>If a requested group does not exist on the host machine, the build will fail
+instead of creating an invalid container configuration.</p>
+</li>
+<li><p>Combined example:</p>
+<p>If you need a fresh build for a robot requiring a webcam, a dynamically pluggable Xbox controller, and a serial microcontroller:</p>
+</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>my_robot_ws<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>jazzy<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--no-cache<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--devices<span class="w"> </span>/dev/video0<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--enable-input<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--groups<span class="w"> </span>video<span class="w"> </span>dialout
+</pre></div>
+</div>
+</section>
 </section>
 <section id="how-to-install-rocker-fork-with-the-new-features">
 <h2>How to install rocker fork with the new features<a class="headerlink" href="#how-to-install-rocker-fork-with-the-new-features" title="Permalink to this heading"></a></h2>

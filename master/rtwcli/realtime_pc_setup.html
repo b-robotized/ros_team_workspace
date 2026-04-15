@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Realtime PC Setup &mdash; ROS Team Workspace Documentation: Jazzy Apr 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/rtwcli/realtime_pc_setup.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/jazzy.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">RTW CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guidelines/index.html">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases (ROS)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operating_system/index.html">Operating System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Jazzy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Realtime PC Setup</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/rtwcli/realtime_pc_setup.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="realtime-pc-setup">
+<h1>Realtime PC Setup<a class="headerlink" href="#realtime-pc-setup" title="Permalink to this heading"></a></h1>
+<p>This guide describes the recommended and simplest way to set up a
+real-time (PREEMPT_RT) PC and prepare it for ROS 2 development using RTW.</p>
+<p>We’re using a pre-build binary on Linux Debian distribution and a docker container
+with Ubuntu 24.04 with real-time permissions.</p>
+<section id="operating-system-installation">
+<h2>Operating System Installation<a class="headerlink" href="#operating-system-installation" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Download the newest Debian stable version.</p>
+<p>It is recommended to use the <em>complete installation image</em> from:
+<a class="reference external" href="https://www.debian.org/CD/">https://www.debian.org/CD/</a></p>
+</li>
+<li><p>Create a bootable USB (e.g., using <code class="docutils literal notranslate"><span class="pre">dd</span></code> on Linux).</p></li>
+<li><p>Boot from the USB and select <code class="docutils literal notranslate"><span class="pre">Graphical</span> <span class="pre">Installer</span></code>.</p></li>
+<li><p>Follow installation steps:</p>
+<ul class="simple">
+<li><p>Be aware Debian uses a separate <code class="docutils literal notranslate"><span class="pre">root</span></code> user. Don’t get confused with two passwords. Debian has root user that doesn’t have name, and you can access it with <code class="docutils literal notranslate"><span class="pre">su</span> <span class="pre">-</span></code> command.</p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">ssh</span></code> during setup</p></li>
+<li><p>Choose your preferred window manager _(recommended is Plasma)_</p></li>
+</ul>
+</li>
+<li><p>Configure networking:</p>
+<ul class="simple">
+<li><p>Main network according to your company requirements</p></li>
+</ul>
+</li>
+<li><p>Login to the PC after installation _(recommended to use <strong>Plasma on X11</strong>)_:</p>
+<ul class="simple">
+<li><p>Set up a networking - usually your company network and dedicated RT ethernet interface for your robot with a static IP.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="initial-system-setup">
+<h2>Initial System Setup<a class="headerlink" href="#initial-system-setup" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple" start="6">
+<li><p>Connect via SSH from engineering PC.</p></li>
+<li><p>Add your user to sudo:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>su<span class="w"> </span>-
+usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>sudo<span class="w"> </span>&lt;user_name&gt;
+<span class="nb">exit</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p>Re-login and verify sudo access.</p></li>
+<li><p>Update system:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</pre></div>
+</div>
+</section>
+<section id="preempt-rt-kernel-installation">
+<h2>PREEMPT_RT Kernel Installation<a class="headerlink" href="#preempt-rt-kernel-installation" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple" start="10">
+<li><p>Check current kernel:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uname<span class="w"> </span>-r
+</pre></div>
+</div>
+<ol class="arabic simple" start="11">
+<li><p>Install matching RT kernel:</p></li>
+</ol>
+<p>Check the current kernel version with <code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-r</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">6.12.74+deb13+1-amd64</span></code>.
+Then, install the exact same version of kernel with <code class="docutils literal notranslate"><span class="pre">PREEMPT_RT</span></code> flag</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>linux-image-&lt;version&gt;-rt-amd64
+</pre></div>
+</div>
+<ol class="arabic simple" start="12">
+<li><p>Reboot:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>reboot
+</pre></div>
+</div>
+<ol class="arabic simple" start="13">
+<li><p>Verify RT kernel:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uname<span class="w"> </span>-a
+
+<span class="c1"># should contain PREEMPT_RT</span>
+</pre></div>
+</div>
+</section>
+<section id="realtime-permissions-setup">
+<h2>Realtime Permissions Setup<a class="headerlink" href="#realtime-permissions-setup" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple" start="14">
+<li><p>Install Docker (APT method):</p></li>
+</ol>
+<blockquote>
+<div><p><a class="reference external" href="https://docs.docker.com/engine/install/debian/">https://docs.docker.com/engine/install/debian/</a></p>
+</div></blockquote>
+<ol class="arabic simple" start="15">
+<li><p>Configure <code class="docutils literal notranslate"><span class="pre">realtime</span></code> and <code class="docutils literal notranslate"><span class="pre">docker</span></code> groups and configure limits:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+sudo<span class="w"> </span>addgroup<span class="w"> </span>realtime
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>realtime<span class="w"> </span><span class="nv">$USER</span>
+
+sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/security/limits.conf<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">@realtime soft rtprio 99</span>
+<span class="s">@realtime soft priority 99</span>
+<span class="s">@realtime soft memlock unlimited</span>
+<span class="s">@realtime hard rtprio 99</span>
+<span class="s">@realtime hard priority 99</span>
+<span class="s">@realtime hard memlock unlimited</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="16">
+<li><p>Logout/login and verify:</p></li>
+</ol>
+<p>You should see <code class="docutils literal notranslate"><span class="pre">docker</span></code> and <code class="docutils literal notranslate"><span class="pre">realtime</span></code> groups in the output.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>groups
+</pre></div>
+</div>
+</section>
+<section id="rtw-and-ros-workspace-setup">
+<h2>RTW and ROS Workspace Setup<a class="headerlink" href="#rtw-and-ros-workspace-setup" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple" start="17">
+<li><p>Install RTW:</p></li>
+</ol>
+<blockquote>
+<div><p><a class="reference external" href="https://rtw.b-robotized.com/master/tutorials/setting_up_rtw.html">https://rtw.b-robotized.com/master/tutorials/setting_up_rtw.html</a></p>
+</div></blockquote>
+<ol class="arabic simple" start="18">
+<li><p>Create RT-enabled workspace:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>workspace<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ws-folder<span class="w"> </span>&lt;my-ws-name&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--ros-distro<span class="w"> </span>&lt;my-distro&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--docker<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--disable-nvidia<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--repos-containing-repository-url<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>https://&lt;repo-url&gt;.git<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--repos-branch<span class="w"> </span>master<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--apt_packages<span class="w"> </span>&lt;additional-pkg-1&gt;<span class="w">  </span><span class="se">\</span>
+<span class="w">                 </span>&lt;additional-pkg-2&gt;...<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--enable-realtime
+</pre></div>
+</div>
+<ol class="arabic simple" start="19">
+<li><p>Exit container and source workspace:</p></li>
+</ol>
+<p>Exiting the container saves the workspace configuration in RTW.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>ws<span class="w"> </span>&lt;my-ws-name&gt;
+</pre></div>
+</div>
+<ol class="arabic simple" start="20">
+<li><p>Enter container:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw<span class="w"> </span>docker<span class="w"> </span>enter
+</pre></div>
+</div>
+</section>
+<section id="verification-and-testing">
+<h2>Verification and Testing<a class="headerlink" href="#verification-and-testing" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple" start="21">
+<li><p>Verify RT kernel inside container:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uname<span class="w"> </span>-a
+
+<span class="c1"># should contain PREEMPT_RT</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dd><a href="realtime_pc_setup.html">Master (Jazzy, Kilted, Rolling)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../humble/index.html">Humble</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
