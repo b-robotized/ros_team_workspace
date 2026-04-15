@@ -35,7 +35,7 @@ def generate_rocker_flags(
     devices: Union[List[str], None] = None,
     enable_input: bool = False,
     enable_realtime: bool = False,
-    use_groups: Union[List[str], None] = None
+    use_groups: Union[List[str], None] = None,
 ) -> List[str]:
     # rocker flags have order, see rocker --help
     rocker_flags = ["--nocache", "--nocleanup", "--git"]
@@ -95,12 +95,10 @@ def generate_rocker_flags(
     # --- INPUT HARDWARE BINDINGS ---
     # off-your-rocker rocker extension, to add docker run args rocker does not support out of the box.
     oyr_run_args = []
-    
+
     if enable_input:
-        groups_to_add.append('input')
-        rocker_flags.extend([
-            "--volume", "/dev/input:/dev/input"
-        ])
+        groups_to_add.append("input")
+        rocker_flags.extend(["--volume", "/dev/input:/dev/input"])
         # In Linux hardware management, devices are categorized by a "Major" number.
         # The Major number 13 is permanently assigned by the Linux kernel to the entire Input Subsystem.
         # This 13 is a static kernel constant.
@@ -109,12 +107,16 @@ def generate_rocker_flags(
         oyr_run_args.append("--device-cgroup-rule='c 13:* rmw'")
 
     if enable_realtime:
-        groups_to_add.append('realtime')
-        rocker_flags.extend([
-            "--ulimit", "rtprio=99",
-            "--ulimit", "memlock=-1",
-        ])
-        oyr_run_args.append("--cap-add=sys_nice")    
+        groups_to_add.append("realtime")
+        rocker_flags.extend(
+            [
+                "--ulimit",
+                "rtprio=99",
+                "--ulimit",
+                "memlock=-1",
+            ]
+        )
+        oyr_run_args.append("--cap-add=sys_nice")
 
     # Resolve and add GIDs for all requested groups
     for group_name in set(groups_to_add):
@@ -124,7 +126,9 @@ def generate_rocker_flags(
             logger.info(f"SUCCESS: Added '{group_name}' group (GID: {gid}) to rocker flags.")
         except KeyError:
             # Abort if the user requested a group they don't actually have on the host system
-            raise RuntimeError(f"Requested group '{group_name}' does not exist on the host system. Please create it or remove the flag.")
+            raise RuntimeError(
+                f"Requested group '{group_name}' does not exist on the host system. Please create it or remove the flag."
+            )
 
     if oyr_run_args:
         raw_docker_args = " ".join(oyr_run_args)

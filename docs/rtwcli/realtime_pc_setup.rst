@@ -8,7 +8,7 @@ We're using a pre-build binary on Linux Debian distribution and a docker contain
 with Ubuntu 24.04 with real-time permissions.
 
 Operating System Installation
------------------------------
+------------------------------
 
 1. Download the newest Debian stable version.
 
@@ -31,7 +31,7 @@ Operating System Installation
    * Set up a dedicated RT ethernet interface for your robot with a static IP.
 
 Initial System Setup
--------------------
+---------------------
 
 6. Connect via SSH from engineering PC.
 
@@ -52,7 +52,7 @@ Initial System Setup
    sudo apt update
 
 PREEMPT_RT Kernel Installation
-------------------------------
+-------------------------------
 
 10. Check current kernel:
 
@@ -84,7 +84,7 @@ Then, install the exact same version of kernel with ``PREEMPT_RT`` flag
    # should contain PREEMPT_RT
 
 Realtime Permissions Setup
--------------------------
+---------------------------
 
 14. Install Docker (APT method):
 
@@ -116,7 +116,7 @@ You should see ``docker`` and ``realtime`` groups in the output.
    groups
 
 RTW and ROS Workspace Setup
----------------------------
+----------------------------
 
 17. Install RTW:
 
@@ -153,7 +153,7 @@ Exiting the container saves the workspace configuration in RTW.
    rtw docker enter
 
 Verification and Testing
------------------------
+-------------------------
 
 21. Verify RT kernel inside container:
 

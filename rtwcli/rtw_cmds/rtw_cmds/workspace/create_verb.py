@@ -18,7 +18,6 @@ from dataclasses import dataclass, field, fields
 import grp
 import os
 import shutil
-import subprocess
 import textwrap
 from typing import Any, List
 
@@ -666,9 +665,9 @@ class CreateVerb(VerbExtension):
         # --- SYNC HOST GROUPS TO CONTAINER ---
         groups_to_sync = create_args.use_groups.copy() if create_args.use_groups else []
         if getattr(create_args, "enable_input", False):
-            groups_to_sync.append('input')
+            groups_to_sync.append("input")
         if getattr(create_args, "enable_realtime", False):
-            groups_to_sync.append('realtime')
+            groups_to_sync.append("realtime")
 
         group_sync_cmds = []
         for group_name in set(groups_to_sync):
@@ -682,8 +681,10 @@ class CreateVerb(VerbExtension):
                 )
                 group_sync_cmds.append(cmd)
             except KeyError:
-                raise RuntimeError(f"Requested group '{group_name}' does not exist on the host system.")
-                
+                raise RuntimeError(
+                    f"Requested group '{group_name}' does not exist on the host system."
+                )
+
         group_sync_cmd_str = "\n".join(group_sync_cmds)
 
         rtw_clone_cmd = " ".join(
@@ -1137,7 +1138,7 @@ RUN rm -rf /var/lib/apt/lists/*
             if create_args.docker:
                 import docker
 
-                client = docker.from_env(timeout=12000) # 20 min timeout on response timeout
+                client = docker.from_env(timeout=12000)  # 20 min timeout on response timeout
                 uid = os.getuid()
                 gid = os.getgid()
 
