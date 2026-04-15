@@ -73,7 +73,7 @@ DEFAULT_RTW_DOCKER_PATH = os.path.expanduser("~/ros_team_workspace")
 DEFAULT_UPSTREAM_WS_NAME_FORMAT = "{workspace_name}_upstream"
 DEFAULT_WS_REPOS_FILE_FORMAT = "{repo_name}.{ros_distro}.repos"
 DEFAULT_UPSTREAM_WS_REPOS_FILE_FORMAT = "{repo_name}.{ros_distro}.upstream.repos"
-DEFAULT_APT_PACKAGES = [
+BASE_APT_PACKAGES = [
     "bash-completion",
     "git",
     "git-lfs",
@@ -121,7 +121,8 @@ class CreateVerbArgs:
     user_override_name: str
     has_upstream_ws: bool = False
     ignore_ws_cmd_error: bool = False
-    apt_packages: List[str] = field(default_factory=list)
+    additional_apt_packages: List[str] = field(default_factory=list)
+    no_base_apt_packages: bool = False
     python_packages: List[str] = field(default_factory=list)
     standalone: bool = False
     repos_no_skip_existing: bool = False
@@ -539,10 +540,23 @@ class CreateVerb(VerbExtension):
             default=DEFAULT_RTW_DOCKER_PATH,
         )
         parser.add_argument(
-            "--apt_packages",
+            "--additional_apt_packages",
             nargs="*",
-            help="Additional apt packages to install.",
-            default=DEFAULT_APT_PACKAGES,
+            help=(
+                "Additional apt packages to install on top of BASE_APT_PACKAGES. "
+                "These are installed in a separate RUN layer after the base packages."
+            ),
+            default=[],
+        )
+        parser.add_argument(
+            "--no-base-apt-packages",
+            action="store_true",
+            help=(
+                "Skip installation of BASE_APT_PACKAGES. "
+                "Use this for minimal images or when the base image already provides these tools. "
+                f"BASE_APT_PACKAGES: {BASE_APT_PACKAGES}"
+            ),
+            default=False,
         )
         parser.add_argument(
             "--python_packages",
@@ -626,12 +640,13 @@ class CreateVerb(VerbExtension):
         )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
-        if create_args.apt_packages:
-            apt_packages_cmd = " ".join(
-                ["RUN", "apt-get", "install", "-y"] + create_args.apt_packages
+        apt_packages_cmd = "# no apt packages to install"
+        if not create_args.no_base_apt_packages:
+            apt_packages_cmd = " ".join(["RUN", "apt-get", "install", "-y"] + BASE_APT_PACKAGES)
+        if create_args.additional_apt_packages:
+            apt_packages_cmd += "\n" + " ".join(
+                ["RUN", "apt-get", "install", "-y"] + create_args.additional_apt_packages
             )
-        else:
-            apt_packages_cmd = "# no apt packages to install"
 
         if create_args.python_packages:
             # hack to install system-wide python packages
@@ -1097,7 +1112,9 @@ RUN rm -rf /var/lib/apt/lists/*
 
         logger.info(f"Committing container '{intermediate_container.id}'")
         try:
-            docker_client_commit = docker.from_env(timeout=12000)  # 20 min timeout on response timeout
+            docker_client_commit = docker.from_env(
+                timeout=12000
+            )  # 20 min timeout on response timeout
             container_to_commit = docker_client_commit.containers.get(intermediate_container.id)
             container_to_commit.commit(repository=create_args.final_image_name)
         except docker.errors.APIError as e:  # type: ignore
