@@ -22,10 +22,10 @@ Workspace Configuration
 --------------------------
 To enable Zenoh, you need to set the appropriate environment variables. RTW expects these to be defined in your workspace configuration.
 
-The best solution is to set zenoh variables per specific workspace either at the creation with `rtw workspace create` or later using the `rtw edit` command. In both cases the flag is `--env-vars RMW_IMPLEMENTATION=rmw_zenoh_cpp export RUST_LOG=zenoh=warn,zenoh_transport=warn`.
-If you want to use zenoh to connecto to a remote computer append `ZENOH_CONNECT_IP=192.168.28.28`.
+The best solution is to set Zenoh variables per specific workspace either at the creation with ``rtw workspace create`` or later using the ``rtw edit`` command. In both cases the flag is ``--env-vars RMW_IMPLEMENTATION=rmw_zenoh_cpp export RUST_LOG=zenoh=warn,zenoh_transport=warn``.
+If you want to use Zenoh to connect to a remote computer append ``ZENOH_CONNECT_IP=192.168.28.28``.
 
-If you want to use `zenoh` as default in your system open your ``~/.ros_team_ws_rc`` file and uncomment the following lines.
+If you want to use ``zenoh`` as default in your system open your ``~/.ros_team_ws_rc`` file and uncomment the following lines.
 
 .. code-block:: bash
 
@@ -34,8 +34,8 @@ If you want to use `zenoh` as default in your system open your ``~/.ros_team_ws_
     # Optional: Set a default target IP to connect to automatically
     export ZENOH_CONNECT_IP=192.168.28.28
 
-Once added you will have to `source ~/.bashrc` again or better, open new terminal and then choose the workspace using `rtw ws <ws_name>`.
- 
+Once added you will have to ``source ~/.bashrc`` again or better, open new terminal and then choose the workspace using ``rtw ws <ws_name>``.
+
 
 Starting the Router
 ----------------------

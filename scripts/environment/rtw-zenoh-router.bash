@@ -23,17 +23,17 @@ source "$script_own_dir/../../setup.bash"
 show_help() {
     echo -e "${TERMINAL_COLOR_USER_NOTICE}Usage: rtw-zenoh-router [IP_ADDRESS]${TERMINAL_COLOR_NC}"
     echo -e "Starts a local Zenoh router (rmw_zenohd).\n"
-    
+
     echo -e "${TERMINAL_COLOR_LIGHT_BLUE}Modes:${TERMINAL_COLOR_NC}"
     echo -e "  ${TERMINAL_COLOR_GREEN}Local-only:${TERMINAL_COLOR_NC}  rtw-zenoh-router        (Local nodes only, if ZENOH_CONNECT_IP is unset)"
     echo -e "  ${TERMINAL_COLOR_GREEN}Connected:${TERMINAL_COLOR_NC}   rtw-zenoh-router <IP>   (Connects to tcp/<IP>:7447)\n"
-    
+
     echo -e "${TERMINAL_COLOR_LIGHT_BLUE}Environment Variables:${TERMINAL_COLOR_NC}"
     echo "  ZENOH_CONNECT_IP   Define this in your workspace configuration (.ros_team_ws_rc)"
     echo "                     to set a default IP address. Running 'rtw-zenoh-router' with no"
     echo "                     arguments will automatically connect to this IP."
     echo "                     Passing an <IP> argument manually overrides this variable.\n"
-    
+
     echo -e "${TERMINAL_COLOR_LIGHT_BLUE}Options:${TERMINAL_COLOR_NC}"
     echo "  -h, --help   Show this help message."
 }
