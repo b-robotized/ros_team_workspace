@@ -112,6 +112,22 @@ crm [<package1_name>, <package2_name>]
   Remove ``build``, ``log`` and ``install`` folders for the workspace or corresponding sub-folders for specific packages.
   *Auto-completion for all build ROS 2 packages is available.*
 
+Zenoh Router (Networking)
+-------------------------
+
+When using ``rmw_zenoh_cpp`` as middleware, starting the Zenoh router with the correct configuration is critical. RTW provides a dedicated alias for this:
+
+.. code-block:: bash
+
+    rtw-zenoh-router [IP_ADDRESS]
+
+This alias simplifies starting the ``rmw_zenohd`` daemon and handles dynamic endpoint routing:
+
+* **Local-only:** ``rtw-zenoh-router`` starts a local standalone router in ``listen`` mode.
+* **Connected:** ``rtw-zenoh-router 192.168.28.28`` automatically exports the required TCP endpoint configuration (``connect/endpoints=["tcp/<IP>:7447"]``) before starting the router, so your local ROS 2 network successfully bridges to the target device.
+
+For a full breakdown of the environment setup for ``zenoh``, see the :ref:`Zenoh Crash Course <zenoh_crash_course>`.
+
 .. _uc-aliases-ros2-daemon:
 
 ROS 2 Daemon Management
