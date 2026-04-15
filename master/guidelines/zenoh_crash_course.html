@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenoh Crash Course &mdash; ROS Team Workspace Documentation: Jazzy Apr 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon-bg.png"/>
+    <link rel="canonical" href="https://rtw.b-robotized.com/jazzy//jazzy/guidelines/zenoh_crash_course.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Use Cases (ROS)" href="../use-cases/index.html" />
+    <link rel="prev" title="ROS-Robot Package structure" href="robot_package_structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/jazzy.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtwcli/index.html">RTW CLI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guidelines</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="creating_robot_description.html">Creating Robot Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html">Development Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_workflow.html">Working as a team with Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robot_package_structure.html">ROS-Robot Package structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Zenoh Crash Course</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-and-concepts">Overview and Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workspace-configuration">Workspace Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-the-router">Starting the Router</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verifying-the-connection">Verifying the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases/index.html">Use Cases (ROS)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operating_system/index.html">Operating System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROS Team Workspace Documentation: Jazzy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Guidelines</a></li>
+      <li class="breadcrumb-item active">Zenoh Crash Course</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/b-robotized/ros_team_workspace/blob/master//docs/guidelines/zenoh_crash_course.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="zenoh-crash-course">
+<span id="id1"></span><h1>Zenoh Crash Course<a class="headerlink" href="#zenoh-crash-course" title="Permalink to this heading"></a></h1>
+<p>In the context of ROS 2, using the Zenoh RMW (<code class="docutils literal notranslate"><span class="pre">rmw_zenoh_cpp</span></code>) simplifies connecting multiple devices across different subnets.</p>
+<section id="overview-and-concepts">
+<h2>Overview and Concepts<a class="headerlink" href="#overview-and-concepts" title="Permalink to this heading"></a></h2>
+<p>When using Zenoh with ROS 2, the network architecture is slightly different from traditional DDS:</p>
+<ul class="simple">
+<li><p><strong>Router (zenohd):</strong> Think of this as a ros2 daemon running on your host. It handles network discovery and host-to-host communication. Typically, you run one router per host. Routers must be configured to talk to each other across the network.</p></li>
+<li><p><strong>Sessions:</strong> Every ROS 2 node creates a Zenoh “session” that communicates through the local loopback interface (<code class="docutils literal notranslate"><span class="pre">lo</span></code>). The router then picks up this traffic and handles the host-to-host routing.</p></li>
+</ul>
+<p>The router is required for the initial discovery phase. In the common case, even if the router process dies, the established connection between ROS 2 nodes will persist, though new nodes will not be able to discover each other until the router is restarted.</p>
+<p>For deeper technical details, refer to the <a class="reference external" href="https://github.com/ros2/rmw_zenoh">official rmw_zenoh documentation</a>.</p>
+</section>
+<section id="workspace-configuration">
+<h2>Workspace Configuration<a class="headerlink" href="#workspace-configuration" title="Permalink to this heading"></a></h2>
+<p>To enable Zenoh, you need to set the appropriate environment variables. RTW expects these to be defined in your workspace configuration.</p>
+<p>The best solution is to set Zenoh variables per specific workspace either at the creation with <code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">workspace</span> <span class="pre">create</span></code> or later using the <code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">edit</span></code> command. In both cases the flag is <code class="docutils literal notranslate"><span class="pre">--env-vars</span> <span class="pre">RMW_IMPLEMENTATION=rmw_zenoh_cpp</span> <span class="pre">export</span> <span class="pre">RUST_LOG=zenoh=warn,zenoh_transport=warn</span></code>.
+If you want to use Zenoh to connect to a remote computer append <code class="docutils literal notranslate"><span class="pre">ZENOH_CONNECT_IP=192.168.28.28</span></code>.</p>
+<p>If you want to use <code class="docutils literal notranslate"><span class="pre">zenoh</span></code> as default in your system open your <code class="docutils literal notranslate"><span class="pre">~/.ros_team_ws_rc</span></code> file and uncomment the following lines.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
+<span class="nb">export</span><span class="w"> </span><span class="nv">RUST_LOG</span><span class="o">=</span><span class="nv">zenoh</span><span class="o">=</span>warn,zenoh_transport<span class="o">=</span>warn
+<span class="c1"># Optional: Set a default target IP to connect to automatically</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONNECT_IP</span><span class="o">=</span><span class="m">192</span>.168.28.28
+</pre></div>
+</div>
+<p>Once added you will have to <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/.bashrc</span></code> again or better, open new terminal and then choose the workspace using <code class="docutils literal notranslate"><span class="pre">rtw</span> <span class="pre">ws</span> <span class="pre">&lt;ws_name&gt;</span></code>.</p>
+</section>
+<section id="starting-the-router">
+<h2>Starting the Router<a class="headerlink" href="#starting-the-router" title="Permalink to this heading"></a></h2>
+<p>Every machine participating in the Zenoh network needs access to a Zenoh router (<code class="docutils literal notranslate"><span class="pre">rmw_zenohd</span></code>). RTW provides the <code class="docutils literal notranslate"><span class="pre">rtw-zenoh-router</span></code> alias to manage this.</p>
+<p><strong>Local-Only mode</strong>
+If you are developing locally and do not need to bridge to an external device, start the router without arguments in one terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw-zenoh-router
+</pre></div>
+</div>
+<p><em>What it does:</em> This launches the router in <code class="docutils literal notranslate"><span class="pre">listen</span></code> mode, listening to all interfaces for incoming connections, but does not attempt to connect to other routers.</p>
+<p><strong>Connected Mode</strong>
+If you need to connect your local machine to an external device also running a <code class="docutils literal notranslate"><span class="pre">zenoh</span></code> router:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw-zenoh-router<span class="w"> </span><span class="m">192</span>.168.28.28
+</pre></div>
+</div>
+<p>If you need to connect your local machine to an external device also running a <code class="docutils literal notranslate"><span class="pre">zenoh</span></code> router, the script will automatically connect if you either:</p>
+<ol class="arabic simple">
+<li><p>Defined <code class="docutils literal notranslate"><span class="pre">ZENOH_CONNECT_IP</span></code> in your workspace configuration and run <code class="docutils literal notranslate"><span class="pre">rtw-zenoh-router</span></code> without arguments. How to set this variable per workspace or system-wide check the explanation above.</p></li>
+<li><p>Explicitly pass the IP as an argument (this <strong>overrides</strong> the workspace variable, setting <code class="docutils literal notranslate"><span class="pre">ZENOH_CONFIG_OVERRIDE='connect/endpoints=[&quot;tcp/&lt;IP&gt;:7447&quot;]'</span></code>):</p></li>
+</ol>
+</section>
+<section id="verifying-the-connection">
+<h2>Verifying the Connection<a class="headerlink" href="#verifying-the-connection" title="Permalink to this heading"></a></h2>
+<p>If you want to see detailed connection logs, you can increase the <code class="docutils literal notranslate"><span class="pre">RUST_LOG</span></code> verbosity in your terminal before running the script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">RUST_LOG</span><span class="o">=</span><span class="nv">zenoh</span><span class="o">=</span>info,zenoh_transport<span class="o">=</span>info
+rtw-zenoh-router<span class="w"> </span><span class="m">192</span>.168.28.28
+</pre></div>
+</div>
+<p>When using Zenoh, take care that the <code class="docutils literal notranslate"><span class="pre">ros2</span></code> commands are executed differently. More about this check the <a class="reference internal" href="../use-cases/ros_workspaces/aliases.html#uc-aliases-ros2-daemon"><span class="std std-ref">ROS 2 Daemon Management</span></a> documentation.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="robot_package_structure.html" class="btn btn-neutral float-left" title="ROS-Robot Package structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../use-cases/index.html" class="btn btn-neutral float-right" title="Use Cases (ROS)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, b»robotized group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dd><a href="zenoh_crash_course.html">Master (Jazzy, Kilted, Rolling)</a></dd>
+    </dl>
+    <dl>
+<!--       <dt>ROS Team Workspace - Foxy</dt> -->
+        <dd><a href="../../humble/index.html">Humble</a></dd>
+        <dd><a href="../../galactic/index.html">Galactic (EOL)</a></dd>
+        
+        <dd><a href="../../foxy/index.html">Foxy (EOL)</a></dd>
+        
+   </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

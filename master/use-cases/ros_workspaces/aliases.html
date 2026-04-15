@@ -74,6 +74,9 @@
 <li class="toctree-l5"><a class="reference internal" href="#executing-package-tests">Executing Package Tests</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#executing-multiple-commands">Executing Multiple Commands</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#cleaning-workspace">Cleaning Workspace</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#zenoh-router-networking">Zenoh Router (Networking)</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#ros-2-daemon-management">ROS 2 Daemon Management</a></li>
 </ul>
 </li>
@@ -212,6 +215,19 @@ Alias for command: <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 </section>
+</section>
+<section id="zenoh-router-networking">
+<h3>Zenoh Router (Networking)<a class="headerlink" href="#zenoh-router-networking" title="Permalink to this heading"></a></h3>
+<p>When using <code class="docutils literal notranslate"><span class="pre">rmw_zenoh_cpp</span></code> as middleware, starting the Zenoh router with the correct configuration is critical. RTW provides a dedicated alias for this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtw-zenoh-router<span class="w"> </span><span class="o">[</span>IP_ADDRESS<span class="o">]</span>
+</pre></div>
+</div>
+<p>This alias simplifies starting the <code class="docutils literal notranslate"><span class="pre">rmw_zenohd</span></code> daemon and handles dynamic endpoint routing:</p>
+<ul class="simple">
+<li><p><strong>Local-only:</strong> <code class="docutils literal notranslate"><span class="pre">rtw-zenoh-router</span></code> starts a local standalone router in <code class="docutils literal notranslate"><span class="pre">listen</span></code> mode.</p></li>
+<li><p><strong>Connected:</strong> <code class="docutils literal notranslate"><span class="pre">rtw-zenoh-router</span> <span class="pre">192.168.28.28</span></code> automatically exports the required TCP endpoint configuration (<code class="docutils literal notranslate"><span class="pre">connect/endpoints=[&quot;tcp/&lt;IP&gt;:7447&quot;]</span></code>) before starting the router, so your local ROS 2 network successfully bridges to the target device.</p></li>
+</ul>
+<p>For a full breakdown of the environment setup for <code class="docutils literal notranslate"><span class="pre">zenoh</span></code>, see the <a class="reference internal" href="../../guidelines/zenoh_crash_course.html#zenoh-crash-course"><span class="std std-ref">Zenoh Crash Course</span></a>.</p>
 <section id="ros-2-daemon-management">
 <span id="uc-aliases-ros2-daemon"></span><h4>ROS 2 Daemon Management<a class="headerlink" href="#ros-2-daemon-management" title="Permalink to this heading"></a></h4>
 <p>RTW includes a wrapper for the standard <code class="docutils literal notranslate"><span class="pre">ros2</span></code> CLI commands that automatically manages the ROS 2 daemon based on your active workspace configuration.</p>
