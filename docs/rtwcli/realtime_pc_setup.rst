@@ -23,12 +23,15 @@ Operating System Installation
 
    * Be aware Debian uses a separate ``root`` user. Don't get confused with two passwords. Debian has root user that doesn't have name, and you can access it with ``su -`` command.
    * Install ``ssh`` during setup
-   * Choose your preferred window manager
+   * Choose your preferred window manager _(recommended is Plasma)_
 
 5. Configure networking:
 
    * Main network according to your company requirements
-   * Set up a dedicated RT ethernet interface for your robot with a static IP.
+
+6. Login to the PC after installation _(recommended to use **Plasma on X11**)_:
+
+   * Set up a networking - usually your company network and dedicated RT ethernet interface for your robot with a static IP.
 
 Initial System Setup
 ---------------------
