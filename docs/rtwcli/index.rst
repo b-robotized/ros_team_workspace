@@ -297,6 +297,7 @@ Hardware and device access
   the container is running. The option mounts ``/dev/input``, adds the required
   cgroup rules, and synchronizes the host ``input`` group into the container.
 
+
 Kernel scheduling and performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -310,7 +311,10 @@ Kernel scheduling and performance
 
   .. note::
      Your host system must already be configured for real-time scheduling and
-     provide the ``realtime`` group. `See documentation on controls.ros.org <https://control.ros.org/rolling/doc/ros2_control/controller_manager/doc/userdoc.html#determinism>`_ for more info.
+     provide the ``realtime`` group.
+
+  For a complete step-by-step guide on setting up a PREEMPT_RT Debian system
+  and ROS workspace, see: `PREEMPT_RT PC setup <realtime_pc_setup.rst>`_
 
 Supplementary group permissions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
