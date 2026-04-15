@@ -38,13 +38,13 @@ def docker_build(
     dockerfile_path: str,
     file: Union[str, None] = None,
     pull: bool = True,
-    no_cache: bool = True,
+    no_cache: bool = False,
 ) -> bool:
     """Build a docker image with the given tag from the given dockerfile path."""
     docker_build_command = ["docker", "build", "-t", tag]
+    docker_build_command.append("--progress=plain")
     if no_cache:
         docker_build_command.append("--no-cache")
-        docker_build_command.append("--progress=plain")
     if pull:
         docker_build_command.append("--pull")
     if file:
