@@ -114,6 +114,15 @@ These instructions assume you are running Ubuntu 20.04:
    sudo apt install ros2-$ROS_DISTRO$-forward_command_controller ros2-$ROS_DISTRO$-joint_state_broadcaster ros2-$ROS_DISTRO$-joint_trajectory_controller ros2-$ROS_DISTRO$-xacro
    ```
 
+1. If you use real hardware, make sure your user has access to input devices and serial ports.
+   The `input` group allows access to devices such as joysticks and gamepads, and `dialout`
+   allows access to serial devices such as USB adapters and motor controllers:
+   ```
+   sudo usermod -aG input,dialout $(whoami)
+   ```
+
+   Log out and back in, or reboot, for the group changes to take effect.
+
 ### Configure and Build Workspace:
 To configure and build workspace execute following commands:
   ```

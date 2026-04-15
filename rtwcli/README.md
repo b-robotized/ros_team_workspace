@@ -2,7 +2,7 @@
 
 `git clone https://github.com/b-robotized/ros_team_workspace.git`
 
-`cd ros_team_workspace/rtwcli/ && pip3 install -r requirements.txt`
+`cd ros_team_workspace/rtwcli/ && pip3 install --break-system-dependencies -r requirements.txt`
 
 `source ros_team_workspace/setup.bash`
 

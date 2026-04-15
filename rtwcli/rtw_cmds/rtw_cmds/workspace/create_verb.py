@@ -15,9 +15,9 @@
 
 import argparse
 from dataclasses import dataclass, field, fields
+import grp
 import os
 import shutil
-import subprocess
 import textwrap
 from typing import Any, List
 
@@ -73,7 +73,7 @@ DEFAULT_RTW_DOCKER_PATH = os.path.expanduser("~/ros_team_workspace")
 DEFAULT_UPSTREAM_WS_NAME_FORMAT = "{workspace_name}_upstream"
 DEFAULT_WS_REPOS_FILE_FORMAT = "{repo_name}.{ros_distro}.repos"
 DEFAULT_UPSTREAM_WS_REPOS_FILE_FORMAT = "{repo_name}.{ros_distro}.upstream.repos"
-DEFAULT_APT_PACKAGES = [
+BASE_APT_PACKAGES = [
     "bash-completion",
     "git",
     "git-lfs",
@@ -112,6 +112,7 @@ class CreateVerbArgs:
     container_name: str
     rtw_docker_repo_url: str
     rtw_docker_branch: str
+    no_cache: bool
     rtw_docker_clone_abs_path: str
     ssh_abs_path: str
     intermediate_dockerfile_name: str
@@ -120,7 +121,8 @@ class CreateVerbArgs:
     user_override_name: str
     has_upstream_ws: bool = False
     ignore_ws_cmd_error: bool = False
-    apt_packages: List[str] = field(default_factory=list)
+    additional_apt_packages: List[str] = field(default_factory=list)
+    no_base_apt_packages: bool = False
     python_packages: List[str] = field(default_factory=list)
     standalone: bool = False
     repos_no_skip_existing: bool = False
@@ -134,6 +136,10 @@ class CreateVerbArgs:
     proxy_server: str = ""
     proxy_ca_cert: str = ""
     env_vars: dict = field(default_factory=dict)
+    devices: List[str] = field(default_factory=list)
+    use_groups: List[str] = field(default_factory=list)
+    enable_input: bool = False
+    enable_realtime: bool = False
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -409,6 +415,29 @@ class CreateVerb(VerbExtension):
             default=False,
         )
         parser.add_argument(
+            "--enable-input",
+            action="store_true",
+            help="Enable dynamic hot-plugging for joysticks and input devices (binds whole /dev/input).",
+        )
+        parser.add_argument(
+            "--enable-realtime",
+            action="store_true",
+            help="Enable realtime kernel scheduling capabilities (rtprio, memlock, sys_nice).",
+        )
+        parser.add_argument(
+            "--devices",
+            nargs="*",
+            help="Statically mount specific devices (e.g., /dev/ttyUSB0). Must be plugged in at container startup.",
+            default=[],
+        )
+        parser.add_argument(
+            "--groups",
+            dest="use_groups",
+            nargs="*",
+            help="Additional host groups to pass to the container (e.g., input, realtime, dialout, video).",
+            default=[],
+        )
+        parser.add_argument(
             "--enable-ipc",
             action="store_true",
             help="Enable IPC for the docker workspace.",
@@ -434,6 +463,12 @@ class CreateVerb(VerbExtension):
                 f"default format is used: {DEFAULT_WS_REPOS_FILE_FORMAT}"
             ),
             default=None,
+        )
+        parser.add_argument(
+            "--no-cache",
+            action="store_true",
+            help="Do not use cache when building the docker image.",
+            default=False,
         )
         parser.add_argument(
             "--upstream-ws-repos-file-name",
@@ -505,10 +540,23 @@ class CreateVerb(VerbExtension):
             default=DEFAULT_RTW_DOCKER_PATH,
         )
         parser.add_argument(
-            "--apt_packages",
+            "--additional_apt_packages",
             nargs="*",
-            help="Additional apt packages to install.",
-            default=DEFAULT_APT_PACKAGES,
+            help=(
+                "Additional apt packages to install on top of BASE_APT_PACKAGES. "
+                "These are installed in a separate RUN layer after the base packages."
+            ),
+            default=[],
+        )
+        parser.add_argument(
+            "--no-base-apt-packages",
+            action="store_true",
+            help=(
+                "Skip installation of BASE_APT_PACKAGES. "
+                "Use this for minimal images or when the base image already provides these tools. "
+                f"BASE_APT_PACKAGES: {BASE_APT_PACKAGES}"
+            ),
+            default=False,
         )
         parser.add_argument(
             "--python_packages",
@@ -592,12 +640,13 @@ class CreateVerb(VerbExtension):
         )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
-        if create_args.apt_packages:
-            apt_packages_cmd = " ".join(
-                ["RUN", "apt-get", "install", "-y"] + create_args.apt_packages
+        apt_packages_cmd = "# no apt packages to install"
+        if not create_args.no_base_apt_packages:
+            apt_packages_cmd = " ".join(["RUN", "apt-get", "install", "-y"] + BASE_APT_PACKAGES)
+        if create_args.additional_apt_packages:
+            apt_packages_cmd += "\n" + " ".join(
+                ["RUN", "apt-get", "install", "-y"] + create_args.additional_apt_packages
             )
-        else:
-            apt_packages_cmd = "# no apt packages to install"
 
         if create_args.python_packages:
             # hack to install system-wide python packages
@@ -627,6 +676,31 @@ class CreateVerb(VerbExtension):
             )
         else:
             python_packages_cmd = "# no python packages to install"
+
+        # --- SYNC HOST GROUPS TO CONTAINER ---
+        groups_to_sync = create_args.use_groups.copy() if create_args.use_groups else []
+        if getattr(create_args, "enable_input", False):
+            groups_to_sync.append("input")
+        if getattr(create_args, "enable_realtime", False):
+            groups_to_sync.append("realtime")
+
+        group_sync_cmds = []
+        for group_name in set(groups_to_sync):
+            try:
+                gid = grp.getgrnam(group_name).gr_gid
+                # If the group exists, force its GID to match the host. If missing, create it.
+                cmd = (
+                    f"RUN if getent group {group_name} > /dev/null 2>&1; then "
+                    f"groupmod -g {gid} {group_name} || true; else "
+                    f"groupadd -g {gid} {group_name}; fi"
+                )
+                group_sync_cmds.append(cmd)
+            except KeyError:
+                raise RuntimeError(
+                    f"Requested group '{group_name}' does not exist on the host system."
+                )
+
+        group_sync_cmd_str = "\n".join(group_sync_cmds)
 
         rtw_clone_cmd = " ".join(
             [
@@ -754,6 +828,7 @@ FROM {create_args.base_image_name}
 {update_key_cmds}
 RUN apt-get update {"&& apt-get upgrade -y" if not create_args.docker_disable_upgrade else ""}
 {apt_packages_cmd}
+{group_sync_cmd_str}
 {pip_config_cmd}
 {git_config_cmd}
 {python_packages_cmd}
@@ -794,6 +869,7 @@ RUN rm -rf /var/lib/apt/lists/*
             tag=create_args.final_image_name,
             dockerfile_path=docker_build_context,
             file=create_args.intermediate_dockerfile_abs_path,
+            no_cache=create_args.no_cache,
         ):
             # clean up certificate file from build context even on failure
             if cert_dest_path and os.path.exists(cert_dest_path):
@@ -855,7 +931,6 @@ RUN rm -rf /var/lib/apt/lists/*
             rosdep_cmds = [["sudo", "apt-get", "update"], ["rosdep", "update"]]
         else:
             rosdep_cmds = []
-        os_codename = subprocess.check_output(["lsb_release", "-c", "-s"], text=True).strip()
         rosdep_install_cmd_base = [
             "rosdep",
             "install",
@@ -863,7 +938,6 @@ RUN rm -rf /var/lib/apt/lists/*
             "-r",
             "-y",
             f"--rosdistro={create_args.ros_distro}",
-            f"--os=ubuntu:{os_codename}",
             "--from-paths",
         ]
         if has_upstream_ws_packages:
@@ -1038,7 +1112,11 @@ RUN rm -rf /var/lib/apt/lists/*
 
         logger.info(f"Committing container '{intermediate_container.id}'")
         try:
-            intermediate_container.commit(create_args.final_image_name)
+            docker_client_commit = docker.from_env(
+                timeout=12000
+            )  # 20 min timeout on response timeout
+            container_to_commit = docker_client_commit.containers.get(intermediate_container.id)
+            container_to_commit.commit(repository=create_args.final_image_name)
         except docker.errors.APIError as e:  # type: ignore
             docker_stop(intermediate_container.id)
             raise RuntimeError(f"Failed to commit container '{intermediate_container.id}': {e}")
@@ -1077,7 +1155,7 @@ RUN rm -rf /var/lib/apt/lists/*
             if create_args.docker:
                 import docker
 
-                client = docker.from_env()
+                client = docker.from_env(timeout=12000)  # 20 min timeout on response timeout
                 uid = os.getuid()
                 gid = os.getgid()
 
@@ -1279,6 +1357,10 @@ RUN rm -rf /var/lib/apt/lists/*
                 ws_volumes=rocker_ws_volumes,
                 user_override_name=create_args.user_override_name,
                 env_file=create_args.env_file,
+                devices=create_args.devices,
+                use_groups=create_args.use_groups,
+                enable_input=create_args.enable_input,
+                enable_realtime=create_args.enable_realtime,
             )
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):

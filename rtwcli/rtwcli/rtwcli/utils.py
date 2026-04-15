@@ -174,6 +174,18 @@ def replace_user_name_in_path(
     return path.replace(f"/home/{current_user}", f"/home/{new_user}")
 
 
+def get_os_id() -> str:
+    """Read the OS ID from /etc/os-release (e.g. 'ubuntu', 'debian')."""
+    try:
+        with open("/etc/os-release") as f:
+            for line in f:
+                if line.startswith("ID="):
+                    return line.strip().split("=", 1)[1].strip('"').lower()
+    except OSError:
+        pass
+    return ""
+
+
 def get_display_manager() -> str:
     # Command to get the display manager type
     cmd = "loginctl show-session $(awk '/tty/ {print $1}' <(loginctl)) -p Type | awk -F= '{print $2}'"
