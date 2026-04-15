@@ -22,7 +22,10 @@ Workspace Configuration
 --------------------------
 To enable Zenoh, you need to set the appropriate environment variables. RTW expects these to be defined in your workspace configuration.
 
-Open your ``~/.ros_team_ws_rc`` file and add the following lines to your active workspace's setup function:
+The best solution is to set zenoh variables per specific workspace either at the creation with `rtw workspace create` or later using the `rtw edit` command. In both cases the flag is `--env-vars RMW_IMPLEMENTATION=rmw_zenoh_cpp export RUST_LOG=zenoh=warn,zenoh_transport=warn`.
+If you want to use zenoh to connecto to a remote computer append `ZENOH_CONNECT_IP=192.168.28.28`.
+
+If you want to use `zenoh` as default in your system open your ``~/.ros_team_ws_rc`` file and uncomment the following lines.
 
 .. code-block:: bash
 
@@ -31,9 +34,8 @@ Open your ``~/.ros_team_ws_rc`` file and add the following lines to your active 
     # Optional: Set a default target IP to connect to automatically
     export ZENOH_CONNECT_IP=192.168.28.28
 
-Once added, open a new terminal or re-run your workspace alias (e.g., ``_my_workspace``).
+Once added you will have to `source ~/.bashrc` again or better, open new terminal and then choose the workspace using `rtw ws <ws_name>`.
  
-For a guide on modifying existing workspace ENV variables, see: :ref:`RTW env variable editing <_rtwcli-workspace-edit>`
 
 Starting the Router
 ----------------------
@@ -57,7 +59,7 @@ If you need to connect your local machine to an external device also running a `
 
 If you need to connect your local machine to an external device also running a ``zenoh`` router, the script will automatically connect if you either:
 
-1. Defined ``ZENOH_CONNECT_IP`` in your workspace configuration and run ``rtw-zenoh-router`` without arguments.
+1. Defined ``ZENOH_CONNECT_IP`` in your workspace configuration and run ``rtw-zenoh-router`` without arguments. How to set this variable per workspace or system-wide check the explanation above.
 2. Explicitly pass the IP as an argument (this **overrides** the workspace variable, setting ``ZENOH_CONFIG_OVERRIDE='connect/endpoints=["tcp/<IP>:7447"]'``):
 
 Verifying the Connection

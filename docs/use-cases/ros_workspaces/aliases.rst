@@ -126,7 +126,7 @@ This alias simplifies starting the ``rmw_zenohd`` daemon and handles dynamic end
 * **Local-only:** ``rtw-zenoh-router`` starts a local standalone router in ``listen`` mode.
 * **Connected:** ``rtw-zenoh-router 192.168.28.28`` automatically exports the required TCP endpoint configuration (``connect/endpoints=["tcp/<IP>:7447"]``) before starting the router, so your local ROS 2 network successfully bridges to the target device.
 
-For a full breakdown of the environment setup for ``zenoh``, see the :ref:`zenoh_crash_course`.
+For a full breakdown of the environment setup for ``zenoh``, see the :ref:`Zenoh Crash Course <zenoh_crash_course>`.
 
 .. _uc-aliases-ros2-daemon:
 
