@@ -267,6 +267,41 @@ Docker build control
   Use this if you want to rebuild the image from scratch, for example after
   package repositories changed or when debugging dependency issues.
 
+APT package installation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+A predefined set of base packages (``BASE_APT_PACKAGES``) is always installed
+into the Docker image during the build. These include common tools such as
+``git``, ``vim``, ``tmux``, ``python3-colcon-common-extensions``, and others
+required for a functional ROS development environment.
+
+* ``--no-base-apt-packages``: Skip the installation of ``BASE_APT_PACKAGES``.
+
+  Use this for minimal images or when the base image already provides these
+  tools.
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_minimal_ws \
+        --ros-distro jazzy \
+        --docker \
+        --no-base-apt-packages
+
+* ``--additional_apt_packages [PKG ...]``: Install extra apt packages on top of
+  ``BASE_APT_PACKAGES`` (or instead of them if ``--no-base-apt-packages`` is
+  set). These are installed in a separate ``RUN`` layer after the base packages.
+
+  Example:
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_robot_ws \
+        --ros-distro jazzy \
+        --docker \
+        --additional_apt_packages ros-jazzy-rviz2 htop can-utils
+
 Hardware and device access
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
