@@ -21,9 +21,14 @@ TEAM_PRIVATE_CONFIG_PATH=""
 #export IGNITION_VERSION=edifice
 
 # RMW setup
+## Zenoh
+# export RMW_IMPLEMENTATION=rmw_zenoh_cpp
+# export RUST_LOG=zenoh=warn,zenoh_transport=warn
+# Optional: Set a default target IP to connect to automatically
+# export ZENOH_CONNECT_IP=192.168.28.28
+## Cyclone
 # export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 # export CYCLONEDDS_URI=~/workspace/cyclonedds.xml
-# export RMW_IMPLEMENTATION=rmw_zenoh_cpp
 
 # export CYCLONEDDS_URI='<CycloneDDS><Domain><General><NetworkInterfaceAddress>ADD_HERE_INTERFACE_NAME</NetworkInterfaceAddress></General></Domain></CycloneDDS>'
 
