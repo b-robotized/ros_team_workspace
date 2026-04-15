@@ -28,6 +28,8 @@ Open your ``~/.ros_team_ws_rc`` file and add the following lines to your active 
 
     export RMW_IMPLEMENTATION=rmw_zenoh_cpp
     export RUST_LOG=zenoh=warn,zenoh_transport=warn
+    # Optional: Set a default target IP to connect to automatically
+    export ZENOH_CONNECT_IP=192.168.28.28
 
 Once added, open a new terminal or re-run your workspace alias (e.g., ``_my_workspace``).
  
@@ -53,7 +55,10 @@ If you need to connect your local machine to an external device also running a `
 
     rtw-zenoh-router 192.168.28.28
 
-*What it does:* This automatically sets ``ZENOH_CONFIG_OVERRIDE='connect/endpoints=["tcp/192.168.28.28:7447"]'`` and starts the router. Your local ROS 2 nodes will now discover and communicate with nodes on the target device.
+If you need to connect your local machine to an external device also running a ``zenoh`` router, the script will automatically connect if you either:
+
+1. Defined ``ZENOH_CONNECT_IP`` in your workspace configuration and run ``rtw-zenoh-router`` without arguments.
+2. Explicitly pass the IP as an argument (this **overrides** the workspace variable, setting ``ZENOH_CONFIG_OVERRIDE='connect/endpoints=["tcp/<IP>:7447"]'``):
 
 Verifying the Connection
 ---------------------------
