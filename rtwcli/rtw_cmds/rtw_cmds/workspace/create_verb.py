@@ -1096,7 +1096,9 @@ RUN rm -rf /var/lib/apt/lists/*
 
         logger.info(f"Committing container '{intermediate_container.id}'")
         try:
-            intermediate_container.commit(create_args.final_image_name)
+            docker_client_commit = docker.from_env(timeout=600)
+            container_to_commit = docker_client_commit.containers.get(intermediate_container.id)
+            container_to_commit.commit(repository=create_args.final_image_name)
         except docker.errors.APIError as e:  # type: ignore
             docker_stop(intermediate_container.id)
             raise RuntimeError(f"Failed to commit container '{intermediate_container.id}': {e}")
