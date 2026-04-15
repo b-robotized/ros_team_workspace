@@ -270,7 +270,7 @@ Docker build control
 Hardware and device access
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* ``--devices [DEV ...]``: Pass one or more device nodes from the host into the
+* ``--devices [DEV ...]``: Pass one or more device paths from the host into the
   container.
 
   Example:
@@ -315,6 +315,7 @@ Kernel scheduling and performance
 
   For a complete step-by-step guide on setting up a PREEMPT_RT Debian system
   and ROS workspace, see: `PREEMPT_RT PC setup <realtime_pc_setup.rst>`_
+
 
 Supplementary group permissions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

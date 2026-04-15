@@ -40,7 +40,7 @@ Initial System Setup
 .. code-block:: bash
 
    su -
-   usermod -a -G sudo core
+   usermod -a -G sudo <user_name>
    exit
 
 8. Re-login and verify sudo access.
