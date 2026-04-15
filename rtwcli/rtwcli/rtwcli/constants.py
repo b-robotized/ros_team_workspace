@@ -61,6 +61,8 @@ ROS_TEAM_WS_ENV_VARIABLES = [
 
 DISPLAY_MANAGER_WAYLAND = "wayland"
 
+OS_ID_DEBIAN = "debian"
+
 RICH_TREE_LABEL_COLOR = "[bold green]"
 RICH_TREE_GUIDE_STYLE = "bold"
 RICH_TREE_FST_LVL_COLOR = "[bold blue]"

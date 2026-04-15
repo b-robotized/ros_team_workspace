@@ -17,8 +17,8 @@ import grp
 from typing import List, Union
 
 from rtwcli import logger
-from rtwcli.constants import DISPLAY_MANAGER_WAYLAND
-from rtwcli.utils import get_display_manager, run_command
+from rtwcli.constants import DISPLAY_MANAGER_WAYLAND, OS_ID_DEBIAN
+from rtwcli.utils import get_display_manager, get_os_id, run_command
 
 
 def generate_rocker_flags(
@@ -41,6 +41,10 @@ def generate_rocker_flags(
     rocker_flags = ["--nocache", "--nocleanup", "--git"]
 
     rocker_flags.extend(["-e", "QT_QPA_PLATFORM=xcb"])
+    if get_os_id() == OS_ID_DEBIAN:
+        rocker_flags.extend(["-e", "QT_X11_NO_MITSHM=1"])
+        rocker_flags.extend(["-e", "LIBGL_ALWAYS_SOFTWARE=1"])
+        rocker_flags.extend(["--device", "/dev/dri"])
     if not disable_nvidia:
         rocker_flags.extend(["-e", "__GLX_VENDOR_LIBRARY_NAME=nvidia"])
         rocker_flags.extend(["-e", "__NV_PRIME_RENDER_OFFLOAD=1"])
