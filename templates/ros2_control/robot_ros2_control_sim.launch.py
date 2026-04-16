@@ -76,6 +76,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "attach_world",
+            default_value="false",
+            description="Create a world link and attach the robot base link to it.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "robot_controller",
             default_value="forward_position_controller",
             choices=["forward_position_controller", "joint_trajectory_controller"],
@@ -89,6 +96,7 @@ def generate_launch_description():
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
+    attach_world = LaunchConfiguration("attach_world")
     robot_controller = LaunchConfiguration("robot_controller")
 
     robot_controllers = PathJoinSubstitution(
@@ -110,6 +118,9 @@ def generate_launch_description():
             " ",
             "prefix:=",
             prefix,
+            " ",
+            "attach_world:=",
+            attach_world,
             " ",
             "use_mock:=false",
             " ",

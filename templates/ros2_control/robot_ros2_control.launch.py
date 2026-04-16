@@ -70,6 +70,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "attach_world",
+            default_value="false",
+            description="Create a world link and attach the robot base link to it.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "use_mock",
             default_value="true",
             description="Start robot with mock hardware mirroring command to its states.",
@@ -98,6 +105,7 @@ def generate_launch_description():
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
+    attach_world = LaunchConfiguration("attach_world")
     use_mock = LaunchConfiguration("use_mock")
     mock_sensor_commands = LaunchConfiguration("mock_sensor_commands")
     robot_controller = LaunchConfiguration("robot_controller")
@@ -113,6 +121,9 @@ def generate_launch_description():
             " ",
             "prefix:=",
             prefix,
+            " ",
+            "attach_world:=",
+            attach_world,
             " ",
             "use_mock:=",
             use_mock,
