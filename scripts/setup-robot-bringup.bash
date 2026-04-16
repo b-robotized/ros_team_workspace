@@ -90,14 +90,21 @@ for file_type in "${LAUNCH_FILE_TYPES[@]}"; do
   ROBOT_LAUNCH="launch/${ROBOT_NAME}.launch${file_type}"
   TEST_FWD_POS_CTRL_LAUNCH="launch/test_forward_position_controller.launch${file_type}"
   TEST_JTC_LAUNCH="launch/test_joint_trajectory_controller.launch${file_type}"
+  TEST_DIFF_DRIVE_CTRL_LAUNCH="launch/test_diff_drive_controller.launch.xml"
 
   # Copy the templates to the destination with the specified file type
   cp -n "$ROS2_CONTROL_TEMPLATES/robot_ros2_control.launch${file_type}" "${ROBOT_LAUNCH}"
   cp -n "$ROS2_CONTROL_TEMPLATES/test_forward_position_controller.launch${file_type}" "${TEST_FWD_POS_CTRL_LAUNCH}"
   cp -n "$ROS2_CONTROL_TEMPLATES/test_joint_trajectory_controller.launch${file_type}" "${TEST_JTC_LAUNCH}"
+  if [ "$file_type" = ".xml" ]; then
+    cp -n "$ROS2_CONTROL_TEMPLATES/test_diff_drive_controller.launch.xml" "${TEST_DIFF_DRIVE_CTRL_LAUNCH}"
+  fi
 
   # sed all needed files
   FILES_TO_SED=($ROBOT_LAUNCH $TEST_FWD_POS_CTRL_LAUNCH $TEST_JTC_LAUNCH)
+  if [ "$file_type" = ".xml" ]; then
+    FILES_TO_SED+=($TEST_DIFF_DRIVE_CTRL_LAUNCH)
+  fi
 
   for SED_FILE in "${FILES_TO_SED[@]}"; do
     sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" $SED_FILE
