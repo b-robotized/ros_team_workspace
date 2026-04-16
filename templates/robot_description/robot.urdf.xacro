@@ -3,6 +3,7 @@
 
   <!-- Use this if parameters are set from the launch file, otherwise delete -->
   <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="attach_world" default="true"/>
 
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="mock_sensor_commands" default="false"/>
@@ -14,13 +15,23 @@
   <xacro:include filename="$(find $PKG_NAME$)/urdf/$ROBOT_NAME$/$ROBOT_NAME$_macro.ros2_control.xacro"/>
 
   <!-- create link fixed to the "world" -->
-  <link name="world"/>
+  <xacro:if value="$(arg attach_world)">
+    <link name="world"/>
 
-  <!-- Load robot's macro with parameters -->
-  <!-- set prefix if multiple robots are used -->
-  <xacro:$ROBOT_NAME$ prefix="$(arg prefix)" parent="world">
-    <origin xyz="0 0 0" rpy="0 0 0"/>          <!-- position robot in the world -->
-  </xacro:$ROBOT_NAME$>
+    <!-- Load robot's macro with parameters -->
+    <!-- set prefix if multiple robots are used -->
+    <xacro:$ROBOT_NAME$ prefix="$(arg prefix)" parent="world">
+      <origin xyz="0 0 0" rpy="0 0 0"/>          <!-- position robot in the world -->
+    </xacro:$ROBOT_NAME$>
+  </xacro:if>
+
+  <xacro:unless value="$(arg attach_world)">
+    <!-- Load robot's macro without attaching it to the world frame -->
+    <!-- set prefix if multiple robots are used -->
+    <xacro:$ROBOT_NAME$ prefix="$(arg prefix)" parent="">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:$ROBOT_NAME$>
+  </xacro:unless>
 
   <xacro:$ROBOT_NAME$_ros2_control
     name="$ROBOT_NAME$"
