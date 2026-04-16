@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2023 Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright 2023 b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ script_own_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 source $script_own_dir/../setup.bash
 
 # Setting up formatting
-cp -n ${PACKAGE_TEMPLATES}/.clang-format .
-cp -n ${PACKAGE_TEMPLATES}/.pre-commit-config.yaml .
-cp -n ${PACKAGE_TEMPLATES}/.codespell-ignore-words.txt .
+cp --update=none ${PACKAGE_TEMPLATES}/.clang-format .
+cp --update=none ${PACKAGE_TEMPLATES}/.pre-commit-config.yaml .
+cp --update=none ${PACKAGE_TEMPLATES}/.codespell-ignore-words.txt .
 pre-commit install
 pre-commit autoupdate
 

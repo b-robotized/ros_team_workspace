@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,6 +44,8 @@ class Workspace:
     docker_container_name: Optional[str] = None
     base_ws: Optional[str] = None
     standalone: bool = False
+    env_vars: Dict[str, str] = dataclasses.field(default_factory=dict)
+    docker_devices: List[str] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
         if self.ws_folder == "":
@@ -209,9 +211,18 @@ def create_bash_script_content_for_using_ws(
     bash_script_content = "#!/bin/bash\n"
 
     ws_data = workspace.to_dict()
+    # Extract env_vars to handle separately
+    env_vars = ws_data.pop("env_vars", {})
+
     for ws_var, ws_var_value in ws_data.items():
         env_var, env_var_value = workspace_var_to_env_var(ws_var, ws_var_value)
         bash_script_content += f"export {env_var}='{env_var_value}'\n"
+
+    # Export custom environment variables without prefix
+    if env_vars:
+        for key, value in env_vars.items():
+            if value is not None:
+                bash_script_content += f"export {key}='{value}'\n"
 
     bash_script_content += (
         f"source {use_workspace_script_path} {workspace.distro} {workspace.ws_folder}\n"

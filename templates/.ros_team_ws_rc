@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# Set this to the location of RosTeamWorkspace
+source <PATH TO ros_team_workspace>/setup.bash
+
 # if you did not install ros under /opt/ros/<ros-distro>/ then you have to set the ALTERNATIVE_ROS_<ROS_DISTRO>_LOCATION
 # to point to your installation folder e.g. ALTERNATIVE_ROS_ROLLING_LOCATION=/home/user/my_installation_folder/rolling/
-# For other ros versions simply add ALTERNATIVE_ROS_<ros-distro>_LOCATION e.g. ALTERNATIVE_ROS_FOXY_LOCATION
-ALTERNATIVE_ROS_ROLLING_LOCATION=""
+# export ALTERNATIVE_ROS_NOETIC_LOCATION="/opt/ros/rolling"
+# export ALTERNATIVE_ROS_GALACTIC_LOCATION="/opt/ros/rolling"
+# export ALTERNATIVE_ROS_HUMBLE_LOCATION="/opt/ros/rolling"
+# export ALTERNATIVE_ROS_IRON_LOCATION="/opt/ros/rolling"
 
 TEAM_LICENSE="Apache License 2.0"
 
@@ -11,15 +16,26 @@ TEAM_REPOSITORY_SERVER="https://github.com"
 
 TEAM_PRIVATE_CONFIG_PATH=""
 
-# set this to the location of RosTeamWorkspace
-source <PATH TO ros_team_workspace>/setup.bash
 
 # User specific setup/variables
+#export IGNITION_VERSION=edifice
 
-#export CYCLONEDDS_URI='<CycloneDDS><Domain><General><NetworkInterfaceAddress>ADD_HERE_INTERFACE_NAME</NetworkInterfaceAddress></General></Domain></CycloneDDS>'
+# RMW setup
+## Zenoh
+# export RMW_IMPLEMENTATION=rmw_zenoh_cpp
+# export RUST_LOG=zenoh=warn,zenoh_transport=warn
+# Optional: Set a default target IP to connect to automatically
+# export ZENOH_CONNECT_IP=192.168.28.28
+## Cyclone
+# export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+# export CYCLONEDDS_URI=~/workspace/cyclonedds.xml
+
+# export CYCLONEDDS_URI='<CycloneDDS><Domain><General><NetworkInterfaceAddress>ADD_HERE_INTERFACE_NAME</NetworkInterfaceAddress></General></Domain></CycloneDDS>'
 
 export ROS_AUTOMATIC_DISCOVERY_RANGE="LOCALHOST"  # Doc: https://docs.ros.org/en/rolling/Tutorials/Advanced/Improved-Dynamic-Discovery.html
 export ROS_DOMAIN_ID=0 # Set your Domain ID if you are in a network with multiple computers
+#export ROS_STATIC_PEERS="<ROBOT IP>;<Control Box IP>"
+export ROS_STATIC_PEERS="192.168.28.28"
 
 # needed to execute cppcheck version 2.7 used in pre-commit
 export AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=true
@@ -30,7 +46,11 @@ export AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=true
 export RCUTILS_COLORIZED_OUTPUT=1
 #export RCUTILS_LOGGING_USE_STDOUT=1  # force all logging output to stdout
 
-# Stogl Robotics custom setup for nice colors and showing ROS workspace
+# Docker display setup
+export QT_QPA_PLATFORM=xcb
+
+# b»robotized custom setup for nice colors and showing ROS workspace
 #source <Path to ros_team_workspace>/scripts/configuration/terminal_coloring.bash
+
 
 # WORKSPACES

@@ -1,4 +1,4 @@
-// Copyright (c) 2022, Stogl Robotics Consulting UG (haftungsbeschränkt) (template)
+// Copyright (c) 2022-2026, b»robotized group (template)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
 // limitations under the License.
 
 //
-// Source of this file are templates in
-// [RosTeamWorkspace](https://github.com/StoglRobotics/ros_team_workspace) repository.
+// Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 //
 
 #ifndef TEMPLATES__ROS2_CONTROL__CONTROLLER__TEST_DUMMY_CHAINABLE_CONTROLLER_HPP_
@@ -150,8 +149,9 @@ protected:
 
     for (size_t i = 0; i < joint_command_values_.size(); ++i)
     {
-      command_itfs_.emplace_back(hardware_interface::CommandInterface(
-        joint_names_[i], interface_name_, &joint_command_values_[i]));
+      command_itfs_.emplace_back(
+        hardware_interface::CommandInterface(
+          joint_names_[i], interface_name_, &joint_command_values_[i]));
       command_ifs.emplace_back(command_itfs_.back());
     }
     // TODO(anyone): Add other command interfaces, if any
@@ -162,8 +162,9 @@ protected:
 
     for (size_t i = 0; i < joint_state_values_.size(); ++i)
     {
-      state_itfs_.emplace_back(hardware_interface::StateInterface(
-        joint_names_[i], interface_name_, &joint_state_values_[i]));
+      state_itfs_.emplace_back(
+        hardware_interface::StateInterface(
+          joint_names_[i], interface_name_, &joint_state_values_[i]));
       state_ifs.emplace_back(state_itfs_.back());
     }
     // TODO(anyone): Add other state interfaces, if any

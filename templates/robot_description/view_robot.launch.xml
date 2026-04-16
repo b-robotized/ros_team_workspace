@@ -1,11 +1,11 @@
 <!--
-Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt)
+Copyright (c) 2025, b»robotized Group
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,25 +13,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 
-Source of this file are templates in https://github.com/StoglRobotics/ros_team_workspace repository.
+Author: Dr. Denis
 -->
 
 <launch>
   <arg name="description_package"
        default="$PKG_NAME$"
-       description="Description package of the dte_ea_1000. Usually the argument is not set, it enables use of a custom description."/>
+       description="Description package with robot URDF/xacro files. Usually not set, it enables use of a custom description."/>
+  <arg name="description_file"
+       default="$ROBOT_NAME$"
+       description="URDF/XACRO description file with the robot."/>
   <arg name="prefix"
        default=""
-       description="Prefix of the joint names, useful for multi-robot setup. If changed than also joint names in the controllers' configuration have to be updated."/>
+       description="Prefix of the joint names, useful for multi-robot setup. If changed, joint names in controller config must also be updated."/>
+  <arg name="use_mock"
+       default="true"
+       description="Choose if to start mock hardware or real hardware."/>
 
-  <let name="robot_description_content" value="$(command '$(find-exec xacro) $(find-pkg-share $(var description_package))/urdf/$ROBOT_NAME$.urdf.xacro prefix:=$(var prefix)')" />
+  <include file="$(find-pkg-share $(var description_package))/launch/load_description.launch.xml">
+    <arg name="description_package" value="$(var description_package)"/>
+    <arg name="description_file" value="$(var description_file)"/>
+    <arg name="prefix" value="$(var prefix)"/>
+    <arg name="use_mock" value="$(var use_mock)"/>
+  </include>
 
-  <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui"/>
+  <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_node"/>
 
-  <node pkg="robot_state_publisher" exec="robot_state_publisher" output="both">
-    <param name="robot_description" value="$(var robot_description_content)" />
-  </node>
-
-  <node pkg="rviz2" exec="rviz2" output="log" args="-d $(find-pkg-share $(var description_package))/rviz/$ROBOT_NAME$.rviz"/>
+  <node pkg="rviz2" exec="rviz2" name="rviz2" output="both" args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz"/>
 </launch>

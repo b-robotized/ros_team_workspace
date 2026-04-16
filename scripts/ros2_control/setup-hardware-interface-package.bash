@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2021, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2021-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ case "$choice" in
   LICENSE_HEADER="$LICENSE_TEMPLATES/default_cpp.txt"
   ;;
 "2")
-  LICENSE_HEADER="$LICENSE_TEMPLATES/propriatery_company_cpp.txt"
+  LICENSE_HEADER="$LICENSE_TEMPLATES/proprietary_company_cpp.txt"
 esac
 
 echo -e "${TERMINAL_COLOR_USER_INPUT_DECISION}Which type of ros2_control hardware interface you want to extend? [0]"
@@ -111,10 +111,10 @@ PLUGIN_XML="$PKG_NAME.xml"
 TEST_CPP="test/test_$FILE_NAME.cpp"
 
 # Copy files
-cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/dummy_package_namespace/robot_hardware_interface.hpp $HW_ITF_HPP
-cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_hardware_interface.cpp $HW_ITF_CPP
-cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_pluginlib.xml $PLUGIN_XML
-cp -n $ROS2_CONTROL_HW_ITF_TEMPLATES/test_robot_hardware_interface.cpp $TEST_CPP
+cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/dummy_package_namespace/robot_hardware_interface.hpp $HW_ITF_HPP
+cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_hardware_interface.cpp $HW_ITF_CPP
+cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_pluginlib.xml $PLUGIN_XML
+cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/test_robot_hardware_interface.cpp $TEST_CPP
 
 echo -e "${TERMINAL_COLOR_USER_NOTICE}Template files copied.${TERMINAL_COLOR_NC}"
 

@@ -1,0 +1,7 @@
+<library path="dummy_ikfast_plugin">
+  <class name="dummy_ikfast/DummyKinematics"
+         type="dummy_ikfast::DummyKinematics"
+         base_class_type="kinematics_interface::KinematicsInterface">
+    <description>IKFast plugin for Dummy robot</description>
+  </class>
+</library>

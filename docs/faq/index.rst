@@ -6,13 +6,13 @@ On Docker
 ----------------
 
 How to forward an xsession
-"""""""""""""""""""""""""""""
+""""""""""""""""""""""""""
 If you want to forward an xsession from docker (e.g. rviz2), you have to install xhost.
 The forwarding is done automatically by adding docker user to the X Server access list when docker is created.
 
 
 How to use nvidia driver in docker
-""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""
 We explain :ref:`here <docker-nvidia-support-how-to>` how to expose your nvidia drivers into the docker container.
 
 
@@ -23,3 +23,12 @@ Problem using sudo: If you encounter following message trying to use sudo: ``sud
 Docker and ROS (ROS1): Can not start my roscore.
 """""""""""""""""""""""""""""""""""""""""""""""""
 If you try to start your roscore inside the docker container with ``roscore``-command and get the following error message: ``RLException: Unable to contact my own server at [http://<hostname>:<port>]``. You have to add ``127.0.0.1 <hostname>`` to the ``/etc/hosts`` file inside the container.
+
+Guides
+------
+
+.. toctree::
+   :maxdepth: 1
+
+   introduction_to_freecad
+   moving_parts_to_different_reference_system

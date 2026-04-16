@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2022, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2022-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -124,6 +124,17 @@ function RosTeamWS_setup_exports {
 
 # TODO(denis): add this into setup.bash
 function RosTeamWS_setup_aliases {
+  # ssh helper aliases
+  # TODO(denis): Add function for this that requests the Email/comment and filename
+  alias create-ssh-key="ssh-keygen -t ed25519"
+
+  alias stop_kvm="sudo systemctl stop libvirtd && sudo modprobe -r kvm_intel kvm_amd kvm"
+  alias start_kvm="sudo modprobe kvm && sudo modprobe kvm_intel && sudo modprobe kvm_amd && sudo systemctl start libvirtd"
+  alias fix_bt_headphones_audio="sudo pulseaudio -k && systemctl --user restart wireplumber && systemctl --user restart pipewire"
+}
+
+# TODO(denis): add this into setup.bash
+function RosTeamWS_setup_ros_aliases {
 
   # ROS
   alias rosds="cd \$ROS_WS/src"
@@ -131,9 +142,6 @@ function RosTeamWS_setup_aliases {
   alias rosdi="cd \$ROS_WS/install"
   alias rosdep_prep="sudo apt update && rosdep update"
   alias rosdepi="rosdep install -r -y -i --from-paths \$ROS_WS/src --os=ubuntu:$(lsb_release -c -s)"
-
-  # ssh helper aliases
-  alias create-ssh-key="ssh-keygen -t ed25519"
 }
 
 function RosTeamWS_setup_ros1_exports {
@@ -158,7 +166,6 @@ function RosTeamWS_setup_ros1_aliases {
 function RosTeamWS_setup_ros2_exports {
 
   export RTI_LICENSE_FILE=/opt/rti.com/rti_connext_dds-5.3.1/rti_license.dat
-
 }
 
 function RosTeamWS_setup_ros2_aliases {
@@ -206,19 +213,63 @@ function RosTeamWS_setup_ros2_aliases {
   complete -F _rosd_completions_multi ca
   complete -F _rosd_completions_single caup
   complete -F _rosd_completions_multi crm
+
+  # Automatic --no-daemon to ros2 cli commands
+  function ros2() {
+    local base_cmd="ros2"
+    local should_append=false
+
+    if [[ "$RMW_IMPLEMENTATION" == "rmw_zenoh_cpp" ]]; then
+      should_append=true
+    fi
+
+    if [[ "$RTW_NO_DAEMON" == "1" ]]; then
+      should_append=true
+    fi
+
+    # If the command already has --no-daemon, skip
+    if [[ "$*" == *"--no-daemon"* ]]; then
+      command $base_cmd "$@"
+      return
+    fi
+
+    # if we don't append, run normal ros2
+    if ! $should_append; then
+      command $base_cmd "$@"
+      return
+    fi
+
+    # commands that actually support the --no-daemon flag
+    local daemon_cmds=("info" "list" "node" "param" "interface" "lifecycle")
+    local is_daemon_cmd=false
+
+    for cmd in "${daemon_cmds[@]}"; do
+      if [[ "$1" == "$cmd" ]]; then
+        is_daemon_cmd=true
+        break
+      fi
+    done
+
+    if $is_daemon_cmd; then
+      command $base_cmd "$@" --no-daemon
+    else
+      command $base_cmd "$@"
+    fi
+  }
+
 }
 
 function rtw_ros_cd {
   if [ -z "$1" ]; then
-    cd $ROS_WS
+    cd "$ROS_WS" || exit
   else
-    roscd $1
+    roscd "$1"
   fi
 }
 
 function rtw_ros2_cd {
   if [ -z "$1" ]; then
-    cd $ROS_WS
+    cd "$ROS_WS" || exit
   else
     # Run the command and capture the output
     pkg_path=$(ros2 pkg prefix "$1" 2>/dev/null)
@@ -232,12 +283,12 @@ function rtw_ros2_cd {
 #             echo "Output starts with /opt/ros"
             pkg_path="$pkg_path/share/$1"
         else
-            cd $ROS_WS
+            cd "$ROS_WS" || exit
             pkg_path=$(colcon list --packages-select "$1" --paths-only 2>/dev/null)
             pkg_path="$ROS_WS/$pkg_path"
         fi
 #         echo "Entering $pkg_path"
-        cd $pkg_path
+        cd "$pkg_path" || exit
     else
         echo "No output from command"
     fi
@@ -250,16 +301,16 @@ function colcon_helper_ros2 {
     print_and_exit "This should never happen. Check your helpers definitions!"
   fi
 
-  cd $ROS_WS
+  cd "$ROS_WS" || exit
 
   CMD="$1"
   if [ -z "$2" ]; then
     $CMD
   else
-    $CMD --packages-select $2
+    $CMD --packages-select "$2"
   fi
 
-  cd -
+  cd - || exit
 }
 
 function colcon_helper_ros2_up_to {
@@ -267,16 +318,16 @@ function colcon_helper_ros2_up_to {
     print_and_exit "This should never happen. Check your helpers definitions!"
   fi
 
-  cd $ROS_WS
+  cd "$ROS_WS" || exit
 
   CMD="$1"
   if [ -z "$2" ]; then
     print_and_exit "You should provide package for this command!"
   else
-    $CMD --packages-up-to $2
+    $CMD --packages-up-to "$2"
   fi
 
-  cd -
+  cd - || exit
 }
 
 function colcon_build {
@@ -312,13 +363,13 @@ function colcon_test_up_to {
 }
 
 function colcon_test_results {
-  cd $ROS_WS
+  cd "$ROS_WS" || exit
   if [ -z "$1" ]; then
     colcon test-result --all
   else
     colcon test-result --all | grep "$*"
   fi
-  cd -
+  cd - || exit
 }
 
 function colcon_all {
@@ -334,15 +385,15 @@ function colcon_all_up_to {
 }
 
 function colcon_remove {
-  cd $ROS_WS
+  cd "$ROS_WS" || exit
   if [ -z "$1" ]; then
     /bin/rm -rf build install log
   else
     for package in "$*"; do
-      /bin/rm -rf build/${package} install/${package}
+      /bin/rm -rf build/"${package}" install/"${package}"
     done
   fi
-  cd -
+  cd - || exit
 }
 
 # docker_transfer rtw_image_export ssh-user@ssh-server
@@ -479,7 +530,7 @@ let_user_select_license() {
       break
       ;;
     "$licence_proprietary")
-      read -p "Enter name of license (e.g. 'Propriatery License'): " NAME_OF_LICENSE
+      read -p "Enter name of license (e.g. 'Proprietary License'): " NAME_OF_LICENSE
       YEAR=$(date +'%Y')
       license=$(<"${LICENSE_TEMPLATES}/proprietary_company_header.txt")
       license=$(echo "${license}" | sed -e "s/\\\$YEAR\\\$/${YEAR}/g; s/\\\$NAME_ON_LICENSE\\\$/${NAME_OF_LICENSE}/g")
@@ -506,6 +557,7 @@ function set_framework_default_paths {
   PACKAGE_TEMPLATES="$FRAMEWORK_BASE_PATH/templates/package"
   ROBOT_DESCRIPTION_TEMPLATES="$FRAMEWORK_BASE_PATH/templates/robot_description"
   ROS2_CONTROL_TEMPLATES="$FRAMEWORK_BASE_PATH/templates/ros2_control"
+  MOVEIT_TEMPLATES="$FRAMEWORK_BASE_PATH/templates/moveit"
   ROS2_CONTROL_HW_ITF_TEMPLATES="$ROS2_CONTROL_TEMPLATES/hardware"
   ROS2_CONTROL_CONTROLLER_TEMPLATES="$ROS2_CONTROL_TEMPLATES/controller"
   LICENSE_TEMPLATES="$FRAMEWORK_BASE_PATH/templates/licenses"
@@ -546,7 +598,7 @@ function check_ros_distro {
   # inside docker container we don't need to check if ros distro is present on system
   if [ "${use_docker}" != "true" ]; then
     if [ ! -d "/opt/ros/$ros_distro" ]; then
-      local upper_case=$(echo $ros_distro | tr '[:lower:]' '[:upper:]')
+      local upper_case=$(echo "$ros_distro" | tr '[:lower:]' '[:upper:]')
       local alternative_ros_location=ALTERNATIVE_ROS_${upper_case}_LOCATION
       if [ ! -f "${!alternative_ros_location}/setup.bash" ]; then
         notify_user "You are possibly trying to run unsupported ROS distro ('$ros_distro') for your version of Ubuntu. Please set ${alternative_ros_location} variable, e.g., 'export ${alternative_ros_location}=/opt/ros/rolling'. The best is to add that line somewhere at the beginning of the '~/.ros_team_ws_rc' file."
@@ -639,11 +691,11 @@ function compile_and_source_package {
 
   cd "$ROS_WS" || { print_and_exit "Could not change directory to workspace:\"$ROS_WS\". Check your workspace names in .ros_team_ws_rc and try again."; return 1; }
 
-  colcon_build_up_to $pkg_name
+  colcon_build_up_to "$pkg_name"
   source install/setup.bash
   if [[ "$test" == "yes" ]]; then
-    colcon_test_up_to $pkg_name
-    colcon_test_results | grep $pkg_name
+    colcon_test_up_to "$pkg_name"
+    colcon_test_results | grep "$pkg_name"
   fi
 }
 

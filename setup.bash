@@ -8,6 +8,7 @@ set_supported_versions
 set_framework_default_paths
 # Get color definitions
 RosTeamWS_setup_exports
+RosTeamWS_setup_aliases
 
 # Load Team defines
 source $setup_script_own_dir/scripts/_Team_Defines.bash

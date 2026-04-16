@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt) (template)
+// Copyright (c) 2024-2026, b»robotized group (template)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
 // limitations under the License.
 
 //
-// Source of this file are templates in
-// [RosTeamWorkspace](https://github.com/StoglRobotics/ros_team_workspace) repository.
+// Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 //
 
 #include "dummy_package_namespace/dummy_chainable_controller.hpp"
@@ -210,9 +209,10 @@ std::vector<hardware_interface::CommandInterface> DummyClassName::on_export_refe
 
   for (size_t i = 0; i < reference_interfaces_.size(); ++i)
   {
-    reference_interfaces.push_back(hardware_interface::CommandInterface(
-      get_node()->get_name(), state_joints_[i] + "/" + params_.interface_name,
-      &reference_interfaces_[i]));
+    reference_interfaces.push_back(
+      hardware_interface::CommandInterface(
+        get_node()->get_name(), state_joints_[i] + "/" + params_.interface_name,
+        &reference_interfaces_[i]));
   }
 
   return reference_interfaces;

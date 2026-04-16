@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2025, b»robotized
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
 # limitations under the License.
 
 #
-# Source of this file are templates in
-# [RosTeamWorkspace](https://github.com/StoglRobotics/ros_team_workspace) repository.
+# Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 #
 # Author: Dr. Denis
 #
@@ -123,11 +122,9 @@ def generate_launch_description():
             "attach_world:=",
             attach_world,
             " ",
-            "use_mock_hardware:=false",
+            "use_mock:=false",
             " ",
             "mock_sensor_commands:=false",
-            " ",
-            "sim_gazebo_classic:=false",
             " ",
             "sim_gazebo:=true",
             " ",

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 
 import argparse
 from dataclasses import dataclass, field, fields
+import grp
 import os
-import pathlib
 import shutil
 import textwrap
 from typing import Any, List
-import questionary
+
 import rich
 from rtwcli import logger
 from rtwcli.constants import (
@@ -38,9 +38,12 @@ from rtwcli.docker_utils import (
     docker_exec_bash_cmd,
     docker_stop,
     is_docker_tag_valid,
+    remove_docker_container,
+    remove_docker_image,
 )
 from rtwcli.rocker_utils import execute_rocker_cmd, generate_rocker_flags
 from rtwcli.utils import (
+    ask_yes_no,
     create_file_and_write,
     create_temp_file,
     get_display_manager,
@@ -61,7 +64,6 @@ from rtwcli.workspace_utils import (
     update_workspaces_config,
 )
 
-
 DEFAULT_BASE_IMAGE_NAME_FORMAT = "osrf/ros:{ros_distro}-desktop"
 DEFAULT_FINAL_IMAGE_NAME_FORMAT = "rtw_{workspace_name}_final"
 DEFAULT_CONTAINER_NAME_FORMAT = "{final_image_name}-instance"
@@ -71,7 +73,7 @@ DEFAULT_RTW_DOCKER_PATH = os.path.expanduser("~/ros_team_workspace")
 DEFAULT_UPSTREAM_WS_NAME_FORMAT = "{workspace_name}_upstream"
 DEFAULT_WS_REPOS_FILE_FORMAT = "{repo_name}.{ros_distro}.repos"
 DEFAULT_UPSTREAM_WS_REPOS_FILE_FORMAT = "{repo_name}.{ros_distro}.upstream.repos"
-DEFAULT_APT_PACKAGES = [
+BASE_APT_PACKAGES = [
     "bash-completion",
     "git",
     "git-lfs",
@@ -97,6 +99,7 @@ WS_SRC_FOLDER = "src"
 
 @dataclass
 class CreateVerbArgs:
+    ws_name: str
     ws_abs_path: str
     ros_distro: str
     repos_containing_repository_url: str
@@ -109,6 +112,7 @@ class CreateVerbArgs:
     container_name: str
     rtw_docker_repo_url: str
     rtw_docker_branch: str
+    no_cache: bool
     rtw_docker_clone_abs_path: str
     ssh_abs_path: str
     intermediate_dockerfile_name: str
@@ -117,19 +121,25 @@ class CreateVerbArgs:
     user_override_name: str
     has_upstream_ws: bool = False
     ignore_ws_cmd_error: bool = False
-    apt_packages: List[str] = field(default_factory=list)
+    additional_apt_packages: List[str] = field(default_factory=list)
+    no_base_apt_packages: bool = False
     python_packages: List[str] = field(default_factory=list)
     standalone: bool = False
     repos_no_skip_existing: bool = False
     disable_nvidia: bool = False
     docker: bool = False
     enable_ipc: bool = False
-    disable_upgrade: bool = False
+    docker_disable_upgrade: bool = False
+    enable_local_updates: bool = False
     update_key: bool = False
-
-    @property
-    def ws_name(self) -> str:
-        return pathlib.Path(self.ws_abs_path).name
+    env_file: str = ""
+    proxy_server: str = ""
+    proxy_ca_cert: str = ""
+    env_vars: dict = field(default_factory=dict)
+    devices: List[str] = field(default_factory=list)
+    use_groups: List[str] = field(default_factory=list)
+    enable_input: bool = False
+    enable_realtime: bool = False
 
     @property
     def ssh_abs_path_in_docker(self) -> str:
@@ -232,13 +242,14 @@ class CreateVerbArgs:
         )
 
         if not os.listdir(self.upstream_ws_src_abs_path):
-            remove_upstream_ws = questionary.confirm(
+            remove_upstream_ws = ask_yes_no(
                 f"Upstream workspace src folder '{self.upstream_ws_src_abs_path}' "
                 "is empty after importing the repos. Do you want to remove the upstream "
                 f"workspace folder {self.upstream_ws_abs_path} "
                 f"({os.listdir(self.upstream_ws_src_abs_path)})"
-                "and create only the main workspace?"
-            ).ask()
+                "and create only the main workspace?",
+                default=False,
+            )
             if remove_upstream_ws:
                 logger.info(f"Removing upstream workspace folder '{self.upstream_ws_abs_path}'")
                 shutil.rmtree(self.upstream_ws_abs_path)
@@ -292,10 +303,11 @@ class CreateVerbArgs:
 
     def handle_non_empty_src_folder(self, ws_type: str, ws_src_path: str):
         # ask the user to still create the workspace even if the src folder is not empty
-        still_create_ws = questionary.confirm(
+        still_create_ws = ask_yes_no(
             f"{ws_type} src folder '{ws_src_path}' is not empty. "
-            "Do you still want to proceed and create the workspace?"
-        ).ask()
+            "Do you still want to proceed and create the workspace?",
+            default=False,
+        )
         if not still_create_ws:
             exit("Not creating the workspace.")
 
@@ -353,14 +365,27 @@ class CreateVerb(VerbExtension):
     def add_arguments(self, parser: argparse.ArgumentParser, cli_name: str):
         parser.formatter_class = argparse.ArgumentDefaultsHelpFormatter
         parser.add_argument(
-            "--ws-folder", type=str, help="Path to the workspace folder to create.", required=True
+            "--ws-name",
+            type=str,
+            help="Name of the workspace to create. If not provided, the basename of the workspace folder will be used.",
+        )
+        parser.add_argument(
+            "--ws-folder",
+            type=str,
+            help="Path to the workspace folder to create.",
+            required=True,
         )
         parser.add_argument(
             "--ros-distro",
             type=str,
             help="ROS distro to use for the workspace.",
             required=True,
-            choices=["humble", "jazzy", "rolling"],
+            choices=["humble", "jazzy", "kilted", "rolling"],
+        )
+        parser.add_argument(
+            "--add-existing-workspace",
+            action="store_true",
+            help="Option to add existing workspace in the workspace.yaml file.",
         )
         parser.add_argument(
             "--docker", action="store_true", help="Create a docker workspace.", default=False
@@ -390,15 +415,44 @@ class CreateVerb(VerbExtension):
             default=False,
         )
         parser.add_argument(
+            "--enable-input",
+            action="store_true",
+            help="Enable dynamic hot-plugging for joysticks and input devices (binds whole /dev/input).",
+        )
+        parser.add_argument(
+            "--enable-realtime",
+            action="store_true",
+            help="Enable realtime kernel scheduling capabilities (rtprio, memlock, sys_nice).",
+        )
+        parser.add_argument(
+            "--devices",
+            nargs="*",
+            help="Statically mount specific devices (e.g., /dev/ttyUSB0). Must be plugged in at container startup.",
+            default=[],
+        )
+        parser.add_argument(
+            "--groups",
+            dest="use_groups",
+            nargs="*",
+            help="Additional host groups to pass to the container (e.g., input, realtime, dialout, video).",
+            default=[],
+        )
+        parser.add_argument(
             "--enable-ipc",
             action="store_true",
             help="Enable IPC for the docker workspace.",
             default=False,
         )
         parser.add_argument(
-            "--disable-upgrade",
+            "--docker-disable-upgrade",
             action="store_true",
-            help="Disable execution of 'apt-get upgrade' when creating workspace.",
+            help="Disable execution of 'apt-get upgrade' when creating Docker workspace.",
+            default=False,
+        )
+        parser.add_argument(
+            "--enable-local-updates",
+            action="store_true",
+            help="Enable system updates (apt-get update and rosdep update) for local workspaces.",
             default=False,
         )
         parser.add_argument(
@@ -409,6 +463,12 @@ class CreateVerb(VerbExtension):
                 f"default format is used: {DEFAULT_WS_REPOS_FILE_FORMAT}"
             ),
             default=None,
+        )
+        parser.add_argument(
+            "--no-cache",
+            action="store_true",
+            help="Do not use cache when building the docker image.",
+            default=False,
         )
         parser.add_argument(
             "--upstream-ws-repos-file-name",
@@ -480,10 +540,23 @@ class CreateVerb(VerbExtension):
             default=DEFAULT_RTW_DOCKER_PATH,
         )
         parser.add_argument(
-            "--apt_packages",
+            "--additional_apt_packages",
             nargs="*",
-            help="Additional apt packages to install.",
-            default=DEFAULT_APT_PACKAGES,
+            help=(
+                "Additional apt packages to install on top of BASE_APT_PACKAGES. "
+                "These are installed in a separate RUN layer after the base packages."
+            ),
+            default=[],
+        )
+        parser.add_argument(
+            "--no-base-apt-packages",
+            action="store_true",
+            help=(
+                "Skip installation of BASE_APT_PACKAGES. "
+                "Use this for minimal images or when the base image already provides these tools. "
+                f"BASE_APT_PACKAGES: {BASE_APT_PACKAGES}"
+            ),
+            default=False,
         )
         parser.add_argument(
             "--python_packages",
@@ -541,31 +614,93 @@ class CreateVerb(VerbExtension):
             help="update the key for ros2.",
             default=False,
         )
+        parser.add_argument(
+            "--env-file",
+            type=str,
+            help="Path to environment file for rocker",
+            default=None,
+        )
+        parser.add_argument(
+            "--proxy-server",
+            type=str,
+            help="Proxy server URL for setting proxy environment variables",
+            default=None,
+        )
+        parser.add_argument(
+            "--proxy-ca-cert",
+            type=str,
+            help="Path to company CA certificate file for proxy (will be copied to container)",
+            default=None,
+        )
+        parser.add_argument(
+            "--env-vars",
+            nargs="*",
+            help="Additional environment variables to export in the workspace (format: KEY=VALUE)",
+            default=[],
+        )
 
     def generate_intermediate_dockerfile_content(self, create_args: CreateVerbArgs) -> str:
-        if create_args.apt_packages:
-            apt_packages_cmd = " ".join(
-                ["RUN", "apt-get", "install", "-y"] + create_args.apt_packages
+        apt_packages_cmd = "# no apt packages to install"
+        if not create_args.no_base_apt_packages:
+            apt_packages_cmd = " ".join(["RUN", "apt-get", "install", "-y"] + BASE_APT_PACKAGES)
+        if create_args.additional_apt_packages:
+            apt_packages_cmd += "\n" + " ".join(
+                ["RUN", "apt-get", "install", "-y"] + create_args.additional_apt_packages
             )
-        else:
-            apt_packages_cmd = "# no apt packages to install"
 
         if create_args.python_packages:
             # hack to install system-wide python packages
-            mv_externally_managed_cmd = textwrap.dedent(
-                """
+            mv_externally_managed_cmd = textwrap.dedent("""
                 RUN python_version=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')") \
                     && echo "Python version is $python_version" \
                     && externally_managed_file_path="/usr/lib/python${python_version}/EXTERNALLY-MANAGED" \
                     && if [ -f "$externally_managed_file_path" ]; then mv "$externally_managed_file_path" "$externally_managed_file_path.old"; fi
-                """
-            )
+                """)
 
+            trusted_hosts = (
+                [
+                    "--trusted-host",
+                    "pypi.org",
+                    "--trusted-host",
+                    "pypi.python.org",
+                    "--trusted-host",
+                    "files.pythonhosted.org",
+                ]
+                if create_args.proxy_server
+                else []
+            )
             python_packages_cmd = mv_externally_managed_cmd + " ".join(
-                ["RUN", "pip3", "install", "-U", "-I"] + create_args.python_packages
+                ["RUN", "pip3", "install", "-U", "-I"]
+                + trusted_hosts
+                + create_args.python_packages
             )
         else:
             python_packages_cmd = "# no python packages to install"
+
+        # --- SYNC HOST GROUPS TO CONTAINER ---
+        groups_to_sync = create_args.use_groups.copy() if create_args.use_groups else []
+        if getattr(create_args, "enable_input", False):
+            groups_to_sync.append("input")
+        if getattr(create_args, "enable_realtime", False):
+            groups_to_sync.append("realtime")
+
+        group_sync_cmds = []
+        for group_name in set(groups_to_sync):
+            try:
+                gid = grp.getgrnam(group_name).gr_gid
+                # If the group exists, force its GID to match the host. If missing, create it.
+                cmd = (
+                    f"RUN if getent group {group_name} > /dev/null 2>&1; then "
+                    f"groupmod -g {gid} {group_name} || true; else "
+                    f"groupadd -g {gid} {group_name}; fi"
+                )
+                group_sync_cmds.append(cmd)
+            except KeyError:
+                raise RuntimeError(
+                    f"Requested group '{group_name}' does not exist on the host system."
+                )
+
+        group_sync_cmd_str = "\n".join(group_sync_cmds)
 
         rtw_clone_cmd = " ".join(
             [
@@ -621,8 +756,7 @@ class CreateVerb(VerbExtension):
             copy_upstream_workspace_cmd = "# upstream workspace will be mounted as volume"
 
         if create_args.update_key:
-            update_key_cmds = textwrap.dedent(
-                """
+            update_key_cmds = textwrap.dedent("""
                 RUN if [ -f /usr/share/keyrings/ros2-latest-archive-keyring.gpg ]; then \\
                       gpg_file="/usr/share/keyrings/ros2-latest-archive-keyring.gpg"; \\
                     elif [ -f /usr/share/keyrings/ros-archive-keyring.gpg ]; then \\
@@ -635,25 +769,75 @@ class CreateVerb(VerbExtension):
                     echo "Using GPG file: $gpg_file" && \\
                     rm -f "$gpg_file" && \\
                     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o "$gpg_file"
-                """
-            )
+                """)
         else:
             update_key_cmds = ""
 
-        return textwrap.dedent(
-            f"""
-            FROM {create_args.base_image_name}
-            {update_key_cmds}
-            RUN apt-get update {"&& apt-get upgrade -y" if not create_args.disable_upgrade else ""}
-            {apt_packages_cmd}
-            {python_packages_cmd}
-            {rtw_clone_cmd}
-            {rtw_install_cmd}
-            {copy_workspace_cmd}
-            {copy_upstream_workspace_cmd}
-            RUN rm -rf /var/lib/apt/lists/*
-            """
-        )
+        proxy_env_cmds = ""
+        if create_args.proxy_server:
+            proxy_env_cmds = textwrap.dedent(f"""
+            ENV http_proxy={create_args.proxy_server}
+            ENV https_proxy={create_args.proxy_server}
+            ENV HTTP_PROXY={create_args.proxy_server}
+            ENV HTTPS_PROXY={create_args.proxy_server}
+            ENV PIP_PROXY={create_args.proxy_server}
+            ENV no_proxy=localhost,127.0.0.1
+            ENV NO_PROXY=localhost,127.0.0.1
+            """)
+
+        apt_proxy_cmd = ""
+        if create_args.proxy_server:
+            apt_proxy_cmd = textwrap.dedent(f"""
+            RUN mkdir -p /etc/apt/apt.conf.d && \\
+                echo 'Acquire::http::Proxy "{create_args.proxy_server}";' > /etc/apt/apt.conf.d/95proxies && \\
+                echo 'Acquire::https::Proxy "{create_args.proxy_server}";' >> /etc/apt/apt.conf.d/95proxies
+            """)
+
+        proxy_ca_cert_cmd = ""
+        if create_args.proxy_ca_cert:
+            cert_filename = os.path.basename(create_args.proxy_ca_cert)
+            proxy_ca_cert_cmd = textwrap.dedent(f"""
+            COPY {cert_filename} /usr/local/share/ca-certificates/{cert_filename}
+            RUN update-ca-certificates
+            ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+            """)
+
+        pip_config_cmd = ""
+        if create_args.proxy_server:
+            pip_config_cmd = textwrap.dedent(f"""
+            RUN mkdir -p /root/.config/pip && \\
+                echo "[global]" > /root/.config/pip/pip.conf && \\
+                echo "proxy = {create_args.proxy_server}" >> /root/.config/pip/pip.conf && \\
+                echo "trusted-host = pypi.org" >> /root/.config/pip/pip.conf && \\
+                echo "               pypi.python.org" >> /root/.config/pip/pip.conf && \\
+                echo "               files.pythonhosted.org" >> /root/.config/pip/pip.conf
+            """)
+
+        git_config_lines = ['git config --global --add safe.directory "*"']
+        if create_args.proxy_server:
+            git_config_lines.append(f"git config --global http.proxy {create_args.proxy_server}")
+            git_config_lines.append(f"git config --global https.proxy {create_args.proxy_server}")
+
+        git_config_cmd = f"RUN {' && '.join(git_config_lines)}"
+
+        return textwrap.dedent(f"""
+FROM {create_args.base_image_name}
+{proxy_env_cmds}
+{apt_proxy_cmd}
+{proxy_ca_cert_cmd}
+{update_key_cmds}
+RUN apt-get update {"&& apt-get upgrade -y" if not create_args.docker_disable_upgrade else ""}
+{apt_packages_cmd}
+{group_sync_cmd_str}
+{pip_config_cmd}
+{git_config_cmd}
+{python_packages_cmd}
+{rtw_clone_cmd}
+{rtw_install_cmd}
+{copy_workspace_cmd}
+{copy_upstream_workspace_cmd}
+RUN rm -rf /var/lib/apt/lists/*
+""")
 
     def build_intermediate_docker_image(self, create_args: CreateVerbArgs):
         # create intermediate dockerfile
@@ -666,16 +850,40 @@ class CreateVerb(VerbExtension):
                 f"'{create_args.intermediate_dockerfile_abs_path}'"
             )
 
+        # copy proxy CA certificate to build context if provided
+        docker_build_context = os.path.join(
+            create_args.intermediate_dockerfile_save_folder, "../.."
+        )
+        cert_dest_path = None
+        if create_args.proxy_ca_cert:
+            cert_src_path = os.path.abspath(create_args.proxy_ca_cert)
+            cert_filename = os.path.basename(create_args.proxy_ca_cert)
+            cert_dest_path = os.path.join(docker_build_context, cert_filename)
+            if not os.path.exists(cert_src_path):
+                raise RuntimeError(f"Proxy CA certificate file '{cert_src_path}' does not exist.")
+            shutil.copy2(cert_src_path, cert_dest_path)
+            logger.info(f"Copied proxy CA certificate to build context: {cert_dest_path}")
+
         # build intermediate docker image
         if not docker_build(
             tag=create_args.final_image_name,
-            dockerfile_path=os.path.join(create_args.intermediate_dockerfile_save_folder, "../.."),
+            dockerfile_path=docker_build_context,
             file=create_args.intermediate_dockerfile_abs_path,
+            no_cache=create_args.no_cache,
         ):
+            # clean up certificate file from build context even on failure
+            if cert_dest_path and os.path.exists(cert_dest_path):
+                os.remove(cert_dest_path)
+                logger.info(f"Removed proxy CA certificate from build context: {cert_dest_path}")
             raise RuntimeError(
                 "Failed to build intermediate docker image for "
                 f"'{create_args.final_image_name}'"
             )
+
+        # clean up certificate file from build context after successful build
+        if cert_dest_path and os.path.exists(cert_dest_path):
+            os.remove(cert_dest_path)
+            logger.info(f"Removed proxy CA certificate from build context: {cert_dest_path}")
 
         # check if the intermediate docker image exists
         if not is_docker_tag_valid(create_args.final_image_name):
@@ -719,7 +927,10 @@ class CreateVerb(VerbExtension):
             create_args.upstream_ws_src_abs_path
         )
 
-        rosdep_cmds = [["sudo", "apt-get", "update"], ["rosdep", "update"]]
+        if create_args.docker or create_args.enable_local_updates:
+            rosdep_cmds = [["sudo", "apt-get", "update"], ["rosdep", "update"]]
+        else:
+            rosdep_cmds = []
         rosdep_install_cmd_base = [
             "rosdep",
             "install",
@@ -741,7 +952,8 @@ class CreateVerb(VerbExtension):
             else:
                 ws_src_abs_path = create_args.ws_src_abs_path
             rosdep_cmds.append(rosdep_install_cmd_base + [ws_src_abs_path])
-        rosdep_cmds.append(["sudo", "rm", "-rf", "/var/lib/apt/lists/*"])
+        if create_args.docker:
+            rosdep_cmds.append(["sudo", "rm", "-rf", "/var/lib/apt/lists/*"])
 
         compile_cmds = []
         if create_args.docker:
@@ -831,6 +1043,7 @@ class CreateVerb(VerbExtension):
                 distro=create_args.ros_distro,
                 ws_folder=create_args.ws_abs_path_in_docker,
                 base_ws=create_args.upstream_ws_name if create_args.has_upstream_ws else "",
+                env_vars=create_args.env_vars,
             ),
         )
 
@@ -856,8 +1069,7 @@ class CreateVerb(VerbExtension):
         with open(SKEL_BASHRC_PATH) as file:
             default_bashrc_content = file.read()
 
-        extra_bashrc_content = textwrap.dedent(
-            f"""
+        extra_bashrc_content = textwrap.dedent(f"""
             # source rtw
             . {create_args.rtw_docker_clone_abs_path}/setup.bash
 
@@ -866,13 +1078,12 @@ class CreateVerb(VerbExtension):
                 . ~/.ros_team_ws_rc
             fi
 
-            # Stogl Robotics custom setup for nice colors and showing ROS workspace
+            # b»robotized custom setup for nice colors and showing ROS workspace
             . {create_args.rtw_docker_clone_abs_path}/scripts/configuration/terminal_coloring.bash
 
             # automatically use the main workspace
             rtw workspace use {create_args.ws_name}
-            """
-        )
+            """)
 
         # write the default bashrc with the extra content to the container
         temp_bashrc_file = create_temp_file(content=default_bashrc_content + extra_bashrc_content)
@@ -901,7 +1112,11 @@ class CreateVerb(VerbExtension):
 
         logger.info(f"Committing container '{intermediate_container.id}'")
         try:
-            intermediate_container.commit(create_args.final_image_name)
+            docker_client_commit = docker.from_env(
+                timeout=12000
+            )  # 20 min timeout on response timeout
+            container_to_commit = docker_client_commit.containers.get(intermediate_container.id)
+            container_to_commit.commit(repository=create_args.final_image_name)
         except docker.errors.APIError as e:  # type: ignore
             docker_stop(intermediate_container.id)
             raise RuntimeError(f"Failed to commit container '{intermediate_container.id}': {e}")
@@ -909,8 +1124,112 @@ class CreateVerb(VerbExtension):
         # stop the intermediate container after committing
         docker_stop(intermediate_container.id)
 
+    def delete_workspace_resources(self, create_args: CreateVerbArgs) -> None:
+        """Delete all workspace resources (Docker container, image, folders)."""
+        logger.info("Deleting workspace files and Docker resources...")
+
+        # Remove Docker resources if docker workspace
+        if create_args.docker:
+            # Stop and remove container
+            if docker_container_exists(create_args.container_name):
+                docker_stop(create_args.container_name)
+                if remove_docker_container(create_args.container_name):
+                    logger.info(f"Removed Docker container '{create_args.container_name}'")
+                else:
+                    logger.warning(
+                        f"Failed to remove Docker container '{create_args.container_name}'"
+                    )
+
+            # Remove Docker image
+            if is_docker_tag_valid(create_args.final_image_name):
+                if remove_docker_image(create_args.final_image_name):
+                    logger.info(f"Removed Docker image '{create_args.final_image_name}'")
+                else:
+                    logger.warning(
+                        f"Failed to remove Docker image '{create_args.final_image_name}'"
+                    )
+
+        # Remove workspace folders
+        if not create_args.standalone:
+            # Fix permissions using docker before deletion if docker was used
+            if create_args.docker:
+                import docker
+
+                client = docker.from_env(timeout=12000)  # 20 min timeout on response timeout
+                uid = os.getuid()
+                gid = os.getgid()
+
+                paths_to_fix = []
+                if os.path.exists(create_args.ws_abs_path):
+                    paths_to_fix.append(create_args.ws_abs_path)
+                if create_args.has_upstream_ws and os.path.exists(
+                    create_args.upstream_ws_abs_path
+                ):
+                    paths_to_fix.append(create_args.upstream_ws_abs_path)
+
+                for path in paths_to_fix:
+                    try:
+                        logger.info(f"Fixing permissions for '{path}' before deletion...")
+                        client.containers.run(
+                            image="alpine:latest",
+                            command=f"chown -R {uid}:{gid} /work",
+                            volumes={path: {"bind": "/work", "mode": "rw"}},
+                            remove=True,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to fix permissions for '{path}': {e}")
+
+            if os.path.exists(create_args.ws_abs_path):
+                shutil.rmtree(create_args.ws_abs_path)
+                logger.info(f"Removed workspace folder '{create_args.ws_abs_path}'")
+
+            if create_args.has_upstream_ws and os.path.exists(create_args.upstream_ws_abs_path):
+                shutil.rmtree(create_args.upstream_ws_abs_path)
+                logger.info(
+                    f"Removed upstream workspace folder '{create_args.upstream_ws_abs_path}'"
+                )
+
+        logger.info("Workspace cleanup completed.")
+
+    def handle_failed_workspace_creation(
+        self, create_args: CreateVerbArgs, error_msg: str
+    ) -> bool:
+        """
+        Handle failed workspace creation by asking user to keep or delete the workspace.
+
+        Returns True if the workspace was kept, False if it was deleted.
+        """
+        logger.error(f"Workspace creation failed: {error_msg}")
+
+        if create_args.docker:
+            prompt_msg = (
+                "Workspace creation failed. Do you want to keep the workspace files and "
+                "add it to the config?\n"
+                "(Note: For Docker workspaces, we cannot distinguish between dependency "
+                "installation and compilation failures.\n"
+                "If you choose 'No', all created files and Docker resources will be deleted)"
+            )
+        else:
+            prompt_msg = (
+                "Workspace creation failed. Do you want to keep the workspace files and "
+                "add it to the config?\n"
+                "(If you choose 'no', all created files will be deleted)"
+            )
+
+        keep_workspace = ask_yes_no(prompt_msg, default=False)
+
+        if keep_workspace is None:  # User cancelled (Ctrl+C)
+            logger.info("User cancelled. Workspace will be kept but not added to config.")
+            return True
+
+        if keep_workspace:
+            return True
+        else:
+            self.delete_workspace_resources(create_args)
+            return False
+
     def main(self, *, args):
-        ws_name = os.path.basename(args.ws_folder)
+        ws_name = args.ws_name if args.ws_name else os.path.basename(args.ws_folder)
         if ws_name in get_workspace_names():
             raise RuntimeError(
                 f"Workspace with name '{ws_name}' already exists. "
@@ -922,11 +1241,50 @@ class CreateVerb(VerbExtension):
 
         filtered_args = get_filtered_args(args, list(fields(CreateVerbArgs)))
         filtered_args["ws_abs_path"] = os.path.normpath(os.path.abspath(args.ws_folder))
+        filtered_args["ws_name"] = ws_name
+
+        # Process env_vars
+        env_vars_dict = {}
+        if args.env_vars:
+            for env_var in args.env_vars:
+                if "=" not in env_var:
+                    logger.warning(
+                        f"Skipping invalid environment variable format: '{env_var}'. Expected format KEY=VALUE"
+                    )
+                    continue
+                key, value = env_var.split("=", 1)
+                env_vars_dict[key] = value
+        filtered_args["env_vars"] = env_vars_dict
 
         create_args = CreateVerbArgs(**filtered_args)
         logger.info("### CREATE ARGS ###")
         rich.print(create_args)
         logger.info("### CREATE ARGS ###")
+
+        if args.add_existing_workspace:
+            # add existing workspace to the workspaces config and exit
+            if not os.path.exists(create_args.ws_abs_path):
+                raise RuntimeError("Workspace folder does not exist.")
+            local_existing_ws = Workspace(
+                ws_name=create_args.ws_name,
+                ws_folder=create_args.ws_abs_path,
+                distro=create_args.ros_distro,
+                ws_docker_support=create_args.docker,
+                docker_tag=create_args.final_image_name if create_args.docker else None,
+                docker_container_name=(create_args.container_name if create_args.docker else None),
+                base_ws=(create_args.upstream_ws_name if create_args.has_upstream_ws else ""),
+                standalone=create_args.standalone,
+            )
+            if not update_workspaces_config(WORKSPACES_PATH, local_existing_ws):
+                raise RuntimeError("Failed to update workspaces config with existing workspace.")
+            logger.info(
+                f"Successfully added existing workspace '{create_args.ws_name}' to "
+                f"the workspaces config '{WORKSPACES_PATH}'. If it uses docker, please update the workspace.yaml file accordingly."
+            )
+            return
+
+        if create_args.env_file and not os.path.exists(create_args.env_file):
+            raise RuntimeError(f"Environment file '{create_args.env_file}' does not exist.")
 
         if create_args.docker and docker_container_exists(create_args.container_name):
             raise RuntimeError(
@@ -938,7 +1296,13 @@ class CreateVerb(VerbExtension):
             )
 
         if create_args.docker:
-            self.build_intermediate_docker_image(create_args)
+            try:
+                self.build_intermediate_docker_image(create_args)
+            except RuntimeError as e:
+                logger.error(f"Docker image build failed: {e}")
+                logger.info("Cleaning up workspace resources...")
+                self.delete_workspace_resources(create_args)
+                raise
 
         intermediate_container = None
         if create_args.docker:
@@ -948,7 +1312,25 @@ class CreateVerb(VerbExtension):
         logger.info("### WS CMDS ###")
         rich.print(ws_cmds)
         logger.info("### WS CMDS ###")
-        self.execute_ws_cmds(create_args, ws_cmds, intermediate_container)
+
+        # Track if workspace commands failed but user chose to keep the workspace
+        ws_cmds_failed = False
+        try:
+            self.execute_ws_cmds(create_args, ws_cmds, intermediate_container)
+        except RuntimeError as e:
+            # Stop the intermediate container if it exists
+            if intermediate_container:
+                docker_stop(intermediate_container.id)
+
+            kept = self.handle_failed_workspace_creation(create_args, str(e))
+            if not kept:
+                # User chose to delete, exit early
+                return
+            ws_cmds_failed = True
+            # User chose to keep, continue with the rest of the flow
+            # Need to restart the container for permission changes
+            if create_args.docker:
+                intermediate_container = self.run_intermediate_container(create_args)
 
         if create_args.docker:
             self.change_ws_folder_permissions(create_args, intermediate_container)
@@ -974,13 +1356,19 @@ class CreateVerb(VerbExtension):
                 final_image_name=create_args.final_image_name,
                 ws_volumes=rocker_ws_volumes,
                 user_override_name=create_args.user_override_name,
+                env_file=create_args.env_file,
+                devices=create_args.devices,
+                use_groups=create_args.use_groups,
+                enable_input=create_args.enable_input,
+                enable_realtime=create_args.enable_realtime,
             )
 
             if not execute_rocker_cmd(rocker_flags, create_args.rocker_base_image_name):
                 # ask the user to still save ws config even if there was a rocker error
-                still_save_config = questionary.confirm(
-                    "Rocker command failed. Do you still want to save the workspace config?"
-                ).ask()
+                still_save_config = ask_yes_no(
+                    "Rocker command failed. Do you still want to save the workspace config?",
+                    default=False,
+                )
                 if not still_save_config:
                     exit("Not saving the workspace config.")
 
@@ -1008,9 +1396,17 @@ class CreateVerb(VerbExtension):
             base_ws=create_args.upstream_ws_name if create_args.has_upstream_ws else "",
             docker_container_name=create_args.container_name if create_args.docker else "",
             standalone=create_args.standalone,
+            env_vars=create_args.env_vars,
         )
         if not update_workspaces_config(WORKSPACES_PATH, local_main_ws):
             raise RuntimeError("Failed to update workspaces config with main workspace.")
+
+        # Inform user if workspace was kept despite build failure
+        if ws_cmds_failed:
+            logger.info(
+                f"Workspace '{create_args.ws_name}' added to config despite build failure. "
+                "You can fix the issues and rebuild manually."
+            )
 
         # remove the local files if the standalone flag is set
         if create_args.standalone:

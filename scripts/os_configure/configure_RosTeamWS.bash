@@ -25,7 +25,7 @@ cd $FRAMEWORK_REPO_PATH/src
 
 ## TODO: Correct this form here to use configuration from the GitHub repository
 
-vcs import src < $REMOTE_FRAMEWORK_PATH/src/.rosinstall
+vcs import --recursive src < $REMOTE_FRAMEWORK_PATH/src/.rosinstall
 bash $SCRIPT_PATH/update_IPR_Framework.bash $ros_distro
 
 cd $FRAMEWORK_BASE_PATH

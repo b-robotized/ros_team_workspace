@@ -1,4 +1,4 @@
-// Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt) (template)
+// Copyright (c) 2024-2026, b»robotized group (template)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
 // limitations under the License.
 
 //
-// Source of this file are templates in
-// [RosTeamWorkspace](https://github.com/StoglRobotics/ros_team_workspace) repository.
+// Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 //
 
 #ifndef TEMPLATES__ROS2_CONTROL__CONTROLLER__DUMMY_PACKAGE_NAMESPACE__VALIDATE_DUMMY_CONTROLLER_PARAMETERS_HPP_

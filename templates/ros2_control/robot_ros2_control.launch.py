@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2025, b»robotized
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,7 @@
 # limitations under the License.
 
 #
-# Source of this file are templates in
-# [RosTeamWorkspace](https://github.com/StoglRobotics/ros_team_workspace) repository.
+# Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 #
 # Author: Dr. Denis
 #
@@ -78,7 +77,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "use_mock_hardware",
+            "use_mock",
             default_value="true",
             description="Start robot with mock hardware mirroring command to its states.",
         )
@@ -88,7 +87,7 @@ def generate_launch_description():
             "mock_sensor_commands",
             default_value="false",
             description="Enable mock command interfaces for sensors used for simple simulations. \
-            Used only if 'use_mock_hardware' parameter is true.",
+            Used only if 'use_mock' parameter is true.",
         )
     )
     declared_arguments.append(
@@ -107,7 +106,7 @@ def generate_launch_description():
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
     attach_world = LaunchConfiguration("attach_world")
-    use_mock_hardware = LaunchConfiguration("use_mock_hardware")
+    use_mock = LaunchConfiguration("use_mock")
     mock_sensor_commands = LaunchConfiguration("mock_sensor_commands")
     robot_controller = LaunchConfiguration("robot_controller")
 
@@ -126,8 +125,8 @@ def generate_launch_description():
             "attach_world:=",
             attach_world,
             " ",
-            "use_mock_hardware:=",
-            use_mock_hardware,
+            "use_mock:=",
+            use_mock,
             " ",
             "mock_sensor_commands:=",
             mock_sensor_commands,

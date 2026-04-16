@@ -23,11 +23,13 @@ The CLI currently supports the following commands:
 
 * ``rtw workspace``: Various workspace related sub-commands
    * ``create``: Create a new ROS workspace (local or dockerized)
+   * ``edit``: Edit an existing ROS workspace configuration
+   * ``list``: List all known ROS workspaces
    * ``use``: Select and source an existing ROS workspace
    * ``port``: Port existing RTW workspace(s)
 
 * ``rtw docker``: Various Docker related sub-commands
-   * ``enter``: Enter a Docker container for a dockerized workspace
+   * ``enter``: Enter a Docker container for a dockerized workspace (make sure to run ``rtw ws <ws-name>`` before)
 
 * ``rtw ws``: Alias for ``rtw workspace use``
 
@@ -59,6 +61,13 @@ repositories.
         * Upstream ws repos format: ``{repo_name}.{ros_distro}.upstream.repos``
       * ``--repos-branch <branch>``: Branch of the repository containing the
         ``.repos`` files
+      * ``--enable-local-updates``: Enable system updates (``apt-get update``
+        and ``rosdep update``) for local workspaces. By default, these updates
+        are only run for Docker workspaces.
+      * ``--env-vars``: Additional environment variables to export in the
+        workspace (format: ``KEY=VALUE``). Multiple variables can be specified
+        separated by spaces. These variables are exported when the workspace is
+        sourced.
 
 * Minimal example:
 
@@ -93,6 +102,17 @@ repositories.
    If you don't have nvidia graphics card or you don't want to use nvidia capabilits
    in the container add ``--disable-nvidia`` flag to the command.
 
+.. warning::
+   When using ``.repos`` files, ``rosdep install`` may fail if the package
+   references in your repositories are outdated or if the rosdep database
+   is not up-to-date. In such cases:
+
+   * Ensure your ``.repos`` files point to the correct branches for your ROS distro
+   * Run ``rosdep update`` before creating the workspace
+   * Check that the packages in your repositories have valid ``package.xml`` files
+     with correct dependencies
+   * For Docker workspaces, the rosdep database is updated automatically during
+     the build process
 
 * Example of a ``standalone`` workspace and ``robot`` user:
 
@@ -179,6 +199,198 @@ workspaces.
    (rolling_ws)$ ros2 run demo_nodes_cpp listener
 
 
+How to use proxy for Docker workspaces
+""""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-proxy-usage:
+
+When working behind a corporate proxy, the CLI provides options to configure
+proxy settings for Docker workspaces. This ensures that apt, pip, and git
+can access the internet through the proxy during the Docker image build process.
+
+* Proxy options:
+   * ``--proxy-server <url>``: Proxy server URL (e.g., ``http://proxy.company.com:8080``)
+   * ``--proxy-ca-cert <path>``: Path to company CA certificate file for SSL inspection proxies
+
+* What the proxy configuration does:
+   * Sets environment variables (``http_proxy``, ``https_proxy``, ``HTTP_PROXY``, ``HTTPS_PROXY``, ``PIP_PROXY``, ``no_proxy``, ``NO_PROXY``)
+   * Configures apt proxy in ``/etc/apt/apt.conf.d/95proxies``
+   * Configures pip proxy and trusted hosts in ``/root/.config/pip/pip.conf``
+   * Configures git proxy settings
+   * If CA certificate is provided:
+      * Copies the certificate to ``/usr/local/share/ca-certificates/``
+      * Runs ``update-ca-certificates`` to register it
+      * Sets ``REQUESTS_CA_BUNDLE`` environment variable for Python requests
+
+* Example with proxy server only:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_docker_ws \
+      --ros-distro jazzy \
+      --docker \
+      --proxy-server http://proxy.company.com:8080
+
+* Example with proxy server and CA certificate:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_docker_ws \
+      --ros-distro jazzy \
+      --docker \
+      --proxy-server http://proxy.company.com:8080 \
+      --proxy-ca-cert /path/to/company-ca.crt
+
+.. note::
+   The CA certificate file will be temporarily copied to the Docker build context
+   during the build process and automatically removed after the build completes.
+
+.. important::
+   If your company uses SSL inspection (MITM proxy), you must provide the
+   company CA certificate using ``--proxy-ca-cert`` to avoid SSL verification
+   errors during package installation.
+
+How to configure advanced Docker options
+""""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-advanced-docker-usage:
+
+When creating Docker workspaces with ``rtw workspace create --docker``, you can
+use additional options to control the Docker build, pass hardware devices into
+the container, and synchronize host group permissions.
+
+Docker build control
+~~~~~~~~~~~~~~~~~~~~
+
+* ``--no-cache``: Build the Docker image without using the Docker build cache.
+
+  Use this if you want to rebuild the image from scratch, for example after
+  package repositories changed or when debugging dependency issues.
+
+APT package installation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+A predefined set of base packages (``BASE_APT_PACKAGES``) is always installed
+into the Docker image during the build. These include common tools such as
+``git``, ``vim``, ``tmux``, ``python3-colcon-common-extensions``, and others
+required for a functional ROS development environment.
+
+* ``--no-base-apt-packages``: Skip the installation of ``BASE_APT_PACKAGES``.
+
+  Use this for minimal images or when the base image already provides these
+  tools.
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_minimal_ws \
+        --ros-distro jazzy \
+        --docker \
+        --no-base-apt-packages
+
+* ``--additional_apt_packages [PKG ...]``: Install extra apt packages on top of
+  ``BASE_APT_PACKAGES`` (or instead of them if ``--no-base-apt-packages`` is
+  set). These are installed in a separate ``RUN`` layer after the base packages.
+
+  Example:
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_robot_ws \
+        --ros-distro jazzy \
+        --docker \
+        --additional_apt_packages ros-jazzy-rviz2 htop can-utils
+
+Hardware and device access
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``--devices [DEV ...]``: Pass one or more device paths from the host into the
+  container.
+
+  Example:
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_robot_ws \
+        --ros-distro jazzy \
+        --docker \
+        --devices /dev/ttyUSB0 /dev/video0
+
+  This is useful for hardware such as serial adapters or cameras.
+
+  .. important::
+     Devices passed with ``--devices`` must be available before the container
+     starts. If such a device is unplugged and plugged in again, the container
+     will usually need to be restarted.
+
+* ``--enable-input``: Enable access to the Linux input subsystem for devices
+  such as joysticks, keyboards, and mice.
+
+  This is useful when input devices may be disconnected and reconnected while
+  the container is running. The option mounts ``/dev/input``, adds the required
+  cgroup rules, and synchronizes the host ``input`` group into the container.
+
+
+Kernel scheduling and performance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``--enable-realtime``: Enable real-time scheduling support inside the
+  container.
+
+  This is useful for workloads that require deterministic timing, such as
+  low-latency ROS 2 control loops. The option adjusts the required resource
+  limits, adds the ``SYS_NICE`` capability, and synchronizes the host
+  ``realtime`` group into the container.
+
+  .. note::
+     Your host system must already be configured for real-time scheduling and
+     provide the ``realtime`` group.
+
+  For a complete step-by-step guide on setting up a PREEMPT_RT Debian system
+  and ROS workspace, see: `PREEMPT_RT PC setup <realtime_pc_setup.rst>`_
+
+
+Supplementary group permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``--groups [GROUP ...]``: Synchronize supplementary groups from the host into
+  the container.
+
+  Example:
+
+  .. code-block:: bash
+
+     rtw workspace create \
+        --ws-folder my_robot_ws \
+        --ros-distro jazzy \
+        --docker \
+        --devices /dev/ttyUSB0 \
+        --groups dialout
+
+  This is useful when a device requires group-based access, for example when a
+  serial device is owned by the ``dialout`` group.
+
+  If a requested group does not exist on the host machine, the build will fail
+  instead of creating an invalid container configuration.
+
+* Combined example:
+
+  If you need a fresh build for a robot requiring a webcam, a dynamically pluggable Xbox controller, and a serial microcontroller:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_robot_ws \
+      --ros-distro jazzy \
+      --docker \
+      --no-cache \
+      --devices /dev/video0 /dev/ttyACM0 \
+      --enable-input \
+      --groups video dialout
+
+
 How to install rocker fork with the new features
 """"""""""""""""""""""""""""""""""""""""""""""""""
 .. _rtwcli-setup-rocker-fork:
@@ -188,5 +400,60 @@ Until rocker PR is merged you are encouraged to install your rocker fork with:
 .. code-block:: bash
 
    pip3 uninstall rocker   # if you have installed it with 'sudo' use it here too
-   git clone https://github.com/StoglRobotics-forks/rocker.git --branch <your-feature-branch>
+   git clone https://github.com/b-robotized-forks/rocker.git --branch <your-feature-branch>
    cd rocker && pip3 install -e . && cd -
+
+Modifying an existing workspace
+"""""""""""""""""""""""""""""""
+.. _rtwcli-workspace-edit:
+
+You can update the configuration of an existing workspace (currently only
+environment variables are supported) using the ``edit`` command.
+
+* Usage:
+   * ``rtw workspace edit [workspace_name] [options]``
+   * Options:
+      * ``--env-vars KEY=VALUE [KEY=VALUE ...]``: Add or update environment variables.
+      * ``--remove-env-vars KEY [KEY ...]``: Remove environment variables.
+
+* Examples:
+
+  Update environment variables for a specific workspace:
+
+  .. code-block:: bash
+
+     rtw workspace edit my_ws --env-vars ROS_DOMAIN_ID=28 ROS_LOCALHOST_ONLY=0
+
+  Remove a variable:
+
+  .. code-block:: bash
+
+     rtw workspace edit my_ws --remove-env-vars ROS_STATIC_PEERS
+
+  Interactive mode (if no workspace name or options are provided):
+
+  .. code-block:: bash
+
+     rtw workspace edit
+
+  This will prompt you to select a workspace and then choose an action (Add/Update or Remove variables).
+
+How to set custom environment variables
+"""""""""""""""""""""""""""""""""""""""
+.. _rtwcli-env-vars-usage:
+
+You can set custom environment variables that will be automatically exported whenever
+you use the workspace (both local and Docker). This is useful for variables like
+``ROS_DOMAIN_ID``, ``ROS_LOCALHOST_ONLY``, or ``RMW_IMPLEMENTATION``.
+
+* Example:
+
+.. code-block:: bash
+
+   rtw workspace create \
+      --ws-folder my_custom_ws \
+      --ros-distro jazzy \
+      --env-vars ROS_DOMAIN_ID=28 ROS_LOCALHOST_ONLY=1 ROS_STATIC_PEERS=10.28.28.28
+
+When you later run ``rtw workspace use my_custom_ws`` (or entering the Docker container),
+these variables will be set.

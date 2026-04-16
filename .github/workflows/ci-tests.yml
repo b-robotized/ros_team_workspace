@@ -1,0 +1,47 @@
+name: CI Tests
+on:
+  workflow_dispatch:
+    inputs:
+      ros_distro:
+        description: 'ROS Distro'
+        required: true
+        default: 'jazzy'
+  pull_request:
+  push:
+    branches: [ master, main ]
+
+jobs:
+  rtw_cli_tests:
+    name: RTW CLI Tests
+    runs-on: ubuntu-latest
+    container: ghcr.io/ros-controls/ros:${{ inputs.ros_distro || 'jazzy' }}-ubuntu
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git nano pigz pv python3-pip wget
+
+      - name: Run RTW CLI tests
+        run: |
+          chmod +x tests/run_rtw_cli_tests.bash
+          ./tests/run_rtw_cli_tests.bash
+
+  package_tests:
+    name: Package Creation and Bringup Tests
+    needs: rtw_cli_tests
+    runs-on: ubuntu-latest
+    container: ghcr.io/ros-controls/ros:${{ inputs.ros_distro || 'jazzy' }}-ubuntu
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git nano pigz pv python3-pip wget
+
+      - name: Run package tests
+        run: |
+          chmod +x tests/run_tests.bash
+          ./tests/run_tests.bash

@@ -1,4 +1,4 @@
-# Copyright 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -153,7 +153,7 @@ def vcs_import(
     if makedirs:
         os.makedirs(path, exist_ok=True)
 
-    vcs_import_cmd = ["vcs", "import", "--input", repos_file_path, "--workers", "1"]
+    vcs_import_cmd = ["vcs", "import", "--recursive", "--input", repos_file_path, "--workers", "1"]
     if skip_existing:
         vcs_import_cmd.append("--skip-existing")
     return run_command(vcs_import_cmd, cwd=path)
@@ -174,6 +174,18 @@ def replace_user_name_in_path(
     return path.replace(f"/home/{current_user}", f"/home/{new_user}")
 
 
+def get_os_id() -> str:
+    """Read the OS ID from /etc/os-release (e.g. 'ubuntu', 'debian')."""
+    try:
+        with open("/etc/os-release") as f:
+            for line in f:
+                if line.startswith("ID="):
+                    return line.strip().split("=", 1)[1].strip('"').lower()
+    except OSError:
+        pass
+    return ""
+
+
 def get_display_manager() -> str:
     # Command to get the display manager type
     cmd = "loginctl show-session $(awk '/tty/ {print $1}' <(loginctl)) -p Type | awk -F= '{print $2}'"
@@ -187,3 +199,31 @@ def get_filtered_args(args: argparse.Namespace, dataclass_fields: List[Field]) -
     args_dict = vars(args)
     valid_fields = {field.name for field in dataclass_fields}
     return {key: args_dict[key] for key in valid_fields if key in args_dict}
+
+
+def ask_yes_no(prompt: str, default: bool = False) -> Union[bool, None]:
+    """
+    Ask user a no/yes question and wait for Enter.
+
+    :param prompt: The question to ask
+    :param default: Default value if user just presses Enter (default: False)
+    :return: True for yes/y, False for no/n, None if cancelled (Ctrl+C)
+    """
+    if default is True:
+        prompt_suffix = "(yes/no) [yes]: "
+    else:
+        prompt_suffix = "(yes/no) [no]: "
+
+    try:
+        response = input(f"{prompt} {prompt_suffix}").strip().lower()
+        if not response and default is not None:
+            return default
+        if response in ("yes", "y"):
+            return True
+        if response in ("no", "n"):
+            return False
+        # Invalid input, ask again
+        print("Please enter 'yes', 'y', 'no', or 'n'")
+        return ask_yes_no(prompt, default)
+    except (KeyboardInterrupt, EOFError):
+        return None

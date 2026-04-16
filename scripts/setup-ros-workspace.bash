@@ -181,7 +181,7 @@ setup_new_workspace () {
   current_pwd=$(pwd)
   cd "${new_workspace_location}" || { print_and_exit "Could not change dir to workspace folder. Something went wrong."; }
 
-  if [ "$use_docker" = false ]; then # only build if not in docker, to avoide wrong dependencies
+  if [ "$use_docker" = false ]; then # only build if not in docker, to avoid wrong dependencies
     if [[ $ros_version == 1 ]]; then
       wstool init src
       catkin config -DCMAKE_BUILD_TYPE=RelwithDebInfo
@@ -272,12 +272,14 @@ source_and_update_ws()
     print_and_exit "No ros_team_ws_file given."
   fi
   local ros_team_ws_file=$1
+  local enable_local_updates=${2:-false}
 
   # source new workspace
   source "$ros_team_ws_file"
-
-  # Update rosdep definitions
-  rosdep update
+  # Update rosdep definitions if updates are enabled
+  if [ "$enable_local_updates" = true ]; then
+    rosdep update
+  fi
 
   if [[ $ros_version == 1 ]]; then
     rospack profile
@@ -301,7 +303,7 @@ create_workspace () {
   local ros_team_ws_file_name=".ros_team_ws_rc"
   local ros_team_ws_file="$HOME/$ros_team_ws_file_name"
   setup_ros_team_ws_file "$ros_team_ws_file" "$use_docker" "$is_docker_rtw_file"
-  source_and_update_ws "$ros_team_ws_file"
+   source_and_update_ws "$ros_team_ws_file" "false"
 
   echo -e "${RTW_COLOR_NOTIFY_USER}Finished creating new workspace: Please open a new terminal and execute '$alias_name'${TERMINAL_COLOR_NC} (if you have setup auto sourcing)."
 }

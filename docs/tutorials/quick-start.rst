@@ -24,11 +24,34 @@ Local, empty workspace:
 
    rtw workspace create --ros-distro jazzy --ws-folder my_workspace
 
+Docker, empty workspace:
+
+.. code-block:: bash
+
+   rtw workspace create --ros-distro jazzy --docker --ws-folder my_workspace
+
+Local workspace from ``.repos`` file:
+
+.. code-block:: bash
+
+   rtw workspace create --ros-distro jazzy --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
+
 Docker workspace from ``.repos`` file:
 
 .. code-block:: bash
 
    rtw workspace create --ros-distro jazzy --docker --repos-containing-repository-url <my_git_url> --repos-branch <my_git_branch_with_repos> --ws-folder my_workspace
+
+.. warning::
+   When using ``.repos`` files, ``rosdep install`` may fail if the package
+   references in your repositories are outdated or if the rosdep database
+   is not up-to-date. Ensure your ``.repos`` files point to the correct branches
+   for your ROS distro and that packages have valid ``package.xml`` files with
+   correct dependencies.
+
+.. note::
+   For more advanced options such as proxy configuration, standalone workspaces,
+   IPC communication setup, custom environment variables, and other features, check the :doc:`../rtwcli/index` page.
 
 Create new package in an existing workspace
 --------------------------------------------------------

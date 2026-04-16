@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ from rtwcli.workspace_utils import (
     get_selected_ws_names_from_user,
     update_workspaces_config,
 )
-
 
 WS_FUNCTION_PREFIX = ROS_TEAM_WS_PREFIX + "setup_"
 BASE_WS_CURRENT = "<current>"

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Stogl Robotics Consulting UG (haftungsbeschränkt)
+# Copyright (c) 2023-2026, b»robotized group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,7 +59,9 @@ The package provides the commands for the ROS Team Workspace command line tools.
         "rtw_cmds.workspace.verbs": [
             "create = rtw_cmds.workspace.create_verb:CreateVerb",
             "delete = rtw_cmds.workspace.delete_verb:DeleteVerb",
+            "edit = rtw_cmds.workspace.edit_verb:EditVerb",
             "import = rtw_cmds.workspace.import_verb:ImportVerb",
+            "list = rtw_cmds.workspace.list_verb:ListVerb",
             "port = rtw_cmds.workspace.port_verb:PortVerb",
             "use = rtw_cmds.workspace.use_verb:UseVerb",
         ],

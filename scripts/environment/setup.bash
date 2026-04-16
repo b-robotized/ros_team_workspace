@@ -46,6 +46,7 @@ if [[ $ros_version == 1 ]]; then
 
   setup_exports
   setup_aliases
+  setup_ros_aliases
   setup_ros1_exports
   setup_ros1_aliases
 
@@ -78,6 +79,7 @@ elif [[ $ros_version == 2 ]]; then
 
   setup_exports
   setup_aliases
+  setup_ros_aliases
   setup_ros2_exports
   setup_ros2_aliases
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Stogl Robotics Consulting UG (haftungsbeschränkt) (template)
+# Copyright (c) 2025, b»robotized
 # Copyright (c) 2022 FZI Forschungszentrum Informatik
 #
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 #
-# Source of this file is https://github.com/StoglRobotics/ros_team_workspace repository.
+# Source of this file is https://github.com/b-robotized/ros_team_workspace repository.
 # Modified from tests in https://github.com/UniversalRobots/Universal_Robots_ROS2_Description
 #
 # Author: Lukas Sackewitz
@@ -51,7 +51,7 @@ def test_urdf_xacro():
         get_package_share_directory(description_package), "urdf", description_file
     )
 
-    (_, tmp_urdf_output_file) = tempfile.mkstemp(suffix=".urdf")
+    _, tmp_urdf_output_file = tempfile.mkstemp(suffix=".urdf")
 
     # Compose `xacro` and `check_urdf` command
     xacro_command = (
