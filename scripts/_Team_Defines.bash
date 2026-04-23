@@ -90,6 +90,10 @@ alias setup-rt-kernel="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-rt-kernel.bash
 # Setup RMW
 alias rtw-zenoh-router="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/rtw-zenoh-router.bash
 
+# Kill all running ROS 2 nodes
+alias ros2_kill="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/ros2_kill.bash
+alias ros2kill="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/ros2_kill.bash
+
 # VCS Aliases and helpers
 function rtw-ws-import () {
   # TODO: if not argument use WS default path for this after #169 is merged
