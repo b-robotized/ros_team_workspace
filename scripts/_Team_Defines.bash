@@ -92,7 +92,6 @@ alias rtw-zenoh-router="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/rtw-zenoh
 
 # Kill all running ROS 2 nodes
 alias ros2_kill="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/ros2_kill.bash
-alias ros2kill="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/ros2_kill.bash
 
 # VCS Aliases and helpers
 function rtw-ws-import () {
