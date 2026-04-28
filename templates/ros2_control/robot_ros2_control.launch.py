@@ -84,6 +84,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "overrun_flags",
+            default_value="true",
+            description="Set to true to manage controller overruns and print warnings. Set to false to disable overrun handling (useful for mock systems).",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "mock_sensor_commands",
             default_value="false",
             description="Enable mock command interfaces for sensors used for simple simulations. \
@@ -107,6 +114,7 @@ def generate_launch_description():
     prefix = LaunchConfiguration("prefix")
     attach_world = LaunchConfiguration("attach_world")
     use_mock = LaunchConfiguration("use_mock")
+    overrun_flags = LaunchConfiguration("overrun_flags")
     mock_sensor_commands = LaunchConfiguration("mock_sensor_commands")
     robot_controller = LaunchConfiguration("robot_controller")
 
@@ -147,7 +155,11 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         output="both",
-        parameters=[robot_description, robot_controllers],
+        parameters=[
+            robot_description,
+            robot_controllers,
+            {"overruns.manage": overrun_flags, "overruns.print_warnings": overrun_flags},
+        ],
     )
     robot_state_pub_node = Node(
         package="robot_state_publisher",
