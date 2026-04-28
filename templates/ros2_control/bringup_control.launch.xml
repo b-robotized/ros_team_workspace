@@ -73,14 +73,8 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
 
   <!-- Doesn't work until fix releass, open from March 2026 -->
   <!-- <node pkg="controller_manager" exec="ros2_control_node" name="$(var controller_manager_name)" output="both"> -->
-  <node pkg="controller_manager" exec="ros2_control_node" output="both">
-    <param name="update_rate" value="100"/>
-    <param name="overruns.manage" value="$(var overrun_flags)"/>
-    <param name="overruns.print_warnings" value="$(var overrun_flags)"/>
-  </node>
-
- <!-- Suppress overrun warnings only when mock_hardware is true -->
   <group if="$(var use_mock)">
+     <!-- Suppress overrun warnings only when mock_hardware is true -->
      <node pkg="controller_manager" exec="ros2_control_node" output="both">
           <param name="update_rate" value="100"/>
           <param name="overruns.manage" value="false"/>
