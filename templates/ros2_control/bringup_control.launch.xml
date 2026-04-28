@@ -40,9 +40,6 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
   <arg name="use_mock"
        default="true"
        description="Start robot with mock hardware mirroring command to its states."/>
-  <arg name="overrun_flags"
-       default="true"
-       description="Set to true to manage controller overruns and print warnings. Set to false to disable overrun handling (useful for mock systems)."/>
   <arg name="start_rviz"
        default="true"
        description="Launch RViz visualization?"/>
@@ -81,6 +78,22 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
     <param name="overruns.manage" value="$(var overrun_flags)"/>
     <param name="overruns.print_warnings" value="$(var overrun_flags)"/>
   </node>
+
+ <!-- Suppress overrun warnings only when mock_hardware is true -->
+  <group if="$(var use_mock)">
+     <node pkg="controller_manager" exec="ros2_control_node" output="both">
+          <param name="update_rate" value="100"/>
+          <param name="overruns.manage" value="false"/>
+          <param name="overruns.print_warnings" value="false"/>
+     </node>
+  </group>
+
+  <!-- Normal config for real hardware -->
+  <group unless="$(var use_mock)">
+     <node pkg="controller_manager" exec="ros2_control_node" output="both">
+          <param name="update_rate" value="100"/>
+     </node>
+  </group>
 
   <let name="controllers_file_path" value="$(find-pkg-share $(var configuration_package))/config/$(var controllers_file)"/>
 
