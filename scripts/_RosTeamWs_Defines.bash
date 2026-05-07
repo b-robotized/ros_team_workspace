@@ -240,7 +240,7 @@ function RosTeamWS_setup_ros2_aliases {
     fi
 
     # commands that actually support the --no-daemon flag
-    local daemon_cmds=("info" "list" "node" "param" "interface" "lifecycle")
+    local daemon_cmds=("info" "list" "node" "param" "lifecycle")
     local is_daemon_cmd=false
 
     for cmd in "${daemon_cmds[@]}"; do
