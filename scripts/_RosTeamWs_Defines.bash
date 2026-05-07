@@ -180,8 +180,8 @@ function RosTeamWS_setup_ros2_aliases {
   alias cbr="colcon_build_release"
   alias cbup="colcon_build_up_to"
 
+  alias cbnt="colcon_build_no_test"
   alias ct="colcon_test"
-  alias cnt="colcon_no_test_build"
   alias ctup="colcon_test_up_to"
 
   alias ctres="colcon_test_results"
@@ -240,7 +240,7 @@ function RosTeamWS_setup_ros2_aliases {
     fi
 
     # commands that actually support the --no-daemon flag
-    local daemon_cmds=("info" "list" "node" "param" "interface" "lifecycle")
+    local daemon_cmds=("info" "list" "node" "param" "lifecycle")
     local is_daemon_cmd=false
 
     for cmd in "${daemon_cmds[@]}"; do
@@ -354,7 +354,7 @@ function colcon_test {
   colcon_helper_ros2 "colcon test" "$*"
 }
 
-function colcon_no_test_build {
+function colcon_build_no_test {
   colcon_helper_ros2 "colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTING=OFF"  "$*"
 }
 
