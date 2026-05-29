@@ -21,7 +21,13 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction
 from launch.event_handlers import OnProcessExit, OnProcessStart
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    PythonExpression,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -151,8 +157,12 @@ def generate_launch_description():
             robot_description,
             robot_controllers,
             {
-                "overruns.manage": PythonExpression(["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]),
-                "overruns.print_warnings": PythonExpression(["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]),
+                "overruns.manage": PythonExpression(
+                    ["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]
+                ),
+                "overruns.print_warnings": PythonExpression(
+                    ["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]
+                ),
             },
         ],
     )
