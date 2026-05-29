@@ -20,9 +20,8 @@
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction
-from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnProcessExit, OnProcessStart
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -144,28 +143,20 @@ def generate_launch_description():
         [FindPackageShare(description_package), "rviz", "$ROBOT_NAME$.rviz"]
     )
 
-    control_node_mock = Node(
+    control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         output="both",
         parameters=[
             robot_description,
             robot_controllers,
-            {"overruns.manage": False, "overruns.print_warnings": False},
+            {
+                "overruns.manage": PythonExpression(["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]),
+                "overruns.print_warnings": PythonExpression(["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]),
+            },
         ],
-        condition=IfCondition(use_mock),
     )
-    control_node_real = Node(
-        package="controller_manager",
-        executable="ros2_control_node",
-        output="both",
-        parameters=[
-            robot_description,
-            robot_controllers,
-            {"overruns.manage": True, "overruns.print_warnings": True},
-        ],
-        condition=UnlessCondition(use_mock),
-    )
+
     robot_state_pub_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -209,20 +200,9 @@ def generate_launch_description():
         ]
 
     # Delay loading and activation of `joint_state_broadcaster` after start of ros2_control_node
-    delay_joint_state_broadcaster_spawner_after_ros2_control_node_mock = RegisterEventHandler(
+    delay_joint_state_broadcaster_spawner_after_ros2_control_node = RegisterEventHandler(
         event_handler=OnProcessStart(
-            target_action=control_node_mock,
-            on_start=[
-                TimerAction(
-                    period=3.0,
-                    actions=[joint_state_broadcaster_spawner],
-                ),
-            ],
-        )
-    )
-    delay_joint_state_broadcaster_spawner_after_ros2_control_node_real = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=control_node_real,
+            target_action=control_node,
             on_start=[
                 TimerAction(
                     period=3.0,
@@ -267,12 +247,10 @@ def generate_launch_description():
     return LaunchDescription(
         declared_arguments
         + [
-            control_node_mock,
-            control_node_real,
+            control_node,
             robot_state_pub_node,
             rviz_node,
-            delay_joint_state_broadcaster_spawner_after_ros2_control_node_mock,
-            delay_joint_state_broadcaster_spawner_after_ros2_control_node_real,
+            delay_joint_state_broadcaster_spawner_after_ros2_control_node,
         ]
         + delay_robot_controller_spawners_after_joint_state_broadcaster_spawner
         + delay_inactive_robot_controller_spawners_after_joint_state_broadcaster_spawner
