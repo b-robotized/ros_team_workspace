@@ -18,16 +18,18 @@ from launch_ros.actions import Node
 from launch.actions import TimerAction
 import launch_testing.actions
 
-#TODO: add any other imports needed
+# TODO: add any other imports needed (e.g. service/action types)
+
 
 def generate_test_description():
 
     minimal_urdf = """<?xml version="1.0"?><robot name="dummy_robot"><link name="base_link"/></robot>"""
     minimal_srdf = """<robot name="dummy_robot"><group name="dummy_group"><chain base_link="base_link" tip_link="base_link"/></group></robot>"""
 
-    # TODO: Replace with whatever needed to be launched to run your system. You can include pre-existing launch files.
+    # TODO: Replace with whatever nodes/launch files are needed to run your system.
+    # If reusing an existing launch file, add parameters to disable UI components like rviz.
     # NODE_NAME = Node(
-    #     package="PKG_NAME",
+    #     package="$PKG_NAME$",
     #     executable="NODE_NAME",
     #     name="NODE_NAME",
     #     output="screen",
@@ -47,7 +49,7 @@ def generate_test_description():
     #     ],
     # )
 
-    # TODO: Change the time delay in TimerAction(period=0.5, ...) to whatever is needed to launch your system.
+    # TODO: Adjust the period to however long your system takes to fully start up.
     return (
         LaunchDescription(
             [
@@ -56,12 +58,12 @@ def generate_test_description():
                 TimerAction(period=0.5, actions=[launch_testing.actions.ReadyToTest()]),
             ]
         ),
-        # {"moveit_launch": moveit_node, "custom_node": custom_node},
+        # {"moveit_node": moveit_node, "custom_node": NODE_NAME},
     )
 
 
 # Active tests
-class TestPkgName(unittest.TestCase):
+class $TestPkgNameCC$(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -72,33 +74,29 @@ class TestPkgName(unittest.TestCase):
         rclpy.shutdown()
 
     def setUp(self):
-        # Create a ROS 2 node for testing
-        self.node = rclpy.create_node("test_custom_node")
+        self.node = rclpy.create_node("test_$PKG_NAME$_node")
 
-        # TODO: Create a client for each service or action
+        # TODO: Create a client for each service or action you want to test.
         # self.my_service_client = self.node.create_client(MyServiceType, "my_service")
 
     def tearDown(self):
         self.node.destroy_node()
 
-    # TODO: Edit the testcase as required. Each testcase should start by triggering a behavior 
-    # (i.e. calling a service or subscribing to a topic) and end by asserting the response.
+    # TODO: Add your testcases as separate methods below. Testcases run sequentially,
+    # so order matters when one test depends on another (e.g. add object before moving it).
+    #
+    # Each testcase should trigger a behavior and then assert the expected outcome.
     # def test_my_custom_service(self):
-    #     # Wait for the service to be available
     #     self.assertTrue(
     #         self.my_service_client.wait_for_service(timeout_sec=5.0),
-    #         "my_service service not available",
+    #         "my_service is not available",
     #     )
-
-	# 	request = MyServiceType.Request()
-
-    #     # Call the service
+    #
+    #     request = MyServiceType.Request()
+    #
     #     future = self.my_service_client.call_async(request)
     #     rclpy.spin_until_future_complete(self.node, future)
-
-    #     # Check the response
+    #
     #     response = future.result()
-    #     self.assertIsNotNone(response, "No response received from my_service service")
-    #     self.assertEqual(response.result, 1, "my_service service should succeed!")
-    
-    # TODO: After you brainstormed your testcases, name and add them to the class in separate functions. Each function is a testcase.
+    #     self.assertIsNotNone(response, "No response received from my_service")
+    #     self.assertEqual(response.result, 1, "my_service should succeed")
