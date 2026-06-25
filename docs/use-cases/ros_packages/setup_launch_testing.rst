@@ -17,6 +17,10 @@ The most two important types of testing:
 
 Since most of our frameworks need MoveIt to run, we mostly do integration tests.
 
+.. image:: images/IntegrationTests.png
+   :alt: Before/after comparison showing how RTW makes integration test setup simple
+   :align: center
+
 launch_testing
 ---------------
 
