@@ -18,7 +18,7 @@ import unittest
 import rclpy
 
 from launch import LaunchDescription
-from launch_ros.actions import Node
+from launch_ros.actions import Node  # noqa: F401
 from launch.actions import TimerAction
 import launch_testing.actions
 
@@ -27,8 +27,10 @@ import launch_testing.actions
 
 def generate_test_description():
 
-    minimal_urdf = """<?xml version="1.0"?><robot name="dummy_robot"><link name="base_link"/></robot>"""
-    minimal_srdf = """<robot name="dummy_robot"><group name="dummy_group"><chain base_link="base_link" tip_link="base_link"/></group></robot>"""
+    minimal_urdf = (  # noqa: F841
+        """<?xml version="1.0"?><robot name="dummy_robot"><link name="base_link"/></robot>"""
+    )
+    minimal_srdf = """<robot name="dummy_robot"><group name="dummy_group"><chain base_link="base_link" tip_link="base_link"/></group></robot>"""  # noqa: F841
 
     # TODO: Replace with whatever nodes/launch files are needed to run your system.
     # If reusing an existing launch file, add parameters to disable UI components like rviz.
@@ -67,7 +69,7 @@ def generate_test_description():
 
 
 # Active tests
-class $TestPkgNameCC$(unittest.TestCase):
+class TestPkgName(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

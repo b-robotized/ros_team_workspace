@@ -48,8 +48,8 @@ if [ -f "$LAUNCH_TEST_FILE" ]; then
 else
   cp "$TESTING_TEMPLATES/test_package_name.launch.py" "$LAUNCH_TEST_FILE"
   # Substitute placeholders
+  sed -i "s/TestPkgName/Test${PKG_NAME_CC}/g" "$LAUNCH_TEST_FILE"
   sed -i "s/\\\$PKG_NAME\\\$/${PKG_NAME}/g" "$LAUNCH_TEST_FILE"
-  sed -i "s/\\\$TestPkgNameCC\\\$/Test${PKG_NAME_CC}/g" "$LAUNCH_TEST_FILE"
   echo "Created '$LAUNCH_TEST_FILE'."
 fi
 
