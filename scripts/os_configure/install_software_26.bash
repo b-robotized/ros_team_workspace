@@ -85,7 +85,7 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 
 # Use newer verison of Libreoffice from flatpak
 sudo nala remove -y libreoffice-*
-sudo flatpak install flathub org.libreoffice.LibreOffice
+sudo flatpak install --system --noninteractive -y flathub org.libreoffice.LibreOffice
 
 # Useful libraries
 sudo nala install -y libxml2-dev libvlc-dev libmuparser-dev libudev-dev
