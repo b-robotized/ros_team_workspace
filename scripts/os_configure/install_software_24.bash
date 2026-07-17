@@ -213,7 +213,7 @@ then
   flatpak install -y app/org.freecad.FreeCAD/x86_64/stable
 
   # Logitech tools
-  sudo add-apt-repository ppa:solaar-unifying/stable
+  sudo add-apt-repository -y ppa:solaar-unifying/stable
   sudo nala update
   sudo nala install -y solaar
 
@@ -228,7 +228,7 @@ then
 
   ### OFFICE TOOLS ###
   # Notes-taking
-  sudo add-apt-repository ppa:pbek/qownnotes
+  sudo add-apt-repository -y ppa:pbek/qownnotes
   sudo apt update
   sudo nala install -y qownnotes
 fi
