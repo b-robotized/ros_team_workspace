@@ -130,6 +130,9 @@ function RosTeamWS_setup_aliases {
 
   alias stop_kvm="sudo systemctl stop libvirtd && sudo modprobe -r kvm_intel kvm_amd kvm"
   alias start_kvm="sudo modprobe kvm && sudo modprobe kvm_intel && sudo modprobe kvm_amd && sudo systemctl start libvirtd"
+  alias start_vbox="sudo systemctl start vboxdrv.service"
+  alias stop_vbox="sudo systemctl stop vboxdrv.service"
+  alias start_docker="sudo systemctl start docker && sudo systemctl start docker.socket"
   alias fix_bt_headphones_audio="sudo pulseaudio -k && systemctl --user restart wireplumber && systemctl --user restart pipewire"
 }
 
