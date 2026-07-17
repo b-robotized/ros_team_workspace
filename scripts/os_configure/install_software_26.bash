@@ -83,7 +83,7 @@ sudo nala install -y neovim ssh git qgit trash-cli htop unrar screen finger kssh
 sudo nala install -y plasma-discover-backend-flatpak kde-config-flatpak
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-# Use newer verison of Libreoffice from flatpak
+# Use newer version of Libreoffice from flatpak
 sudo nala remove -y libreoffice-*
 sudo flatpak install --system --noninteractive -y flathub org.libreoffice.LibreOffice
 
