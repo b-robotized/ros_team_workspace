@@ -65,6 +65,7 @@ if ! ( grep -q '\..*\.ros_team_ws_rc' $bashrc_location || grep -q 'source.*\.ros
     echo "" >> $bashrc_location
     echo "# automatically source RosTeamWorkspace if the .ros_team_ws file is present in your home folder." >> $bashrc_location
     echo "if [ -f ~/.ros_team_ws_rc ]; then" >> $bashrc_location
+    echo "    export PATH=${PATH}:${HOME}/.local/bin  # path to local installation of rtwcli"
     echo "    . ~/.ros_team_ws_rc" >> $bashrc_location
     echo "fi" >> $bashrc_location
 fi

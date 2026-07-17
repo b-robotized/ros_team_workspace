@@ -75,7 +75,7 @@ First install it to you computer using:
 
    .. code-block:: bash
 
-      pip install pre-commit
+      sudo apt install -y pre-commit
 
 
 and than tell ``git`` that you are using it by executing the following in each repository:
