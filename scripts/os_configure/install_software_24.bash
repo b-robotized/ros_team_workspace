@@ -77,11 +77,15 @@ sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt update
 
 ### BASIC TOOLS ###
-sudo nala install -y neovim ssh git qgit trash-cli htop unrar screen finger ksshaskpass kompare filelight tldr tree pre-commit tmux apt-transport-https curl
+sudo nala install -y neovim ssh git qgit trash-cli htop unrar screen finger ksshaskpass kompare filelight tldr tree pre-commit tmux apt-transport-https curl keysmith
 
 ## Enable flatpak
 sudo nala install -y plasma-discover-backend-flatpak kde-config-flatpak
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Use newer verison of Libreoffice from flatpak
+sudo nala remove -y libreoffice-*
+sudo flatpak install flathub org.libreoffice.LibreOffice
 
 # Useful libraries
 sudo nala install -y libxml2-dev libvlc-dev libmuparser-dev libudev-dev
