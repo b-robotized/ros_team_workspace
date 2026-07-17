@@ -55,7 +55,7 @@ fi
 echo "Installing software for $computer_type computers. Press <ENTER> to continue."
 read
 
-ROS2_VERSIONS=( "jazzy" "rolling" )
+ROS2_VERSIONS=( "lyrical" "rolling" )
 
 ### BACKPORTS ###
 # KDE Backports
