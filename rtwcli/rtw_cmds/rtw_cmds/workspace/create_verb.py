@@ -380,7 +380,7 @@ class CreateVerb(VerbExtension):
             type=str,
             help="ROS distro to use for the workspace.",
             required=True,
-            choices=["humble", "jazzy", "kilted", "rolling", "lyrical"],
+            choices=["humble", "jazzy", "kilted", "lyrical", "rolling"],
         )
         parser.add_argument(
             "--add-existing-workspace",
