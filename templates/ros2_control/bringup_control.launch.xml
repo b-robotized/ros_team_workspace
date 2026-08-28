@@ -71,10 +71,16 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
     <arg name="robot_ip" value="$(var robot_ip)"/>
   </include>
 
+  <!-- Overruns disabled in mock mode, enabled for real hardware -->
+  <let name="overrun_enabled" value="false" if="$(var use_mock)"/>
+  <let name="overrun_enabled" value="true" unless="$(var use_mock)"/>
+
   <!-- Doesn't work until fix releass, open from March 2026 -->
   <!-- <node pkg="controller_manager" exec="ros2_control_node" name="$(var controller_manager_name)" output="both"> -->
   <node pkg="controller_manager" exec="ros2_control_node" output="both">
-    <param name="update_rate" value="100"/>
+       <param name="update_rate" value="100"/>
+       <param name="overruns.manage" value="$(var overrun_enabled)"/>
+       <param name="overruns.print_warnings" value="$(var overrun_enabled)"/>
   </node>
 
   <let name="controllers_file_path" value="$(find-pkg-share $(var configuration_package))/config/$(var controllers_file)"/>
