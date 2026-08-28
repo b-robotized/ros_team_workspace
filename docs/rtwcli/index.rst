@@ -349,7 +349,8 @@ Kernel scheduling and performance
      provide the ``realtime`` group.
 
   For a complete step-by-step guide on setting up a PREEMPT_RT Debian system
-  and ROS workspace, see: `PREEMPT_RT PC setup <realtime_pc_setup.rst>`_
+  and ROS workspace, see: :doc:`PREEMPT_RT PC setup
+  <../operating_system/setup_rt_kernel_debian>`
 
 
 Supplementary group permissions
