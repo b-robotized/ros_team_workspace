@@ -48,6 +48,6 @@ Debian
 Debian is not a native ``rosdep``/ROS target. It is used as a **real-time
 docker host**: a Debian PC provides the PREEMPT_RT kernel and Docker runtime,
 while ROS itself still runs inside one of the Ubuntu containers from the
-table above (typically jazzy on ubuntu 24.04). See
+table above. See
 :ref:`Setup Real-Time Kernel (Debian, prebuilt package) <uc-setup-rt-kernel-debian>`
 for the full setup.
