@@ -10,10 +10,8 @@ We're using a pre-build binary on Linux Debian distribution and a docker contain
 with Ubuntu 24.04 with real-time permissions.
 
 .. note::
-   This is the Debian alternative to :ref:`compiling a PREEMPT_RT kernel
-   from source on Ubuntu <uc-setup-rt-kernel>`. Debian ships prebuilt
-   ``-rt-amd64`` kernel packages, so no compilation is needed here — ROS
-   itself still runs inside an Ubuntu 24.04 docker container.
+   This is the Debian alternative to :ref:`compiling a PREEMPT_RT kernel from source on Ubuntu <uc-setup-rt-kernel>`.
+   Debian ships prebuilt ``-rt-amd64`` kernel packages, so no compilation is needed here — ROS itself still runs inside an Ubuntu 24.04 docker container.
 
 Operating System Installation
 ------------------------------
@@ -29,15 +27,17 @@ Operating System Installation
 
 4. Follow installation steps:
 
-   * Be aware Debian uses a separate ``root`` user. Don't get confused with two passwords. Debian has root user that doesn't have name, and you can access it with ``su -`` command.
+   * Be aware Debian uses a separate ``root`` user.
+     Don't get confused with two passwords.
+     The root user has no name; access it with the ``su -`` command.
    * Install ``ssh`` during setup
-   * Choose your preferred window manager _(recommended is Plasma)_
+   * Choose your preferred window manager (recommended: Plasma)
 
 5. Configure networking:
 
    * Main network according to your company requirements
 
-6. Login to the PC after installation _(recommended to use **Plasma on X11**)_:
+6. Login to the PC after installation (recommended: Plasma on X11):
 
    * Set up a networking - usually your company network and dedicated RT ethernet interface for your robot with a static IP.
 
@@ -99,8 +99,7 @@ Realtime Permissions Setup
 
 14. Install Docker (APT method):
 
-   See :ref:`general info on docker installation
-   <general-info-on-docker-installation>` (Debian's official apt repo).
+   See :ref:`general info on docker installation <general-info-on-docker-installation>` (Debian's official apt repo).
 
 15. Configure ``realtime`` and ``docker`` groups and configure limits:
 
