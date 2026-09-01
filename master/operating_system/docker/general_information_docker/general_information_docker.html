@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>General information on docker &mdash; ROS Team Workspace Documentation: Jazzy Aug 2026 documentation</title>
+  <title>General information on docker &mdash; ROS Team Workspace Documentation: Jazzy Sep 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -77,6 +77,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../setup_rt_kernel.html">Setup Real-Time Kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../setup_rt_kernel_debian.html">Setup Real-Time Kernel (Debian, prebuilt package)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
@@ -117,7 +118,12 @@
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.docker.com/desktop/windows/install/">Windows</a></p></li>
 <li><p><a class="reference external" href="https://docs.docker.com/desktop/mac/install/">Mac</a></p></li>
-<li><p><a class="reference external" href="https://docs.docker.com/desktop/install/linux-install/">Linux</a>: it depends.</p></li>
+<li><p>Linux: use Docker Engine’s official apt repo, not Docker Desktop:</p>
+<ul>
+<li><p><a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">Ubuntu</a></p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/engine/install/debian/">Debian</a></p></li>
+</ul>
+</li>
 </ul>
 <p>You can verify that you have docker successfully installed by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>hello-world

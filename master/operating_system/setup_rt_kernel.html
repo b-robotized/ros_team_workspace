@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setup Real-Time Kernel &mdash; ROS Team Workspace Documentation: Jazzy Aug 2026 documentation</title>
+  <title>Setup Real-Time Kernel &mdash; ROS Team Workspace Documentation: Jazzy Sep 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -27,7 +27,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="FAQ" href="../faq/index.html" />
+    <link rel="next" title="Setup Real-Time Kernel (Debian, prebuilt package)" href="setup_rt_kernel_debian.html" />
     <link rel="prev" title="Supported ros versions and operating systems" href="docker/supported_versions/supported_versions.html" />
  
 <!-- Privacy-friendly analytics by Plausible -->
@@ -74,6 +74,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="setup_rt_kernel_debian.html">Setup Real-Time Kernel (Debian, prebuilt package)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
@@ -107,6 +108,10 @@
   <section id="setup-real-time-kernel">
 <span id="uc-setup-rt-kernel"></span><h1>Setup Real-Time Kernel<a class="headerlink" href="#setup-real-time-kernel" title="Permalink to this heading"></a></h1>
 <p>This script automates the process of downloading, patching, compiling, and installing a Linux kernel with the PREEMPT_RT patch. This is essential for achieving real-time performance for robot control.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On Debian, a prebuilt PREEMPT_RT kernel package is available and no compilation is needed — see <a class="reference internal" href="setup_rt_kernel_debian.html#uc-setup-rt-kernel-debian"><span class="std std-ref">Setup Real-Time Kernel (Debian, prebuilt package)</span></a> instead.</p>
+</div>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
 <p>Execute the script using the alias:</p>
@@ -185,7 +190,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="docker/supported_versions/supported_versions.html" class="btn btn-neutral float-left" title="Supported ros versions and operating systems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="setup_rt_kernel_debian.html" class="btn btn-neutral float-right" title="Setup Real-Time Kernel (Debian, prebuilt package)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
