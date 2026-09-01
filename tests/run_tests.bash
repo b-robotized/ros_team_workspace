@@ -141,9 +141,10 @@ ros2 launch my_robot_description load_description.launch.xml &
 PID_DESC=$!
 wait_for_robot_description 20 10 2
 
-kill $PID_DESC
+kill $PID_DESC 2>/dev/null || true
+wait $PID_DESC 2>/dev/null || true
 PID_DESC=""
-sleep 5
+sleep 2
 
 # Regression test: sim_gazebo/use_mock must select the Gazebo hardware plugin,
 # not the mock one, and must forward simulation_controllers into the URDF.
@@ -176,9 +177,10 @@ else
     exit 1
 fi
 
-kill $PID_DESC
+kill $PID_DESC 2>/dev/null || true
+wait $PID_DESC 2>/dev/null || true
 PID_DESC=""
-sleep 5
+sleep 2
 
 # Test bringup launch
 echo -e "${TERMINAL_COLOR_BLUE}Launching my_robot_control start_offline.launch.xml...${TERMINAL_COLOR_NC}"
