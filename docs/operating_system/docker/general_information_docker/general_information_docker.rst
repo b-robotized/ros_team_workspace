@@ -13,7 +13,10 @@ You have to install docker which is dependent on the operating system you are us
 
 *   `Windows <https://docs.docker.com/desktop/windows/install/>`_
 *   `Mac <https://docs.docker.com/desktop/mac/install/>`_
-*   `Linux <https://docs.docker.com/desktop/install/linux-install/>`_: it depends.
+*   Linux: use Docker Engine's official apt repo, not Docker Desktop:
+
+    *   `Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_
+    *   `Debian <https://docs.docker.com/engine/install/debian/>`_
 
 You can verify that you have docker successfully installed by running:
 

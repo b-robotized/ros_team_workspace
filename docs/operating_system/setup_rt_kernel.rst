@@ -5,6 +5,9 @@ Setup Real-Time Kernel
 
 This script automates the process of downloading, patching, compiling, and installing a Linux kernel with the PREEMPT_RT patch. This is essential for achieving real-time performance for robot control.
 
+.. note::
+   On Debian, a prebuilt PREEMPT_RT kernel package is available and no compilation is needed — see :ref:`Setup Real-Time Kernel (Debian, prebuilt package) <uc-setup-rt-kernel-debian>` instead.
+
 Usage
 -----
 
