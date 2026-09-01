@@ -153,7 +153,7 @@ PID_DESC=$!
 wait_for_robot_description 20 10 2
 
 echo -e "${TERMINAL_COLOR_YELLOW}Checking robot_description content for the Gazebo hardware plugin...${TERMINAL_COLOR_NC}"
-ROBOT_DESCRIPTION_CONTENT=$(ros2 topic echo /robot_description --once --timeout 10 2>/dev/null)
+ROBOT_DESCRIPTION_CONTENT=$(ros2 topic echo /robot_description --once --timeout 10 --full-length 2>/dev/null)
 
 if echo "$ROBOT_DESCRIPTION_CONTENT" | grep -q "gz_ros2_control/GazeboSimSystem"; then
     echo -e "${TERMINAL_COLOR_GREEN}Success: GazeboSimSystem plugin present.${TERMINAL_COLOR_NC}"
