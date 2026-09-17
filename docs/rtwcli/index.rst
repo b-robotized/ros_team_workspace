@@ -68,6 +68,8 @@ repositories.
         workspace (format: ``KEY=VALUE``). Multiple variables can be specified
         separated by spaces. These variables are exported when the workspace is
         sourced.
+      * ``--disable-testing``: Build the initial workspace with
+        ``-DBUILD_TESTING=OFF`` (skip compiling test targets).
 
 * Minimal example:
 
