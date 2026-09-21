@@ -115,6 +115,7 @@ cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/dummy_package_namespace/robot_ha
 cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_hardware_interface.cpp $HW_ITF_CPP
 cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/robot_pluginlib.xml $PLUGIN_XML
 cp --update=none $ROS2_CONTROL_HW_ITF_TEMPLATES/test_robot_hardware_interface.cpp $TEST_CPP
+cp $ROS2_CONTROL_HW_ITF_TEMPLATES/CMakeLists.txt CMakeLists.txt
 
 echo -e "${TERMINAL_COLOR_USER_NOTICE}Template files copied.${TERMINAL_COLOR_NC}"
 
@@ -143,7 +144,7 @@ fi
 
 FILES_TO_SED=("${FILES_TO_LICENSE[@]}")
 # sed all needed files
-FILES_TO_SED+=("$PLUGIN_XML")
+FILES_TO_SED+=("$PLUGIN_XML" "CMakeLists.txt")
 # declare -p FILES_TO_SED
 
 for SED_FILE in "${FILES_TO_SED[@]}"; do
@@ -181,146 +182,23 @@ if [[ "$INTERFACE_TYPE" == "sensor" ]]; then
   sed -i '/command_interface/d' $TEST_CPP
 fi
 
-# CMakeLists.txt: Remove comments if there any and add library
-DEL_STRINGS=("# uncomment the following" "# further" "# find_package(<dependency>")
 
-for DEL_STR in "${DEL_STRINGS[@]}"; do
-  sed -i "/$DEL_STR/d" CMakeLists.txt
-done
-
-TMP_FILE=".f_tmp"
-touch $TMP_FILE
-
-# Get line with if(BUILD_TESTING)
-TEST_LINE=`awk '$1 == "if(BUILD_TESTING)" { print NR }' CMakeLists.txt`
-let CUT_LINE=$TEST_LINE-1
-head -$CUT_LINE CMakeLists.txt >> $TMP_FILE
-
-# Add Plugin library stuff inside
-echo "add_library(" >> $TMP_FILE
-echo "  $PKG_NAME" >> $TMP_FILE
-echo "  SHARED" >> $TMP_FILE
-echo "  $HW_ITF_CPP" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-echo "target_include_directories(" >> $TMP_FILE
-echo "  $PKG_NAME" >> $TMP_FILE
-echo "  PUBLIC" >> $TMP_FILE
-echo "  include" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-echo "ament_target_dependencies(" >> $TMP_FILE
-echo "  $PKG_NAME" >> $TMP_FILE
-echo "  hardware_interface" >> $TMP_FILE
-echo "  rclcpp" >> $TMP_FILE
-echo "  rclcpp_lifecycle" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-# TODO(anyone): Delete after Foxy!!!
-echo "# prevent pluginlib from using boost" >> $TMP_FILE
-echo "target_compile_definitions($PKG_NAME PUBLIC \"PLUGINLIB__DISABLE_BOOST_FUNCTIONS\")" >> $TMP_FILE
-
-echo "" >> $TMP_FILE
-echo "pluginlib_export_plugin_description_file(" >> $TMP_FILE
-echo "  hardware_interface $PLUGIN_XML)" >> $TMP_FILE
-
-## Add install directives
-echo "" >> $TMP_FILE
-echo "install(" >> $TMP_FILE
-echo "  TARGETS" >> $TMP_FILE
-echo "  $PKG_NAME" >> $TMP_FILE
-echo "  RUNTIME DESTINATION bin" >> $TMP_FILE
-echo "  ARCHIVE DESTINATION lib" >> $TMP_FILE
-echo "  LIBRARY DESTINATION lib" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-if [[ ! `grep -q "DIRECTORY include/" $TMP_FILE` ]]; then
-  echo "" >> $TMP_FILE
-  echo "install(" >> $TMP_FILE
-  echo "  DIRECTORY include/" >> $TMP_FILE
-  echo "  DESTINATION include" >> $TMP_FILE
-  echo ")" >> $TMP_FILE
-fi
-
-echo ""  >> $TMP_FILE
-
-END_TEST_LINE=`tail -n +$TEST_LINE CMakeLists.txt | awk '$1 == "endif()" { print NR }'`
-let CUT_LINE=$END_TEST_LINE-1
-tail -n +$TEST_LINE CMakeLists.txt | head -$CUT_LINE >> $TMP_FILE
-
-echo "" >> $TMP_FILE
-echo "  ament_add_gmock(test_$FILE_NAME $TEST_CPP)" >> $TMP_FILE
-echo "  target_include_directories(test_$FILE_NAME PRIVATE include)" >> $TMP_FILE
-echo "  ament_target_dependencies(" >> $TMP_FILE
-echo "    test_$FILE_NAME" >> $TMP_FILE
-echo "    hardware_interface" >> $TMP_FILE
-echo "    pluginlib" >> $TMP_FILE
-echo "    ros2_control_test_assets" >> $TMP_FILE
-echo "  )" >> $TMP_FILE
-echo ""
-
-# Add export definitions
-tail -n +$TEST_LINE CMakeLists.txt | head -$END_TEST_LINE | tail -1 >> $TMP_FILE
-
-echo "" >> $TMP_FILE
-echo "ament_export_include_directories(" >> $TMP_FILE
-echo "  include" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-echo "ament_export_libraries(" >> $TMP_FILE
-echo "  $PKG_NAME" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-echo "ament_export_dependencies(" >> $TMP_FILE
-echo "  hardware_interface" >> $TMP_FILE
-echo "  pluginlib" >> $TMP_FILE
-echo "  rclcpp" >> $TMP_FILE
-echo "  rclcpp_lifecycle" >> $TMP_FILE
-echo ")" >> $TMP_FILE
-
-# Add last part
-let CUT_LINE=$END_TEST_LINE+1
-tail -n +$TEST_LINE CMakeLists.txt | tail -n +$CUT_LINE >> $TMP_FILE
-
-mv $TMP_FILE CMakeLists.txt
-
-# CMakeLists.txt & package.xml: Add dependencies if they not exist
+#  package.xml: Add dependencies if they not exist
 DEP_PKGS=("rclcpp_lifecycle" "rclcpp" "pluginlib" "hardware_interface")
 
 for DEP_PKG in "${DEP_PKGS[@]}"; do
-
-  # CMakeLists.txt
-  if `grep -q "find_package(${DEP_PKG} REQUIRED)" CMakeLists.txt`; then
-    echo "'$DEP_PKG' is already dependency in CMakeLists.txt"
-  else
-    append_to_string="find_package(ament_cmake REQUIRED)"
-    sed -i "s/$append_to_string/$append_to_string\\nfind_package(${DEP_PKG} REQUIRED)/g" CMakeLists.txt
-  fi
-
-  # package.xml
   if `grep -q "<depend>${DEP_PKG}</depend>" package.xml`; then
     echo "'$DEP_PKG' is already listed in package.xml"
   else
     append_to_string="<buildtool_depend>ament_cmake<\/buildtool_depend>"
     sed -i "s/$append_to_string/$append_to_string\\n\\n  <depend>${DEP_PKG}<\/depend>/g" package.xml
   fi
-
 done
 
-# CMakeLists.txt & package.xml: Add test dependencies if they not exist
+# package.xml: Add test dependencies if they do not exist
 TEST_DEP_PKGS=("ros2_control_test_assets" "ament_cmake_gmock")
 
 for DEP_PKG in "${TEST_DEP_PKGS[@]}"; do
-
-  # CMakeLists.txt
-  if `grep -q "  find_package(${DEP_PKG} REQUIRED)" CMakeLists.txt`; then
-    echo "'$DEP_PKG' is already listed in CMakeLists.txt"
-  else
-    append_to_string="ament_lint_auto_find_test_dependencies()"
-    sed -i "s/$append_to_string/$append_to_string\\n  find_package(${DEP_PKG} REQUIRED)/g" CMakeLists.txt
-  fi
-
-  # package.xml
   if `grep -q "<test_depend>${DEP_PKG}</test_depend>" package.xml`; then
     echo "'$DEP_PKG' is already listed in package.xml"
   else
