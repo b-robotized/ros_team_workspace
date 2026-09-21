@@ -3,7 +3,6 @@
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -30,20 +29,27 @@ namespace dummy_package_namespace
 class DummyClassName : public hardware_interface::Dummy_Interface_TypeInterface
 {
 public:
+  RCLCPP_SHARED_PTR_DEFINITIONS(DummyClassName)
+
   hardware_interface::CallbackReturn on_init(
-    const hardware_interface::HardwareInfo & info) override;
+    const hardware_interface::HardwareComponentInterfaceParams & info) override;
 
   hardware_interface::CallbackReturn on_configure(
     const rclcpp_lifecycle::State & previous_state) override;
 
-  std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-
-  std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+  hardware_interface::CallbackReturn on_cleanup(
+    const rclcpp_lifecycle::State & previous_state) override;
 
   hardware_interface::CallbackReturn on_activate(
     const rclcpp_lifecycle::State & previous_state) override;
 
   hardware_interface::CallbackReturn on_deactivate(
+    const rclcpp_lifecycle::State & previous_state) override;
+
+  hardware_interface::CallbackReturn on_shutdown(
+    const rclcpp_lifecycle::State & previous_state) override;
+
+  hardware_interface::CallbackReturn on_error(
     const rclcpp_lifecycle::State & previous_state) override;
 
   hardware_interface::return_type read(
@@ -53,8 +59,12 @@ public:
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
 private:
-  std::vector<double> hw_commands_;
-  std::vector<double> hw_states_;
+  // Cache interface names for fast lookup during read/write in the RT loop
+  std::vector<std::string> joint_position_state_names_;
+  std::vector<std::string> joint_position_command_names_;
+
+  // Note: We no longer need manual memory buffers (like hw_states_ or hw_commands_)
+  // because the base SystemInterface now manages the memory for these interfaces natively.
 };
 
 }  // namespace dummy_package_namespace
