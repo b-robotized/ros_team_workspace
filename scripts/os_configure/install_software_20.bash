@@ -109,6 +109,21 @@ sudo apt -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo groupadd docker
 sudo usermod -aG docker "$(whoami)"
 
+# NVIDIA Container Toolkit (needed for `--gpus all`, which rtw docker workspaces use by default)
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#with-apt-ubuntu-debian
+if lspci 2>/dev/null | grep -qi nvidia; then
+  curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+  curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list > /dev/null
+  sudo apt-get update
+  sudo apt -y install nvidia-container-toolkit
+  sudo nvidia-ctk runtime configure --runtime=docker
+  sudo systemctl restart docker
+else
+  echo "No NVIDIA GPU detected, skipping NVIDIA Container Toolkit. Use 'rtw ws create ... --disable-nvidia' for docker workspaces."
+fi
+
 # VirtualBox
 sudo apt install virtualbox dkms virtualbox-guest-utils virtualbox-ext-pack
 
