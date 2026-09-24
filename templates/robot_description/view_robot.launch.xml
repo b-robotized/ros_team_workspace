@@ -41,5 +41,7 @@ Author: Dr. Denis
 
   <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_node"/>
 
-  <node pkg="rviz2" exec="rviz2" name="rviz2" output="both" args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz"/>
+  <node pkg="rviz2" exec="rviz2" name="rviz2" output="both" args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz">
+    <env name="LC_ALL" value="en_US.UTF-8"/>
+  </node>
 </launch>
