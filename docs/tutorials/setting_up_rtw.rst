@@ -45,6 +45,7 @@ Add auto-sourcing of configuration to your ``.bashrc`` file by adding the follow
    if [ -f ~/.ros_team_ws_rc ]; then
        . ~/.ros_team_ws_rc
    fi
+   export PATH="$HOME/.local/bin:$PATH"
 
 Copy ``<PATH TO ros_team_workspace>/templates/.ros_team_ws_rc`` file to your home folder using
 
