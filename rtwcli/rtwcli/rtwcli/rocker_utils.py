@@ -86,7 +86,12 @@ def generate_rocker_flags(
 
     rocker_flags.append("--rtw-tmpfs")
     rocker_flags.append("--rtw-update")
-    rocker_flags.append("--x11")
+
+    display = os.environ.get("DISPLAY")
+    if display and display.lower() != "none":
+        rocker_flags.append("--x11")
+    else:
+        logger.info("WARNING: DISPLAY not set; disabling X11 forwarding.")
 
     # --- DEVICE MOUNTS ---
     if devices:
