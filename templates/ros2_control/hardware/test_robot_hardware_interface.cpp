@@ -17,6 +17,7 @@
 #include <string>
 
 #include "hardware_interface/resource_manager.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "ros2_control_test_assets/components_urdfs.hpp"
 #include "ros2_control_test_assets/descriptions.hpp"
 
@@ -47,11 +48,24 @@ protected:
   }
 
   std::string dummy_file_name_2dof_;
+  rclcpp::Node::SharedPtr node_ = std::make_shared<rclcpp::Node>("test_node");
 };
 
 TEST_F(TestDummyClassName, load_dummy_file_name_2dof)
 {
   auto urdf = ros2_control_test_assets::urdf_head + dummy_file_name_2dof_ +
               ros2_control_test_assets::urdf_tail;
-  ASSERT_NO_THROW(hardware_interface::ResourceManager rm(urdf));
+
+  ASSERT_NO_THROW(
+    hardware_interface::ResourceManager rm(
+      urdf, node_->get_node_clock_interface(), node_->get_node_logging_interface()));
+}
+
+int main(int argc, char ** argv)
+{
+  rclcpp::init(argc, argv);
+  ::testing::InitGoogleTest(&argc, argv);
+  int result = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return result;
 }
