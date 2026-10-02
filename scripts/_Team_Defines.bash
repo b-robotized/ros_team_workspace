@@ -90,6 +90,9 @@ alias setup-rt-kernel="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-rt-kernel.bash
 # Setup RMW
 alias rtw-zenoh-router="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/rtw-zenoh-router.bash
 
+# Setup NoVNC
+alias rtw-novnc="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/rtw-novnc.bash
+
 # Kill all running ROS 2 nodes
 alias ros2_kill="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/environment/ros2_kill.bash
 
