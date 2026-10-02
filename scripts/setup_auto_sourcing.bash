@@ -68,6 +68,7 @@ if ! ( grep -q '\..*\.ros_team_ws_rc' $bashrc_location || grep -q 'source.*\.ros
     echo "    export PATH=${PATH}:${HOME}/.local/bin  # path to local installation of rtwcli"
     echo "    . ~/.ros_team_ws_rc" >> $bashrc_location
     echo "fi" >> $bashrc_location
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $bashrc_location
 fi
 
 notify_user "Done! Please open a new terminal now."
