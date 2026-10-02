@@ -99,8 +99,14 @@ repositories.
      repository ``br_dummy_packages`` on branch ``dummy_demo_pkg``.
 
 .. important::
-   If you don't have nvidia graphics card or you don't want to use nvidia capabilits
-   in the container add ``--disable-nvidia`` flag to the command.
+   Docker workspaces pass ``--gpus all`` to docker by default. This requires the
+   `NVIDIA Container Toolkit <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#with-apt-ubuntu-debian>`_
+   on the host, otherwise the container start fails with
+   ``could not select device driver "" with capabilities: [[gpu]]``.
+   See :ref:`docker-nvidia-support-how-to` for the setup steps.
+
+   If you don't have an nvidia graphics card or you don't want to use nvidia capabilities
+   in the container add the ``--disable-nvidia`` flag to the command.
 
 .. warning::
    When using ``.repos`` files, ``rosdep install`` may fail if the package
