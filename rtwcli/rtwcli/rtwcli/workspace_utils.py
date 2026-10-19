@@ -242,6 +242,7 @@ def get_compile_cmd(
     upstream_ws_abs_path: Union[str, None] = None,
     distro_setup_bash_format: str = "/opt/ros/{distro}/setup.bash",
     upstream_ws_setup_bash_format: str = "{upstream_ws_abs_path}/install/setup.bash",
+    disable_testing: bool = False,
 ) -> List[str]:
     """Return a compile command for the given workspace."""
     if upstream_ws_abs_path:
@@ -250,6 +251,9 @@ def get_compile_cmd(
         )
     else:
         setup_bash_path = distro_setup_bash_format.format(distro=distro)
+    cmake_args = ["-DCMAKE_BUILD_TYPE=RelWithDebInfo"]
+    if disable_testing:
+        cmake_args.append("-DBUILD_TESTING=OFF")
     compile_ws_cmd = [
         "cd",
         ws_path_abs,
@@ -261,7 +265,7 @@ def get_compile_cmd(
         "build",
         "--symlink-install",
         "--cmake-args",
-        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+        *cmake_args,
     ]
     return compile_ws_cmd
 

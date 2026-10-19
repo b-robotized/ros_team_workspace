@@ -121,6 +121,7 @@ class CreateVerbArgs:
     user_override_name: str
     has_upstream_ws: bool = False
     ignore_ws_cmd_error: bool = False
+    disable_testing: bool = False
     additional_apt_packages: List[str] = field(default_factory=list)
     no_base_apt_packages: bool = False
     python_packages: List[str] = field(default_factory=list)
@@ -593,6 +594,12 @@ class CreateVerb(VerbExtension):
             default=False,
         )
         parser.add_argument(
+            "--disable-testing",
+            action="store_true",
+            help="Build the workspace with -DBUILD_TESTING=OFF (skip compiling test targets).",
+            default=False,
+        )
+        parser.add_argument(
             "--hostname",
             type=str,
             help=(
@@ -965,16 +972,29 @@ RUN rm -rf /var/lib/apt/lists/*
                 upstream_ws_abs_path = create_args.upstream_ws_abs_path_in_docker
             else:
                 upstream_ws_abs_path = create_args.upstream_ws_abs_path
-            compile_cmds.append(get_compile_cmd(upstream_ws_abs_path, create_args.ros_distro))
+            compile_cmds.append(
+                get_compile_cmd(
+                    upstream_ws_abs_path,
+                    create_args.ros_distro,
+                    disable_testing=create_args.disable_testing,
+                )
+            )
             compile_cmds.append(
                 get_compile_cmd(
                     ws_abs_path,
                     create_args.ros_distro,
                     upstream_ws_abs_path=upstream_ws_abs_path,
+                    disable_testing=create_args.disable_testing,
                 )
             )
         else:
-            compile_cmds.append(get_compile_cmd(ws_abs_path, create_args.ros_distro))
+            compile_cmds.append(
+                get_compile_cmd(
+                    ws_abs_path,
+                    create_args.ros_distro,
+                    disable_testing=create_args.disable_testing,
+                )
+            )
         return rosdep_cmds + compile_cmds
 
     def execute_ws_cmds(
