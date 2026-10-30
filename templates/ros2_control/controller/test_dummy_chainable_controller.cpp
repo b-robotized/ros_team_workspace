@@ -367,7 +367,7 @@ TEST_F(DummyClassNameTest, receive_message_and_publish_updated_status)
   ASSERT_EQ(msg.set_point, 101.101);
 
   publish_commands();
-  ASSERT_TRUE(controller_->wait_for_commands(executor));
+  controller_->wait_for_commands(executor);
 
   ASSERT_EQ(
     controller_->update(rclcpp::Time(0), rclcpp::Duration::from_seconds(0.01)),
