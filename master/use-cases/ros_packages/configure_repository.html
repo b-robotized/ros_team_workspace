@@ -145,8 +145,11 @@ You should then already see new workflows active.</p>
 <section id="code-formatters-and-linters">
 <h4>Code formatters and linters<a class="headerlink" href="#code-formatters-and-linters" title="Permalink to this heading"></a></h4>
 <p>For executing formatters, <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> program is used and automatically setup.
-To use it in a cloned repository (if there is <code class="docutils literal notranslate"><span class="pre">.pre-commit-conifg.yaml</span></code> file), execute once <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code>.
+To use it in a cloned repository (if there is <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file), execute once <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code>.
 Clang-Format is used as the main code formatting program.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ci-format</span></code> workflow runs all <em>pre-commit</em> hooks, including the <code class="docutils literal notranslate"><span class="pre">ament_*</span></code> linters, in a ROS container.
+It uses the reusable workflow from <a class="reference external" href="https://github.com/ros-controls/ros2_control_ci">ros2_control_ci</a>.
+The <code class="docutils literal notranslate"><span class="pre">update-pre-commit</span></code> workflow runs <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">autoupdate</span></code> monthly and opens a draft PR with the changes.</p>
 </section>
 <section id="building-packages">
 <h4>Building packages<a class="headerlink" href="#building-packages" title="Permalink to this heading"></a></h4>
