@@ -41,6 +41,19 @@ It uses the reusable workflow from `ros2_control_ci <https://github.com/ros-cont
 The ``update-pre-commit`` workflow runs ``pre-commit autoupdate`` monthly and opens a draft PR with the changes.
 
 
+Docker images
+,,,,,,,,,,,,,,
+``setup-docker-publish-ghcr`` adds a workflow that builds a Docker image and publishes it to the GitHub Container Registry (``ghcr.io``).
+Execute it from the main folder of your repository.
+
+.. code-block:: bash
+
+   setup-docker-publish-ghcr ["dockerfile_path"]
+
+Pull requests only build the image.
+A git tag or a manual run also pushes the image, with the tag or the ``version`` input as image tag.
+After the first push, set the package visibility in the GitHub package settings.
+
 Building packages
 ,,,,,,,,,,,,,,,,,,
 This script creates three stages of build configuration for each ROS 2 version.
