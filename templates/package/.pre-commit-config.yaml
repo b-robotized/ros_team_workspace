@@ -31,6 +31,7 @@ repos:
       - id: check-xml
         exclude: '^templates/robot_description/(robot_srdf_examples.xacro|robot.urdf.xacro)$'
       - id: check-yaml
+        args: ["--allow-multiple-documents"]
       - id: debug-statements
       - id: destroyed-symlinks
       - id: detect-private-key
@@ -81,8 +82,7 @@ repos:
       - id: ament_cppcheck
         name: ament_cppcheck
         description: Static code analysis of C/C++ files.
-        stages: [pre-commit]
-        entry: ament_cppcheck
+        entry: env AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1 ament_cppcheck
         language: system
         files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
 
@@ -92,7 +92,6 @@ repos:
       - id: ament_cpplint
         name: ament_cpplint
         description: Static code analysis of C/C++ files.
-        stages: [pre-commit]
         entry: ament_cpplint
         language: system
         files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
@@ -104,7 +103,6 @@ repos:
       - id: ament_lint_cmake
         name: ament_lint_cmake
         description: Check format of CMakeLists.txt files.
-        stages: [pre-commit]
         entry: ament_lint_cmake
         language: system
         files: CMakeLists\.txt$
@@ -115,7 +113,6 @@ repos:
       - id: ament_copyright
         name: ament_copyright
         description: Check if copyright notice is available in all files.
-        stages: [pre-commit]
         entry: ament_copyright
         language: system
 
@@ -147,8 +144,8 @@ repos:
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.39.0
     hooks:
-      # - id: check-github-workflows
-      #   args: ["--verbose"]
+      - id: check-github-workflows
+        args: ["--verbose"]
       - id: check-github-actions
         args: ["--verbose"]
       - id: check-dependabot

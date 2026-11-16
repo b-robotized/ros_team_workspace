@@ -1,23 +1,22 @@
-# This is a format job. Pre-commit has a first-party GitHub action, so we use
-# that: https://github.com/pre-commit/action
-
+# The pre-commit configuration is in .pre-commit-config.yaml.
+# The reusable workflow runs pre-commit in a ROS container, so the ament hooks run too.
 name: Format
 
 on:
   workflow_dispatch:
   pull_request:
+    branches:
+      - $branch$
+  push:
+    branches:
+      - $branch$
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   pre-commit:
-    name: Format
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4.4.0
-      with:
-        python-version: '3.10'
-    - name: Install system hooks
-      run: sudo apt install -qq clang-format-14 cppcheck
-    - uses: pre-commit/action@v3.0.0
-      with:
-        extra_args: --all-files --hook-stage manual
+    uses: ros-controls/ros2_control_ci/.github/workflows/reusable-pre-commit.yml@master
+    with:
+      ros_distro: $ros_distro$
