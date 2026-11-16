@@ -33,8 +33,12 @@ Details about CI setup and created workflows
 Code formatters and linters
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 For executing formatters, ``pre-commit`` program is used and automatically setup.
-To use it in a cloned repository (if there is ``.pre-commit-conifg.yaml`` file), execute once ``pre-commit install``.
+To use it in a cloned repository (if there is ``.pre-commit-config.yaml`` file), execute once ``pre-commit install``.
 Clang-Format is used as the main code formatting program.
+
+The ``ci-format`` workflow runs all *pre-commit* hooks, including the ``ament_*`` linters, in a ROS container.
+It uses the reusable workflow from `ros2_control_ci <https://github.com/ros-controls/ros2_control_ci>`_.
+The ``update-pre-commit`` workflow runs ``pre-commit autoupdate`` monthly and opens a draft PR with the changes.
 
 
 Building packages

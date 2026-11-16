@@ -37,16 +37,9 @@ if [ -z "$3" ]; then
   package_names="<none>"
 fi
 
-read -p "${RAW_TERMINAL_COLOR_BROWN}Are you setting CI for private repository?${RAW_TERMINAL_COLOR_NC} (yes/no) [no]: " private
-private=${private:="no"}
-
-CI_FORMAT="ci-format"
-if  [[ "$private" == "yes" ]]; then
-  CI_FORMAT="ci-format-private"
-fi
-
 # File-suffix definitions
-CI_ROS_LINT="ci-ros-lint"
+CI_FORMAT="ci-format"
+CI_UPDATE_PRE_COMMIT="update-pre-commit"
 CI_COVERAGE="ci-coverage-build"
 CI_REUSABLE_INDUSTRIAL_CI="reusable-industrial-ci-with-cache"
 CI_REUSABLE_ROS_TOOLING="reusable-ros-tooling-source-build"
@@ -64,7 +57,7 @@ CI_RHEL_BINARY_BUILD="rhel-binary-build"
 # Lists for different generation stages
 CI_GENERAL_FILES=(
   $CI_FORMAT
-  $CI_ROS_LINT
+  $CI_UPDATE_PRE_COMMIT
   $CI_COVERAGE
   $CI_REUSABLE_INDUSTRIAL_CI
   $CI_REUSABLE_ROS_TOOLING
