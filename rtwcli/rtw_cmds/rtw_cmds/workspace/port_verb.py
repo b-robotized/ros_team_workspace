@@ -171,7 +171,7 @@ def port_workspace_name_completer(**kwargs) -> List[str]:
     workspaces = extract_workspaces_from_bash_script(ROS_TEAM_WS_RC_PATH)
     if not workspaces:
         return ["NO_WORKSPACES_FOUND"]
-    return [ws_name for ws_name in workspaces.keys()]
+    return [*workspaces.keys()]
 
 
 def print_port_stats(ported: List[str], to_be_ported: List[str]) -> None:
