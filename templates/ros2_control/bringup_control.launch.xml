@@ -89,6 +89,8 @@ Authors: Riyan Jose, Manuel Muth, Dr. Denis
         args="$(var inactive_robot_controller) --inactive -c $(var controller_manager_name) -p $(var controllers_file_path)"/>
 
   <node if="$(var start_rviz)" pkg="rviz2" exec="rviz2" name="rviz2" output="log"
-        args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz"/>
+        args="-d $(find-pkg-share $(var description_package))/rviz/$(var description_file).rviz">
+    <env name="LC_ALL" value="en_US.UTF-8"/>
+  </node>
 
 </launch>
