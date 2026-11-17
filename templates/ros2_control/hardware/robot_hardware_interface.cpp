@@ -22,9 +22,9 @@
 namespace dummy_package_namespace
 {
 hardware_interface::CallbackReturn DummyClassName::on_init(
-  const hardware_interface::HardwareComponentInterfaceParams & info)
+  const hardware_interface::HardwareComponentInterfaceParams & params)
 {
-  if (hardware_interface::Dummy_Interface_TypeInterface::on_init(info) != CallbackReturn::SUCCESS)
+  if (hardware_interface::Dummy_Interface_TypeInterface::on_init(params) != CallbackReturn::SUCCESS)
   {
     return CallbackReturn::ERROR;
   }
