@@ -30,7 +30,7 @@ RUN locale
 RUN apt update -y && apt upgrade -y
 
 # Install basic utilities
-RUN apt update && apt install -y git git-lfs nano sudo tmux tree vim iputils-ping wget bash-completion pip trash-cli
+RUN apt update && apt install -y git git-lfs nano sudo tmux tree vim iputils-ping wget bash-completion pip trash-cli xvfb x11vnc fluxbox novnc websockify x11-apps
 RUN pip install pre-commit
 
 # install ROS:ROS_DUMMY_VERSION dependencies
