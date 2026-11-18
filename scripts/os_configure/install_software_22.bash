@@ -149,16 +149,16 @@ pip3 install --upgrade pip
 
 # setup bash
 cat "$OS_CONFIGURE_TEMPLATES/extend_to_bashrc" >> "$HOME/.bashrc"
-cat "$OS_CONFIGURE_TEMPLATES/extend_to_bash_aliases" >> "$HOME/.bash_aliases"
 cat "$OS_CONFIGURE_TEMPLATES/extend_to_bash_commands" >> "$HOME/.bash_commands"
 
 # setup git
-commit_template_path="$HOME/.config/git"
-template_name="commit-template.txt"
-mkdir -p "$commit_template_path"
-cp "$OS_CONFIGURE_TEMPLATES/$template_name" "$commit_template_path/."
-git config --global core.editor "vim"
-git config --global commit.template "$commit_template_path/$template_name"
+mkdir -p "$HOME/.config/git"
+cp "$OS_CONFIGURE_TEMPLATES/gitconfig" "$HOME/.config/git/rtw.gitconfig"
+cp -n "$OS_CONFIGURE_TEMPLATES/gitignore" "$HOME/.config/git/ignore"
+if ! grep -qs 'path = ~/.config/git/rtw.gitconfig' "$HOME/.gitconfig"; then
+  printf '[include]\n\tpath = ~/.config/git/rtw.gitconfig\n\n' | cat - "$HOME/.gitconfig" 2>/dev/null > "$HOME/.gitconfig.rtw"
+  mv "$HOME/.gitconfig.rtw" "$HOME/.gitconfig"
+fi
 
 ### NONE DEVELOPMENT RELATED TOOLS ###
 
