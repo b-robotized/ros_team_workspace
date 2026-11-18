@@ -55,46 +55,40 @@ Make sure docker is installed and it's working correctly. For instructions on ho
 
 How to setup a container with nvidia support
 """"""""""""""""""""""""""""""""""""""""""""""
-Install nvidia-docker
-----------------------
-**NOTE**: If you already have installed nvidia-docker, you can skip this and go right to the next section.
+Install the NVIDIA Container Toolkit
+--------------------------------------
+**NOTE**: If you already have the NVIDIA Container Toolkit installed (``nvidia-ctk --version`` works and ``docker info`` lists the ``nvidia`` runtime), skip to the next section.
 
-1. You then have to install the NVIDIA Container Toolkit for docker as described `in official documentation <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker>`_.
-   For Ubuntu or Debian this can be done as follows (the command detects your distribution from ``/etc/os-release`` automatically):
+**NOTE**: The ``rtw`` install scripts under ``scripts/os_configure/install_software_*.bash`` do this automatically when an NVIDIA GPU is detected.
 
-   .. code-block:: bash
-
-      distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-         && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-         && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
-            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-
-   You then have to update your package list to include the new added nvidia-docker2.
+1. Install the NVIDIA Container Toolkit as described `in the official toolkit install guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#with-apt-ubuntu-debian>`_.
+   For Ubuntu or Debian:
 
    .. code-block:: bash
 
+      curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+      curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+         sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+         sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
       sudo apt-get update
+      sudo apt-get install -y nvidia-container-toolkit
 
-   And install the the NVIDIA Container Toolkit:
+   **NOTE**: the older ``nvidia-docker2`` package is deprecated and must not be used anymore.
 
-   .. code-block:: bash
-
-      sudo apt-get install -y nvidia-docker2
-
-   After the installation finished, you need to restart the Docker daemon:
+2. Register the nvidia runtime with docker and restart the daemon:
 
    .. code-block:: bash
 
-      sudo service docker restart
+      sudo nvidia-ctk runtime configure --runtime=docker
+      sudo systemctl restart docker
 
-   At this point you can verify that everything works as intended by running:
+3. Verify that everything works as intended by running:
 
    .. code-block:: bash
 
-      docker run --rm --gpus all nvidia/cuda:11.7.1-base-ubuntu22.04 nvidia-smi
+      docker run --rm --gpus all ubuntu:22.04 nvidia-smi
 
-  **NOTE**: if you get an error executing above docker command make sure that you have ``Nvidia Driver version 515`` or above installed!
+  **NOTE**: if you get ``could not select device driver "" with capabilities: [[gpu]]`` the toolkit is not installed or docker was not restarted. If ``nvidia-smi`` itself fails, check your driver installation.
 
   Which should print something like:
 
