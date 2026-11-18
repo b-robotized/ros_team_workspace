@@ -64,6 +64,8 @@ alias setup-repository-ci="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-repository-c
 
 alias setup-formatting="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-formatting.bash
 
+alias setup-docker-publish-ghcr="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-docker-publish-ghcr.bash
+
 alias setup-ros-workspace="$RosTeamWS_FRAMEWORK_SCRIPTS_PATH"/setup-ros-workspace.bash
 
 setup-ros-workspace () {
