@@ -1,0 +1,15 @@
+# All roles. DISTRO is replaced by jazzy (noble) or lyrical (resolute).
+ros-DISTRO-desktop
+ros-DISTRO-plotjuggler
+ros-DISTRO-forward-command-controller
+ros-DISTRO-joint-state-broadcaster
+ros-DISTRO-joint-trajectory-controller
+ros-DISTRO-xacro
+ros-DISTRO-ros2-control
+ros-DISTRO-ros2-controllers
+ros-DISTRO-gz-ros2-control
+ros-DISTRO-geometric-shapes
+ros-DISTRO-moveit-msgs
+ros-DISTRO-moveit-resources
+ros-DISTRO-srdfdom
+ros-DISTRO-warehouse-ros

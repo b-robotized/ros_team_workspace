@@ -1,0 +1,11 @@
+# One file per device. No secrets.
+RTW_ROLE=demo                  # basic, office, demo
+RTW_TARGET_USERS=(b-demo)      # existing local accounts
+RTW_GRANT_SUDO=1
+RTW_GRANT_DOCKER=1             # docker group gives root access
+RTW_GIT_REF=master             # RTW branch or tag
+RTW_PRO_TOOLS=0
+RTW_INSTALL_ROLLING=0
+RTW_KDE_BACKPORTS=0            # must stay 0 on KDE neon
+RTW_INSTALL_BRANDING=0
+RTW_REPLACE_LIBREOFFICE=0

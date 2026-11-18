@@ -1,0 +1,8 @@
+# Roles basic and office.
+gimp
+meshlab
+inkscape
+pdfposter
+recordmydesktop
+peek
+rdesktop
