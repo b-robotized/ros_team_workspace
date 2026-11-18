@@ -1,0 +1,43 @@
+# Team defaults. Include this file at the top of ~/.gitconfig:
+#   [include]
+#       path = ~/.config/git/rtw.gitconfig
+# Settings below the include in ~/.gitconfig override these values.
+
+[includeIf "gitdir:~/workspace/"]
+	path = ~/.gituser-b-robotized
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[url "ssh://git@gitlab.com/"]
+	insteadOf = https://gitlab.com/
+[url "ssh://git@code.b-robotized.com/"]
+	insteadOf = https://code.b-robotized.com/
+
+[core]
+	editor = vim
+[push]
+	default = simple
+[pull]
+	rebase = true
+[init]
+	defaultBranch = master
+[help]
+	autocorrect = 1
+[merge]
+	tool = kompare
+[diff]
+	submodule = log
+[credential]
+	helper = cache --timeout=600
+[commit]
+	gpgsign = false
+[alias]
+	s = status
+	cs = commit --signoff
+	clean-gone = ! "git fetch --all -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D"
+	graph = ! "git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(yellow)%d%C(reset) %s %C(dim white)- %an%C(reset)' --all"
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
