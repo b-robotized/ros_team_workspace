@@ -21,7 +21,13 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction
 from launch.event_handlers import OnProcessExit, OnProcessStart
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    PythonExpression,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -147,8 +153,20 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         output="both",
-        parameters=[robot_description, robot_controllers],
+        parameters=[
+            robot_description,
+            robot_controllers,
+            {
+                "overruns.manage": PythonExpression(
+                    ["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]
+                ),
+                "overruns.print_warnings": PythonExpression(
+                    ["False if '", use_mock, "' in ('true', 'True', 'TRUE', '1') else True"]
+                ),
+            },
+        ],
     )
+
     robot_state_pub_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
