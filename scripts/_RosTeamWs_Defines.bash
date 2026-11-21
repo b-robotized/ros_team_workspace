@@ -129,7 +129,15 @@ function RosTeamWS_setup_aliases {
   alias create-ssh-key="ssh-keygen -t ed25519"
 
   alias stop_kvm="sudo systemctl stop libvirtd && sudo modprobe -r kvm_intel kvm_amd kvm"
-  alias start_kvm="sudo modprobe kvm && sudo modprobe kvm_intel && sudo modprobe kvm_amd && sudo systemctl start libvirtd"
+  function start_kvm {
+    local module
+    case "$(grep -m1 -o 'GenuineIntel\|AuthenticAMD' /proc/cpuinfo)" in
+      GenuineIntel) module=kvm_intel ;;
+      AuthenticAMD) module=kvm_amd ;;
+      *) echo "start_kvm: unknown CPU vendor" >&2; return 1 ;;
+    esac
+    sudo modprobe "$module" && sudo systemctl start libvirtd
+  }
   alias start_vbox="sudo systemctl start vboxdrv.service"
   alias stop_vbox="sudo systemctl stop vboxdrv.service"
   alias start_docker="sudo systemctl start docker && sudo systemctl start docker.socket"
