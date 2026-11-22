@@ -6,13 +6,6 @@
 [includeIf "gitdir:~/workspace/"]
 	path = ~/.gituser-b-robotized
 
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
-[url "ssh://git@gitlab.com/"]
-	insteadOf = https://gitlab.com/
-[url "ssh://git@code.b-robotized.com/"]
-	insteadOf = https://code.b-robotized.com/
-
 [core]
 	editor = vim
 [push]

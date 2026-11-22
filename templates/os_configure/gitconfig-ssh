@@ -1,0 +1,11 @@
+# Rewrites HTTPS URLs to SSH. Only for personal accounts with an SSH key.
+# Include it after rtw.gitconfig:
+#   [include]
+#       path = ~/.config/git/rtw-ssh.gitconfig
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[url "ssh://git@gitlab.com/"]
+	insteadOf = https://gitlab.com/
+[url "ssh://git@code.b-robotized.com/"]
+	insteadOf = https://code.b-robotized.com/

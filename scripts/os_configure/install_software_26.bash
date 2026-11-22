@@ -163,9 +163,10 @@ cat "$OS_CONFIGURE_TEMPLATES/extend_to_bash_commands" >> "$HOME/.bash_commands"
 # setup git
 mkdir -p "$HOME/.config/git"
 cp "$OS_CONFIGURE_TEMPLATES/gitconfig" "$HOME/.config/git/rtw.gitconfig"
+cp "$OS_CONFIGURE_TEMPLATES/gitconfig-ssh" "$HOME/.config/git/rtw-ssh.gitconfig"
 cp -n "$OS_CONFIGURE_TEMPLATES/gitignore" "$HOME/.config/git/ignore"
 if ! grep -qs 'path = ~/.config/git/rtw.gitconfig' "$HOME/.gitconfig"; then
-  printf '[include]\n\tpath = ~/.config/git/rtw.gitconfig\n\n' | cat - "$HOME/.gitconfig" 2>/dev/null > "$HOME/.gitconfig.rtw"
+  printf '[include]\n\tpath = ~/.config/git/rtw.gitconfig\n\tpath = ~/.config/git/rtw-ssh.gitconfig\n\n' | cat - "$HOME/.gitconfig" 2>/dev/null > "$HOME/.gitconfig.rtw"
   mv "$HOME/.gitconfig.rtw" "$HOME/.gitconfig"
 fi
 
