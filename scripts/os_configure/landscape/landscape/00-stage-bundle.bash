@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Copies the attached bundle to /opt/rtw-provisioning/releases/<sha256> and points "current" to it.
+# Copies the attached bundle to /opt/rtw-provisioning/releases/<sha256>, selects the device
+# configuration by hostname and points "current" to it.
 set -Eeuo pipefail
 [[ $EUID == 0 ]] || { echo 'Run as root.' >&2; exit 2; }
 : "${LANDSCAPE_ATTACHMENTS:?Attach rtw-provisioning.tar.gz to this script.}"
@@ -33,7 +34,10 @@ with tarfile.open(sys.argv[1], 'r:gz') as archive:
             raise ValueError(f'Unsafe archive member: {member.name}')
     archive.extractall(sys.argv[2], filter='data')
 EXTRACT
-[[ -f "$staging/bin/common.bash" && -f "$staging/device.conf" ]] || { echo 'Incomplete bundle.' >&2; exit 2; }
+[[ -f "$staging/bin/common.bash" ]] || { echo 'Incomplete bundle.' >&2; exit 2; }
+host=$(hostname -s)
+[[ -f "$staging/devices/$host.conf" ]] || { echo "No device configuration for $host in the bundle." >&2; exit 2; }
+cp "$staging/devices/$host.conf" "$staging/device.conf"
 chown -R root:root "$staging"
 chmod -R u=rwX,go=rX "$staging"
 if [[ ! -d "$base/releases/$release" ]]; then mv "$staging" "$base/releases/$release"; fi

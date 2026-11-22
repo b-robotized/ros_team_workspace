@@ -59,9 +59,23 @@ gh completion -s bash > "$HOME/.local/share/bash-completion/completions/gh"
 
 log 'Git'
 install -D -m 0644 "$templates/gitconfig" "$HOME/.config/git/rtw.gitconfig"
-managed_block "$HOME/.gitconfig" top "[include]
+git_include="[include]
 	path = ~/.config/git/rtw.gitconfig"
+if [[ "$RTW_ROLE" != demo ]]; then
+  install -D -m 0644 "$templates/gitconfig-ssh" "$HOME/.config/git/rtw-ssh.gitconfig"
+  git_include="$git_include
+	path = ~/.config/git/rtw-ssh.gitconfig"
+fi
+managed_block "$HOME/.gitconfig" top "$git_include"
 managed_block "$HOME/.config/git/ignore" end "$(cat "$templates/gitignore")"
+
+log 'Desktop'
+kwriteconfig6 --file kdeglobals --group KDE --key AutomaticLookAndFeel true
+if [[ -d /usr/share/br-ci-package-computer ]]; then
+  mkdir -p "$HOME/.config/autostart"
+  printf '[Desktop Entry]\nType=Application\nName=b»robotized desktop\nExec=%s\nX-KDE-autostart-phase=2\n' \
+    "$RTW_BUNDLE_DIR/bin/desktop-branding.bash" > "$HOME/.config/autostart/rtw-desktop-branding.desktop"
+fi
 
 log 'VS Code extensions'
 while IFS= read -r extension || [[ -n "$extension" ]]; do
