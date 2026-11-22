@@ -71,11 +71,7 @@ managed_block "$HOME/.config/git/ignore" end "$(cat "$templates/gitignore")"
 
 log 'Desktop'
 kwriteconfig6 --file kdeglobals --group KDE --key AutomaticLookAndFeel true
-if [[ -d /usr/share/br-ci-package-computer ]]; then
-  mkdir -p "$HOME/.config/autostart"
-  printf '[Desktop Entry]\nType=Application\nName=b»robotized desktop\nExec=%s\nX-KDE-autostart-phase=2\n' \
-    "$RTW_BUNDLE_DIR/bin/desktop-branding.bash" > "$HOME/.config/autostart/rtw-desktop-branding.desktop"
-fi
+rm -f "$HOME/.config/autostart/rtw-desktop-branding.desktop"
 
 log 'VS Code extensions'
 while IFS= read -r extension || [[ -n "$extension" ]]; do

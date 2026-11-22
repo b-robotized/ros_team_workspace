@@ -21,6 +21,7 @@ kompare
 filelight
 tealdeer
 tree
+imagemagick
 pre-commit
 tmux
 keysmith

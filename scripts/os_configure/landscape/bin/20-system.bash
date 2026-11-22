@@ -84,26 +84,26 @@ if [[ "$RTW_ROLE" == demo ]]; then
 fi
 
 if [[ "$RTW_INSTALL_BRANDING" == 1 ]]; then
-  log 'Branding'
-  curl -fL https://cloud.b-robotized.com/s/447BJD7tXrd3nDA/download -o "$work/branding.zip"
-  python3 - "$work/branding.zip" <<'BRANDING'
-import pathlib, sys, zipfile
-out = pathlib.Path('/usr/share/br-ci-package-computer')
-out.mkdir(parents=True, exist_ok=True)
-with zipfile.ZipFile(sys.argv[1]) as z:
-    for item in z.infolist():
-        p = pathlib.PurePosixPath(item.filename)
-        if not item.is_dir() and len(p.parts) == 1:
-            dest = out / p.name
-            if dest.is_symlink():
-                raise RuntimeError(f'Refusing symlink: {dest}')
-            dest.write_bytes(z.read(item))
-            dest.chmod(0o644)
-BRANDING
-  sddm_theme=$(sed -n 's/^Current=//p' /usr/lib/sddm/sddm.conf.d/*.conf /etc/sddm.conf /etc/sddm.conf.d/*.conf 2>/dev/null | tail -1) || true
-  if [[ -n "$sddm_theme" && -d "/usr/share/sddm/themes/$sddm_theme" ]]; then
-    printf '[General]\nbackground=%s\n' '/usr/share/br-ci-package-computer/Primary - SDDM Background blur - rgb.png' \
-      > "/usr/share/sddm/themes/$sddm_theme/theme.conf.user"
+  log 'b»robotized KDE design'
+  release=https://code.b-robotized.com/api/v4/projects/b_public%2Finfra%2Fb_kde_design/releases/permalink/latest
+  deb_url=$(curl -fsSL "$release" | python3 -c '
+import json, sys
+print(next(l["url"] for l in json.load(sys.stdin)["assets"]["links"] if l["url"].endswith(".deb")))')
+  curl -fsSL "$deb_url" -o "$work/b-robotized-kde-design.deb"
+  apt-get -o DPkg::Lock::Timeout=300 install -y "$work/b-robotized-kde-design.deb"
+  grep -ls br-ci-package-computer /usr/share/sddm/themes/*/theme.conf.user | xargs -r rm -f
+fi
+
+if [[ -n "$RTW_ADMIN_USER" ]] && id "$RTW_ADMIN_USER" >/dev/null 2>&1; then
+  log "Admin account $RTW_ADMIN_USER"
+  usermod -c "$RTW_ADMIN_NAME" "$RTW_ADMIN_USER"
+  logo=/usr/share/icons/hicolor/scalable/apps/b-robotized.svg
+  if [[ -f "$logo" ]] && command -v magick >/dev/null; then
+    picture=/var/lib/AccountsService/icons/$RTW_ADMIN_USER.png
+    install -d -m 0775 /var/lib/AccountsService/icons
+    magick -background none -density 600 "$logo" -resize 256x256 "$picture"
+    busctl call org.freedesktop.Accounts "/org/freedesktop/Accounts/User$(id -u "$RTW_ADMIN_USER")" \
+      org.freedesktop.Accounts.User SetIconFile s "$picture"
   fi
 fi
 
