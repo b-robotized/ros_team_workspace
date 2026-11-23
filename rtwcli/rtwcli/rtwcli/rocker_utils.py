@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import glob
 import grp
+import os
+import shlex
+import shutil
+import sys
 from typing import List, Union
 
 from rtwcli import logger
@@ -49,17 +53,14 @@ def generate_rocker_flags(
         rocker_flags.extend(["-e", "__GLX_VENDOR_LIBRARY_NAME=nvidia"])
         rocker_flags.extend(["-e", "__NV_PRIME_RENDER_OFFLOAD=1"])
     if get_display_manager() == DISPLAY_MANAGER_WAYLAND:
-        waylad_display = os.environ.get("WAYLAND_DISPLAY", None)
-        if not waylad_display:
-            raise RuntimeError("WAYLAND_DISPLAY is not set.")
-        rocker_flags.extend(["-e", "XDG_RUNTIME_DIR=/tmp"])
-        rocker_flags.extend(["-e", f"WAYLAND_DISPLAY={waylad_display}"])
-        rocker_flags.extend(
-            [
-                "--volume",
-                f"{os.environ['XDG_RUNTIME_DIR']}/{waylad_display}:/tmp/{waylad_display}",
-            ]
-        )
+        wayland_socket = find_wayland_socket()
+        if wayland_socket:
+            wayland_display = os.path.basename(wayland_socket)
+            rocker_flags.extend(["-e", "XDG_RUNTIME_DIR=/tmp"])
+            rocker_flags.extend(["-e", f"WAYLAND_DISPLAY={wayland_display}"])
+            rocker_flags.extend(["--volume", f"{wayland_socket}:/tmp/{wayland_display}"])
+        else:
+            logger.warning("No Wayland socket of this user found; disabling Wayland forwarding.")
 
     rocker_flags.extend(["--hostname", hostname])
     rocker_flags.extend(["--name", container_name])
@@ -149,8 +150,49 @@ def generate_rocker_flags(
     return rocker_flags
 
 
+def find_wayland_socket() -> Union[str, None]:
+    """
+    Return the path of the Wayland socket of this user, or None.
+
+    Uses WAYLAND_DISPLAY and XDG_RUNTIME_DIR if set. Without them (e.g. in an SSH session), uses the
+    first socket 'wayland-<n>' in /run/user/<uid> (the socket of the graphical session).
+    """
+    runtime_dir = os.environ.get("XDG_RUNTIME_DIR") or f"/run/user/{os.getuid()}"
+    wayland_display = os.environ.get("WAYLAND_DISPLAY")
+    if wayland_display:
+        socket = (
+            wayland_display
+            if os.path.isabs(wayland_display)
+            else os.path.join(runtime_dir, wayland_display)
+        )
+        return socket if os.path.exists(socket) else None
+    sockets = sorted(
+        s for s in glob.glob(os.path.join(runtime_dir, "wayland-*")) if not s.endswith(".lock")
+    )
+    if sockets:
+        logger.info(f"WAYLAND_DISPLAY is not set; using the Wayland socket '{sockets[0]}'.")
+        return sockets[0]
+    return None
+
+
+def get_rocker_executable() -> str:
+    """Return rocker from PATH, else rocker next to the Python interpreter of rtw (its venv)."""
+    rocker = shutil.which("rocker")
+    if rocker:
+        return rocker
+    venv_rocker = os.path.join(os.path.dirname(sys.executable), "rocker")
+    if os.access(venv_rocker, os.X_OK):
+        return venv_rocker
+    raise RuntimeError("rocker not found in PATH or in the Python environment of rtw.")
+
+
 def execute_rocker_cmd(rocker_flags: List[str], rocker_base_image_name: str) -> bool:
-    rocker_cmd = ["rocker"] + rocker_flags + [rocker_base_image_name]
+    rocker_cmd = [get_rocker_executable()] + rocker_flags + [rocker_base_image_name]
+    if not sys.stdin.isatty() and shutil.which("script"):
+        # rocker '--mode interactive' runs 'docker run -it', which needs a terminal.
+        # Without one (e.g. 'ssh host rtw ...'), 'script' gives rocker a pseudo-terminal.
+        logger.info("No terminal on stdin; running rocker in a pseudo-terminal of 'script'.")
+        rocker_cmd = ["script", "-qfec", shlex.join(rocker_cmd), "/dev/null"]
     rocker_cmd_str = " ".join(rocker_cmd)
     logger.info(f"Executing rocker command '{rocker_cmd_str}'")
     return run_command(rocker_cmd)
