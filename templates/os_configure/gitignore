@@ -1,0 +1,9 @@
+.kdev4/*
+*.kdev4
+.vscode/
+__pycache__
+*.pyc
+.venv/*
+.rtw_docker_defines/*
+*.egg-info
+**/.claude/settings.local.json

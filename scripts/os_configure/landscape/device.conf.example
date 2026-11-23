@@ -1,0 +1,17 @@
+# One file per device. No secrets.
+RTW_ROLE=demo                  # basic, office, demo
+RTW_TARGET_USERS=(b-demo)      # existing local accounts
+RTW_GRANT_SUDO=1
+RTW_GRANT_DOCKER=1             # docker group gives root access
+RTW_GIT_REF=master             # RTW branch or tag
+RTW_PRO_TOOLS=0
+RTW_INSTALL_ROLLING=0
+RTW_KDE_BACKPORTS=0            # must stay 0 on KDE neon
+RTW_INSTALL_BRANDING=0
+RTW_REPLACE_LIBREOFFICE=0
+RTW_CTRLD_BOX_HOST=              # host number in 10.28.28, 192.168.28, 192.168.1, 10.50.50 (empty: no profile)
+RTW_CTRLD_BOX_MAC=               # MAC of the internal network card (empty: connect by hand)
+RTW_ADMIN_USER=                  # admin account to name (empty: not changed)
+RTW_ADMIN_NAME=                  # display name of the admin account
+RTW_TIMEZONE=                    # e.g. Europe/Berlin (empty: not changed)
+RTW_FORMATS=                     # regional formats, e.g. de_DE.UTF-8; language stays en_US

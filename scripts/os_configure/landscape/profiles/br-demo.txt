@@ -1,0 +1,2 @@
+# Role demo: shared demo and development PCs. Precompiled Ubuntu realtime kernel.
+linux-realtime

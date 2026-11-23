@@ -1,0 +1,22 @@
+# Optional, any role.
+kleopatra
+scdaemon
+pass
+network-manager-openvpn
+network-manager-vpnc
+network-manager-ssh
+network-manager-openconnect
+krdc
+language-pack-de
+language-pack-de-base
+language-pack-kde-de
+aspell-de
+hunspell-de-de
+hyphen-de
+wogerman
+language-pack-hr
+language-pack-hr-base
+language-pack-kde-hr
+aspell-hr
+hunspell-hr
+hyphen-hr

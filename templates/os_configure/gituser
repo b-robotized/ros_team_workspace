@@ -1,0 +1,5 @@
+# Copy to ~/.gituser-b-robotized and fill in. Used for repositories under ~/workspace/.
+[user]
+	name = <First Last>
+	email = <first.last>@b-robotized.com
+#	signingkey = <GPG or SSH key ID>

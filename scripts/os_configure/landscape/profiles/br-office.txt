@@ -1,0 +1,24 @@
+# Role office.
+nextcloud-desktop
+kdesdk-scripts
+dolphin-nextcloud
+wireshark
+nethogs
+nload
+net-tools
+valgrind
+kcachegrind
+heaptrack-gui
+linux-tools-generic
+flac
+solaar
+lttng-tools
+lttng-modules-dkms
+liblttng-ust-dev
+python3-babeltrace
+python3-lttng
+python3-lttngust
+kontact
+korganizer
+kmail
+kaddressbook
