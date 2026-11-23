@@ -82,6 +82,12 @@ without a picture the b»robotized picture. Phase 30 turns on automatic light
 and dark theme: Plasma follows the day and night times of the computer
 location.
 
+Phase 20 also sets the time zone (`RTW_TIMEZONE`) and the regional formats
+(`RTW_FORMATS`, language stays English) and installs the system autostart
+`rtw-desktop-defaults`. It runs once per user at login, and again when the
+system locale changes: regional formats, team holidays and team time zones in
+the Plasma clock.
+
 ## Git defaults
 
 Phase 30 adds `templates/os_configure/gitconfig` as `~/.config/git/rtw.gitconfig`

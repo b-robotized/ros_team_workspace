@@ -85,6 +85,23 @@ if [[ "$RTW_INSTALL_BRANDING" == 1 ]]; then
   systemctl enable --now rtw-kde-design-update.timer
 fi
 
+if [[ -n "$RTW_TIMEZONE" ]]; then
+  log "Time zone $RTW_TIMEZONE"
+  timedatectl set-timezone "$RTW_TIMEZONE"
+fi
+if [[ -n "$RTW_FORMATS" ]]; then
+  log "Regional formats $RTW_FORMATS"
+  locale-gen en_US.UTF-8 "$RTW_FORMATS"
+  update-locale LANG=en_US.UTF-8 LC_NUMERIC="$RTW_FORMATS" LC_TIME="$RTW_FORMATS" LC_MONETARY="$RTW_FORMATS" \
+    LC_PAPER="$RTW_FORMATS" LC_NAME="$RTW_FORMATS" LC_ADDRESS="$RTW_FORMATS" LC_TELEPHONE="$RTW_FORMATS" \
+    LC_MEASUREMENT="$RTW_FORMATS" LC_IDENTIFICATION="$RTW_FORMATS"
+fi
+
+log 'Desktop defaults for all users'
+install -m 0755 "$RTW_BUNDLE_DIR/bin/desktop-defaults.bash" /usr/local/libexec/rtw-desktop-defaults
+printf '[Desktop Entry]\nType=Application\nName=b»robotized desktop defaults\nExec=/usr/local/libexec/rtw-desktop-defaults\nOnlyShowIn=KDE;\nNoDisplay=true\nX-KDE-autostart-phase=2\n' \
+  > /etc/xdg/autostart/rtw-desktop-defaults.desktop
+
 if [[ -n "$RTW_ADMIN_USER" ]] && id "$RTW_ADMIN_USER" >/dev/null 2>&1; then
   log "Admin account $RTW_ADMIN_USER"
   usermod -c "$RTW_ADMIN_NAME" "$RTW_ADMIN_USER"

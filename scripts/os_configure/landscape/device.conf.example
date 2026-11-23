@@ -13,3 +13,5 @@ RTW_CTRLD_BOX_HOST=              # host number in 10.28.28, 192.168.28, 192.168.
 RTW_CTRLD_BOX_MAC=               # MAC of the internal network card (empty: connect by hand)
 RTW_ADMIN_USER=                  # admin account to name (empty: not changed)
 RTW_ADMIN_NAME=                  # display name of the admin account
+RTW_TIMEZONE=                    # e.g. Europe/Berlin (empty: not changed)
+RTW_FORMATS=                     # regional formats, e.g. de_DE.UTF-8; language stays en_US
