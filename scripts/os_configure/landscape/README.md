@@ -18,6 +18,8 @@ Rules for `demo` PCs:
 - Kernel: the precompiled Ubuntu realtime kernel (`linux-realtime`) is installed. No custom kernels.
   GRUB keeps its default; select the realtime kernel in the boot menu when needed.
 - Users are in the groups `realtime` (rtprio 99, unlimited memlock), `docker` and `sudo`.
+- No standby: sleep targets masked, Plasma does not suspend on idle.
+- Night Light on for every user (times from the location).
 - Shared user: no HTTPS-to-SSH rewrite in Git (`gitconfig-ssh` is not included).
 
 ## Phases

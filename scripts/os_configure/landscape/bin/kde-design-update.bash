@@ -28,5 +28,5 @@ fi
 work=$(mktemp -d)
 trap 'rm -rf -- "$work"' EXIT
 curl -fsSL "$deb_url" -o "$work/b-robotized-kde-design.deb"
-DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install -y "$work/b-robotized-kde-design.deb"
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 -o Dpkg::Options::=--force-confnew install -y "$work/b-robotized-kde-design.deb"
 echo "b-robotized-kde-design $installed -> $latest"

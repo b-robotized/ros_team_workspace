@@ -17,7 +17,7 @@
 # regional formats from the system locale, team holidays and time zones in the clock.
 set -uo pipefail
 
-version="1 $(md5sum < /etc/default/locale 2>/dev/null | cut -c1-12)"
+version="2 $(cat /etc/default/locale /etc/rtw/desktop-defaults.conf 2>/dev/null | md5sum | cut -c1-12)"
 marker="${XDG_STATE_HOME:-$HOME/.local/state}/rtw/desktop-defaults"
 [[ "$(cat "$marker" 2>/dev/null)" == "$version" ]] && exit 0
 
@@ -32,6 +32,10 @@ if [[ -f /etc/default/locale ]]; then
   done
 fi
 kwriteconfig6 --file plasma_calendar_holiday_regions --group General --key selectedRegions "$holiday_regions"
+if grep -qs '^NIGHT_LIGHT=1' /etc/rtw/desktop-defaults.conf; then
+  kwriteconfig6 --file kwinrc --group NightColor --key Active true
+  qdbus6 org.kde.KWin /KWin reconfigure >/dev/null 2>&1 || true
+fi
 
 for _ in $(seq 1 30); do
   qdbus6 org.kde.plasmashell /PlasmaShell >/dev/null 2>&1 && break

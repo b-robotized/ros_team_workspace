@@ -71,6 +71,16 @@ if [[ "$RTW_ROLE" == demo ]]; then
   log 'Realtime scheduling for group realtime'
   getent group realtime >/dev/null || groupadd --system realtime
   printf '@realtime - rtprio 99\n@realtime - memlock unlimited\n' > /etc/security/limits.d/90-realtime.conf
+  log 'No standby'
+  systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
+  for profile in AC Battery LowBattery; do
+    kwriteconfig6 --file /etc/xdg/powerdevilrc --group "$profile" --group SuspendAndShutdown --key AutoSuspendAction 0
+  done
+  log 'Night Light for all users'
+  install -d /etc/rtw
+  echo 'NIGHT_LIGHT=1' > /etc/rtw/desktop-defaults.conf
+else
+  rm -f /etc/rtw/desktop-defaults.conf
 fi
 
 if [[ "$RTW_INSTALL_BRANDING" == 1 ]]; then
