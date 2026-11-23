@@ -15,10 +15,8 @@ with Landscape SaaS: package profiles for APT packages, scripts for everything e
 `br-ros-<distro>` is `profiles/br-ros.txt` with `DISTRO` replaced by the ROS distro.
 
 Rules for `demo` PCs:
-- Kernel: the precompiled Ubuntu realtime kernel (`linux-realtime`). No custom kernels.
-- Phase 20 sets `GRUB_DEFAULT=saved` and installs the kernel hook
-  `/etc/kernel/postinst.d/zzz-rtw-realtime-default`: GRUB boots the newest
-  realtime kernel, also after kernel updates.
+- Kernel: the precompiled Ubuntu realtime kernel (`linux-realtime`) is installed. No custom kernels.
+  GRUB keeps its default; select the realtime kernel in the boot menu when needed.
 - Users are in the groups `realtime` (rtprio 99, unlimited memlock), `docker` and `sudo`.
 - Shared user: no HTTPS-to-SSH rewrite in Git (`gitconfig-ssh` is not included).
 
@@ -29,7 +27,7 @@ Rules for `demo` PCs:
 | `00-stage-bundle.bash` | Copies the attached bundle to `/opt/rtw-provisioning/current` and selects `devices/<hostname>.conf` | Attachment `rtw-provisioning.tar.gz` |
 | `10-repositories.bash` | Universe, multiverse, git PPA, Docker and ROS repositories | Phase 00 |
 | `15-install-profile-packages.bash` | Installs the packages of the package profiles | Phase 10 |
-| `20-system.bash` | Flatpak, VS Code snap, `rosdep init`, network connection `b-controlled box`, RTW in `/opt/ros_team_workspace` with `rtw` CLI, realtime limits and GRUB default (demo), CI branding | Phase 15 |
+| `20-system.bash` | Flatpak, VS Code snap, `rosdep init`, network connection `b-controlled box`, RTW in `/opt/ros_team_workspace` with `rtw` CLI, realtime limits (demo), b»robotized design, admin account | Phase 15 |
 | `30-user-settings.bash` | Per user: shell, `~/.ros_team_ws_rc`, Git defaults, VS Code extensions, colcon mixins, rosdep | Phase 20 |
 | `40-user-groups.bash` | Group memberships from `device.conf` | Phase 20 |
 
@@ -75,12 +73,14 @@ selects it by hand. Wi-Fi passwords are not part of the bundle.
 
 ## Desktop
 
-With `RTW_INSTALL_BRANDING=1`, phase 20 installs the b»robotized CI package to
-`/usr/share/br-ci-package-computer` and sets the login screen background.
-Phase 30 turns on automatic light and dark theme (Plasma follows the day and
-night times of the computer location) and adds a one-time autostart
-`bin/desktop-branding.bash`: wallpaper and application menu icon at the next
-login.
+With `RTW_INSTALL_BRANDING=1`, phase 20 installs the latest release of the
+b»robotized KDE design package (`b_public/infra/b_kde_design`) and a daily
+systemd timer `rtw-kde-design-update.timer` that installs newer releases. The
+package applies the design once per user at login. Phase 20 also renames the
+admin account (`RTW_ADMIN_USER`, `RTW_ADMIN_NAME`) and gives every account
+without a picture the b»robotized picture. Phase 30 turns on automatic light
+and dark theme: Plasma follows the day and night times of the computer
+location.
 
 ## Git defaults
 

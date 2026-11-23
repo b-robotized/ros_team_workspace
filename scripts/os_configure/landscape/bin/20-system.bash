@@ -71,40 +71,39 @@ if [[ "$RTW_ROLE" == demo ]]; then
   log 'Realtime scheduling for group realtime'
   getent group realtime >/dev/null || groupadd --system realtime
   printf '@realtime - rtprio 99\n@realtime - memlock unlimited\n' > /etc/security/limits.d/90-realtime.conf
-  install -m 0755 "$RTW_BUNDLE_DIR/bin/realtime-grub-default.bash" /etc/kernel/postinst.d/zzz-rtw-realtime-default
-  if ! grep -q '^GRUB_DEFAULT=saved$' /etc/default/grub; then
-    sed -i 's/^GRUB_DEFAULT=.*/GRUB_DEFAULT=saved/' /etc/default/grub
-    update-grub
-  fi
-  /etc/kernel/postinst.d/zzz-rtw-realtime-default
-  if [[ "$(uname -r)" != *-realtime ]]; then
-    printf '[RTW] WARNING: running kernel %s is not the Ubuntu realtime kernel. Select it in GRUB and reboot.\n' \
-      "$(uname -r)" >&2
-  fi
 fi
 
 if [[ "$RTW_INSTALL_BRANDING" == 1 ]]; then
   log 'b»robotized KDE design'
-  release=https://code.b-robotized.com/api/v4/projects/b_public%2Finfra%2Fb_kde_design/releases/permalink/latest
-  deb_url=$(curl -fsSL "$release" | python3 -c '
-import json, sys
-print(next(l["url"] for l in json.load(sys.stdin)["assets"]["links"] if l["url"].endswith(".deb")))')
-  curl -fsSL "$deb_url" -o "$work/b-robotized-kde-design.deb"
-  apt-get -o DPkg::Lock::Timeout=300 install -y "$work/b-robotized-kde-design.deb"
-  grep -ls br-ci-package-computer /usr/share/sddm/themes/*/theme.conf.user | xargs -r rm -f
+  install -m 0755 "$RTW_BUNDLE_DIR/bin/kde-design-update.bash" /usr/local/sbin/rtw-kde-design-update
+  /usr/local/sbin/rtw-kde-design-update
+  printf '[Unit]\nDescription=Install the latest b»robotized KDE design release\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStart=/usr/local/sbin/rtw-kde-design-update\n' \
+    > /etc/systemd/system/rtw-kde-design-update.service
+  printf '[Unit]\nDescription=Daily b»robotized KDE design update\n\n[Timer]\nOnCalendar=daily\nRandomizedDelaySec=1h\nPersistent=true\n\n[Install]\nWantedBy=timers.target\n' \
+    > /etc/systemd/system/rtw-kde-design-update.timer
+  systemctl daemon-reload
+  systemctl enable --now rtw-kde-design-update.timer
 fi
 
 if [[ -n "$RTW_ADMIN_USER" ]] && id "$RTW_ADMIN_USER" >/dev/null 2>&1; then
   log "Admin account $RTW_ADMIN_USER"
   usermod -c "$RTW_ADMIN_NAME" "$RTW_ADMIN_USER"
-  logo=/usr/share/icons/hicolor/scalable/apps/b-robotized.svg
-  if [[ -f "$logo" ]] && command -v magick >/dev/null; then
-    picture=/var/lib/AccountsService/icons/$RTW_ADMIN_USER.png
-    install -d -m 0775 /var/lib/AccountsService/icons
-    magick -background none -density 600 "$logo" -resize 256x256 "$picture"
-    busctl call org.freedesktop.Accounts "/org/freedesktop/Accounts/User$(id -u "$RTW_ADMIN_USER")" \
-      org.freedesktop.Accounts.User SetIconFile s "$picture"
-  fi
+fi
+
+logo=/usr/share/icons/hicolor/scalable/apps/b-robotized.svg
+if [[ "$RTW_INSTALL_BRANDING" == 1 && -f "$logo" ]] && command -v magick >/dev/null; then
+  log 'User pictures'
+  picture=/usr/share/b-robotized-kde-design/user-picture.png
+  install -d /usr/share/b-robotized-kde-design
+  magick -background none -density 600 "$logo" -resize 256x256 "$picture"
+  for account in $RTW_ADMIN_USER "${RTW_TARGET_USERS[@]}"; do
+    id "$account" >/dev/null 2>&1 || continue
+    user_path=/org/freedesktop/Accounts/User$(id -u "$account")
+    current=$(busctl get-property org.freedesktop.Accounts "$user_path" org.freedesktop.Accounts.User IconFile | cut -d'"' -f2)
+    if [[ -z "$current" || ! -s "$current" || "$current" == /var/lib/AccountsService/icons/$account.png ]]; then
+      busctl call org.freedesktop.Accounts "$user_path" org.freedesktop.Accounts.User SetIconFile s "$picture"
+    fi
+  done
 fi
 
 log 'System setup complete. Next: phase 30 user settings.'
